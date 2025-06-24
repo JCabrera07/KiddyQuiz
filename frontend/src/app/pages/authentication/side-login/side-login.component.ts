@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   templateUrl: './side-login.component.html',
 })
 export class AppSideLoginComponent {
+
   constructor(private router: Router) {}
 
   form = new FormGroup({

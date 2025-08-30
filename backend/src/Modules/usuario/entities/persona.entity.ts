@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn } from 'typeorm';
 import { Usuario } from './usuario.entity';
 import { Rol } from './rol.entity';
 import { Grado } from '../../grado/entities/grado.entity';
@@ -8,14 +8,18 @@ export class Persona {
   @PrimaryGeneratedColumn({ name: 'id_persona' })
   id: number;
 
-  @ManyToOne(() => Usuario, usuario => usuario.personas)
-  usuario: Usuario;
+ @ManyToOne(() => Usuario, usuario => usuario.personas)
+@JoinColumn({ name: 'id_usuario' })
+usuario: Usuario;
 
-  @ManyToOne(() => Rol, rol => rol.personas)
-  rol: Rol;
+@ManyToOne(() => Rol, rol => rol.personas)
+@JoinColumn({ name: 'id_rol' })
+rol: Rol;
 
-  @ManyToOne(() => Grado, grado => grado.personas)
-  grado: Grado;
+@ManyToOne(() => Grado, grado => grado.personas)
+@JoinColumn({ name: 'id_grado' })
+grado: Grado;
+
 
   @Column()
   nombres: string;
@@ -41,3 +45,4 @@ export class Persona {
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
+

@@ -9,12 +9,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'SECRET_KEY', // misma clave que en el módulo
+      secretOrKey: 'CLAVE-SECRETA', // misma clave que en el módulo
     });
   }
 
-  async validate(payload: any): Promise<Usuario> {
-    // payload contiene lo que pusimos en el JWT (ej: id, username)
-    return { id: payload.sub, nombre: payload.username } as Usuario;
-  }
+  async validate(payload: any) {
+  return { id: payload.sub, username: payload.username };
+}
+
 }

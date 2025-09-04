@@ -12,6 +12,11 @@ import { RespuestaUsuario } from '../respuesta/entities/respuesta-usuario.entity
 import { Pregunta } from '../pregunta/entities/pregunta.entity';
 import { MulterModule } from '@nestjs/platform-express';
 
+// 👇 importar tu nuevo service y controller
+import { EvaluacionPreguntaService } from './services/evaluacion-pregunta.service';
+import { EvaluacionPreguntaController } from './controller/evaluacion-pregunta.controller';
+import { AiModule } from '../common/gemini/ia.module'; // 👈 módulo que exporta GeminiService
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -23,11 +28,20 @@ import { MulterModule } from '@nestjs/platform-express';
       Pregunta,
     ]),
     MulterModule.register({
-      dest: './uploads', // carpeta temporal para almacenar archivos antes de subirlos a Cloudinary
+      dest: './uploads',
     }),
+    AiModule, // 👈 aquí, como módulo, no dentro de forFeature
   ],
-  controllers: [EvaluacionController,DetalleEvaluacionController],
-  providers: [EvaluacionService,DetalleEvaluacionService],
+  controllers: [
+    EvaluacionController,
+    DetalleEvaluacionController,
+    EvaluacionPreguntaController,
+  ],
+  providers: [
+    EvaluacionService,
+    DetalleEvaluacionService,
+    EvaluacionPreguntaService,
+  ],
 })
 export class EvaluacionModule {}
 

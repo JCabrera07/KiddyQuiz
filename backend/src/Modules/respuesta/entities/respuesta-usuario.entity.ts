@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -15,14 +16,17 @@ export class RespuestaUsuario {
   @PrimaryGeneratedColumn({ name: 'id_respuesta_usuario' })
   id: number;
 
-  @ManyToOne(() => DetalleEvaluacion, detalle => detalle.respuestas)
+  @ManyToOne(() => DetalleEvaluacion, detalle => detalle.respuestas, { eager: true })
+  @JoinColumn({ name: 'id_detalle_evaluacion' })
   detalleEvaluacion: DetalleEvaluacion;
 
-  @ManyToOne(() => Pregunta)
+  @ManyToOne(() => Pregunta, { eager: true })
+  @JoinColumn({ name: 'id_pregunta' })
   pregunta: Pregunta;
 
-  @ManyToOne(() => Opcion, { nullable: true })
-  opcionSeleccionada: Opcion;
+  @ManyToOne(() => Opcion, { nullable: true, eager: true })
+  @JoinColumn({ name: 'id_opcion_seleccionada' })
+  opcionSeleccionada: Opcion| null;
 
   @Column({ name: 'respuesta_abierta', type: 'text', nullable: true })
   respuestaAbierta: string;

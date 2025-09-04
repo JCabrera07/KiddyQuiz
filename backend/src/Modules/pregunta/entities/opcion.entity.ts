@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -14,17 +15,19 @@ export class Opcion {
   @PrimaryGeneratedColumn({ name: 'id_opcion' })
   id: number;
 
-  @ManyToOne(() => Pregunta, pregunta => pregunta.opciones)
+  @ManyToOne(() => Pregunta, pregunta => pregunta.opciones, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'id_pregunta' })
   pregunta: Pregunta;
 
   @Column({ name: 'texto_opcion', type: 'text' })
   texto: string;
 
-  @ManyToOne(() => TipoContenido, tipo => tipo.opciones)
-  tipoContenido: TipoContenido;
+  @ManyToOne(() => TipoContenido, tipo => tipo.opciones, { nullable: true })
+  @JoinColumn({ name: 'id_tipo_contenido' })
+  tipoContenido: TipoContenido | null; // ahora puede ser null
 
-  @Column({ name: 'url_contenido', nullable: true })
-  urlContenido: string;
+@Column({ name: 'url_contenido', type: 'text', nullable: true })
+urlContenido: string | null;
 
   @Column({ name: 'es_correcta', default: false })
   esCorrecta: boolean;

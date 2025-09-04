@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Evaluacion } from '../entities/evaluacion.entity';
@@ -65,5 +65,26 @@ export class EvaluacionService {
 
   return { message: `Evaluación con id ${id} eliminada correctamente` };
 }
+
+async findOne(id: number) {
+  const evaluacion = await this.evaluacionRepo.findOne({ where: { id } });
+
+  if (!evaluacion) {
+    throw new BadRequestException(`Evaluación con id ${id} no encontrada`);
+  }
+
+  return {
+    id: evaluacion.id,
+    titulo: evaluacion.titulo,
+    descripcion: evaluacion.descripcion,
+    imagenUrl: evaluacion.imagenUrl,
+    estado: evaluacion.estado,
+    fechaInicio: evaluacion.fechaInicio,
+    fechaFin: evaluacion.fechaFin,
+    createdAt: evaluacion.createdAt,
+    updatedAt: evaluacion.updatedAt,
+  };
+}
+
 
 }

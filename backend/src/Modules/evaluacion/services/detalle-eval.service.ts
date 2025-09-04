@@ -72,4 +72,34 @@ export class DetalleEvaluacionService {
     return { message: `DetalleEvaluacion con ID ${id} eliminado correctamente` };
   }
 
+
+    async findWithRespuestas(id: number) {
+    const detalle = await this.detalleRepo.findOne({
+      where: { id },
+      relations: [
+        'usuario',
+        'evaluacion',
+        'respuestas',
+        'respuestas.pregunta',
+        'respuestas.opcionSeleccionada',
+      ],
+    });
+
+    if (!detalle) {
+      throw new NotFoundException(`DetalleEvaluacion con id ${id} no encontrado`);
+    }
+
+    return detalle;
+  }
+
+  async actualizarComentarioIA(id: number, comentarioIA: string) {
+  const detalle = await this.detalleRepo.findOne({ where: { id } });
+  if (!detalle) {
+    throw new NotFoundException(`DetalleEvaluacion con id ${id} no encontrado`);
+  }
+
+  detalle.comentarioIA = comentarioIA;
+  return this.detalleRepo.save(detalle);
+}
+
 }

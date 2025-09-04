@@ -75,5 +75,11 @@ export class EvaluacionController {
     return this.evaluacionService.remove(id);
   }
 
+  @Get(':id')
+async findOne(@Param('id') id: number) {
+  return this.evaluacionService.findOne(+id);
+}
+
+
 }
 

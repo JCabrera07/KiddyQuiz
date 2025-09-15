@@ -12,11 +12,6 @@ import { AppEarningReportsComponent } from 'src/app/components/earning-reports/e
   imports: [
     MaterialModule,
     AppBlogCardsComponent,
-    AppSalesProfitComponent,
-    AppTotalFollowersComponent,
-    AppTotalIncomeComponent,
-    AppPopularProductsComponent,
-    AppEarningReportsComponent
   ],
   templateUrl: './starter.component.html',
   encapsulation: ViewEncapsulation.None,

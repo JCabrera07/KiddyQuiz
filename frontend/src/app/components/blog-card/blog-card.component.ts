@@ -1,66 +1,47 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { TablerIconsModule } from 'angular-tabler-icons';
-
-// card 2
-interface cardimgs {
-  id: number;
-  time: string;
-  imgSrc: string;
-  user: string;
-  title: string;
-  views: string;
-  category: string;
-  comments: number;
-  date: string;
-}
+import { Evaluacion } from 'src/app/models/evaluacion.model';
+import { EvaluacionService } from 'src/app/services/evaluacion.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-blog-card',
   standalone: true,
-  imports: [MatCardModule, MatChipsModule, TablerIconsModule, MatButtonModule],
+  imports: [
+    MatCardModule,
+    MatChipsModule,
+    TablerIconsModule,
+    MatButtonModule,
+    DatePipe
+  ],
   templateUrl: './blog-card.component.html',
+  styles: [`
+    .card-img-fixed {
+      width: 100%;
+      height: 250px;       /* 👈 altura fija */
+      object-fit: cover;   /* 👈 recorta sin deformar */
+      border-radius: 8px;  /* opcional */
+    }
+  `]
 })
-export class AppBlogCardsComponent {
-  constructor() {}
+export class AppBlogCardsComponent implements OnInit {
+  evaluaciones: Evaluacion[] = [];
 
-  //   card 2
-  cardimgs: cardimgs[] = [
-    {
-      id: 1,
-      time: '2 mins Read',
-      imgSrc: '/assets/images/blog/blog-img1.jpg',
-      user: '/assets/images/profile/user-1.jpg',
-      title: 'As yen tumbles, gadget-loving Japan goes for iPhones',
-      views: '9,125',
-      category: 'Social',
-      comments: 3,
-      date: 'Mon, Dec 2025',
-    },
-    {
-      id: 2,
-      time: '2 mins Read',
-      imgSrc: '/assets/images/blog/blog-img2.jpg',
-      user: '/assets/images/profile/user-2.jpg',
-      title:
-        'Intel loses bid to revive antitrust case against patent foe Fortress',
-      views: '9,125',
-      category: 'Gadget',
-      comments: 3,
-      date: 'Sun, Dec 2025',
-    },
-    {
-      id: 3,
-      time: '2 mins Read',
-      imgSrc: '/assets/images/blog/blog-img3.jpg',
-      user: '/assets/images/profile/user-3.jpg',
-      title: 'COVID outbreak deepens as more lockdowns loom in China',
-      views: '9,125',
-      category: 'Health',
-      comments: 12,
-      date: 'Sat, Dec 2025',
-    },
-  ];
+  constructor(private evaluacionService: EvaluacionService) {}
+
+  ngOnInit(): void {
+    this.evaluacionService.getEvaluaciones().subscribe({
+      next: (data) => {
+        this.evaluaciones = data;
+      },
+      error: (err) => {
+        console.error('Error cargando evaluaciones:', err);
+      }
+    });
+  }
 }
+
+

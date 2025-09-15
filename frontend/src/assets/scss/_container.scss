@@ -17,28 +17,23 @@ body {
   color: var(--mat-sys-on-background);
 }
 
-.app-topstrip{
-  position: fixed;
-  top: 0;
-  z-index: 10;
-}
 
 .mainWrapper {
   display: flex;
   min-height: calc(100vh - 72px);
   width: 100%;
   flex: 1;
-  margin-top: 72px;
+  margin-top: 2px;
 }
 
 @media (max-width: 991px){
   .mainWrapper{
-    margin-top: 154px;
+    margin-top: 2px;
   }
 }
 
 .body-wrapper {
-  margin-bottom: 30px;
+  margin-bottom: 2px;
   min-height: calc(100% - 102px);
 }
 

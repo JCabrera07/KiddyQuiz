@@ -29,6 +29,13 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./pages/extra/extra.routes').then((m) => m.ExtraRoutes),
       },
+            {
+        path: 'profile',
+        loadComponent: () =>
+          import('./pages/final-components/profile/profile.component').then(
+            (m) => m.ProfileComponent
+          ),
+      },
     ],
   },
   {
@@ -44,6 +51,11 @@ export const routes: Routes = [
       },
     ],
   },
+      {
+      path: 'profile',
+      loadComponent: () =>
+        import('./pages/final-components/profile/profile.component').then(m => m.ProfileComponent),
+    },
   {
     path: '**',
     redirectTo: 'authentication/error',

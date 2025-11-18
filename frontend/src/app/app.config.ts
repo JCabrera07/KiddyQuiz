@@ -39,6 +39,10 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding()
     ),
     provideHttpClient(withInterceptorsFromDi()),
+<<<<<<< HEAD
+=======
+    provideClientHydration(),
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
     provideAnimationsAsync(),
     importProvidersFrom(
       FormsModule,

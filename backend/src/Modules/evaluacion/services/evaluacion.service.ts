@@ -1,14 +1,21 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+<<<<<<< HEAD
 import { In, Repository } from 'typeorm';
+=======
+import { Repository } from 'typeorm';
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
 import { Evaluacion } from '../entities/evaluacion.entity';
 import { CreateEvaluacionDto } from '../dto/create-evaluacion.dto';
 import { DetalleEvaluacion } from '../entities/detalle-evaluacion.entity';
 import { UpdateEvaluacionDto } from '../dto/update-evaluacion.dto';
 import cloudinary from 'src/cloudinary.config';
+<<<<<<< HEAD
 import { SubmitEvaluacionDto } from '../dto/submit-evaluacion.dto';
 import { Opcion } from 'src/Modules/pregunta/entities/opcion.entity';
 import { RespuestaUsuario } from 'src/Modules/respuesta/entities/respuesta-usuario.entity';
+=======
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
 
 @Injectable()
 export class EvaluacionService {
@@ -17,12 +24,15 @@ export class EvaluacionService {
     private readonly evaluacionRepo: Repository<Evaluacion>,
     @InjectRepository(DetalleEvaluacion)
     private readonly detalleRepo: Repository<DetalleEvaluacion>,
+<<<<<<< HEAD
     @InjectRepository(Opcion)
     private opcionRepository: Repository<Opcion>,
     @InjectRepository(RespuestaUsuario)
     private respuestaUsuarioRepository: Repository<RespuestaUsuario>,
     @InjectRepository(Evaluacion)
     private evaluacionRepository: Repository<Evaluacion>,
+=======
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
   ) {}
 
   async create(createDto: CreateEvaluacionDto & { imagenUrl: string }) {
@@ -63,6 +73,7 @@ export class EvaluacionService {
     return detalles.map(detalle => detalle.evaluacion);
   }
 
+<<<<<<< HEAD
 // VERSIÓN CORRECTA CON TRANSFORMACIÓN
 async findQuizById(id: number) {
   const evaluacion = await this.evaluacionRepo.findOne({
@@ -90,6 +101,8 @@ async findQuizById(id: number) {
   };
 }
 
+=======
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
   async remove(id: number) {
   const evaluacion = await this.evaluacionRepo.findOne({ where: { id } });
 
@@ -122,6 +135,7 @@ async findOne(id: number) {
   };
 }
 
+<<<<<<< HEAD
  async calificarEvaluacion(evaluacionId: number, dto: SubmitEvaluacionDto) {
   // 1. OBTENER LAS RESPUESTAS CORRECTAS DE LA BD
   const preguntaIds = dto.respuestas.map(r => r.id_pregunta);
@@ -192,5 +206,7 @@ private async guardarResultados(evaluacionId: number, dto: SubmitEvaluacionDto, 
     
     return detalleGuardado;
 }
+=======
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
 
 }

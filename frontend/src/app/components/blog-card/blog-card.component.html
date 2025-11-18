@@ -1,6 +1,7 @@
 <div class="row justify-content-center">
   @for(evaluacion of evaluaciones; track evaluacion.id) {
   <div class="col-lg-4">
+<<<<<<< HEAD
     <mat-card class="cardWithShadow position-relative overflow-hidden clickable-card">
       
 <a [routerLink]="['/evaluacion', evaluacion.id]" class="stretched-link"></a>
@@ -12,6 +13,16 @@
           alt="{{ evaluacion.titulo }}"
           class="card-img-fixed"
         />
+=======
+    <mat-card class="cardWithShadow position-relative overflow-hidden">
+      <div class="position-relative">
+<img
+  mat-card-image
+  [src]="evaluacion.imagenUrl"
+  alt="{{ evaluacion.titulo }}"
+  class="card-img-fixed"
+/>
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
         <div class="card-overlay h-100 d-flex align-items-end justify-content-end">
           <span class="f-s-12 f-w-600 m-y-16 m-r-16 p-y-4 p-x-8 rounded-pill bg-white">
             Inicio: {{ evaluacion.fechaInicio | date:'mediumDate' }}
@@ -20,8 +31,15 @@
       </div>
 
       <mat-card-content class="p-y-24">
+<<<<<<< HEAD
         <mat-card-title class="m-t-20">
           {{ evaluacion.titulo }}
+=======
+        <mat-card-title class="m-t-20 text-hover-primary cursor-pointer">
+          <a routerLink="['/']" class="hover-text">
+            {{ evaluacion.titulo }}
+          </a>
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
         </mat-card-title>
         <p>{{ evaluacion.descripcion }}</p>
         <div class="d-flex align-items-center justify-content-between m-t-24">

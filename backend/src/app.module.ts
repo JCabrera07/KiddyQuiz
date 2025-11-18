@@ -17,7 +17,11 @@ import { AuthModule } from './Modules/auth/auth.module';
       port: 5432,
       username: 'postgres',
       password: '123456',
+<<<<<<< HEAD
       database: 'KiddyQuiz_Final',
+=======
+      database: 'KiddyQuizDB',
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
       autoLoadEntities: true,
       synchronize: false, // en desarrollo, no usar en producción
     }),

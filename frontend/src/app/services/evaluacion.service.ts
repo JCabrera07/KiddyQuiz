@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+<<<<<<< HEAD
 // Asegúrate de que la ruta al modelo sea correcta y que el archivo contenga todas las interfaces.
 import { Evaluacion, EvaluacionConPreguntas } from '../models/evaluacion.model'; 
 
+=======
+import { Evaluacion } from '../models/evaluacion.model';
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
 @Injectable({
   providedIn: 'root'
 })
 export class EvaluacionService {
+<<<<<<< HEAD
   // Corregí la URL base para que apunte al controlador correcto de tu API
   private apiUrl = 'http://localhost:3000/evaluacion'; 
 
@@ -45,3 +50,13 @@ export class EvaluacionService {
     return this.http.post(url, respuestas);
   }
 }
+=======
+  private apiUrl = 'http://localhost:3000/evaluacion'; // cambia la URL a la de tu backend
+
+  constructor(private http: HttpClient) {}
+
+  getEvaluaciones(): Observable<Evaluacion[]> {
+    return this.http.get<Evaluacion[]>(this.apiUrl);
+  }
+}
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49

@@ -11,7 +11,10 @@ import { Usuario } from '../usuario/entities/usuario.entity';
 import { RespuestaUsuario } from '../respuesta/entities/respuesta-usuario.entity';
 import { Pregunta } from '../pregunta/entities/pregunta.entity';
 import { MulterModule } from '@nestjs/platform-express';
+<<<<<<< HEAD
 import { Opcion } from '../pregunta/entities/opcion.entity'; 
+=======
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
 
 // 👇 importar tu nuevo service y controller
 import { EvaluacionPreguntaService } from './services/evaluacion-pregunta.service';
@@ -27,7 +30,10 @@ import { AiModule } from '../common/gemini/ia.module'; // 👈 módulo que expor
       Usuario,
       RespuestaUsuario,
       Pregunta,
+<<<<<<< HEAD
       Opcion
+=======
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
     ]),
     MulterModule.register({
       dest: './uploads',

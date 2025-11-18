@@ -6,7 +6,10 @@ import { TablerIconsModule } from 'angular-tabler-icons';
 import { Evaluacion } from 'src/app/models/evaluacion.model';
 import { EvaluacionService } from 'src/app/services/evaluacion.service';
 import { DatePipe } from '@angular/common';
+<<<<<<< HEAD
 import { RouterLink } from '@angular/router';
+=======
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
 
 @Component({
   selector: 'app-blog-card',
@@ -16,6 +19,7 @@ import { RouterLink } from '@angular/router';
     MatChipsModule,
     TablerIconsModule,
     MatButtonModule,
+<<<<<<< HEAD
     DatePipe,
     RouterLink
   ],
@@ -51,6 +55,17 @@ import { RouterLink } from '@angular/router';
       left: 0;
       z-index: 1; /* Se asegura de que esté por encima del contenido */
       content: "";
+=======
+    DatePipe
+  ],
+  templateUrl: './blog-card.component.html',
+  styles: [`
+    .card-img-fixed {
+      width: 100%;
+      height: 250px;       /* 👈 altura fija */
+      object-fit: cover;   /* 👈 recorta sin deformar */
+      border-radius: 8px;  /* opcional */
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
     }
   `]
 })

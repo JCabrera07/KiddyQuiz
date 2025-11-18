@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { BlankComponent } from './layouts/blank/blank.component';
 import { FullComponent } from './layouts/full/full.component';
 
+<<<<<<< HEAD
 // --- 1. IMPORTA TU GUARDIA Y EL NUEVO COMPONENTE ---
 import { authGuard } from 'src/app/auth/auth.guard'; // Asegúrate de que la ruta sea correcta
 import { LandingComponent } from './pages/landing/landing.component'; // Asegúrate de que la ruta sea correcta
@@ -37,6 +38,19 @@ export const routes: Routes = [
     canActivate: [authGuard], // <-- APLICAMOS EL GUARDIA A TODO ESTE GRUPO
     children: [
       {
+=======
+export const routes: Routes = [
+  {
+    path: '',
+    component: FullComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: '/dashboard',
+        pathMatch: 'full',
+      },
+      {
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
         path: 'dashboard',
         loadChildren: () =>
           import('./pages/pages.routes').then((m) => m.PagesRoutes),
@@ -53,13 +67,18 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./pages/extra/extra.routes').then((m) => m.ExtraRoutes),
       },
+<<<<<<< HEAD
       {
+=======
+            {
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
         path: 'profile',
         loadComponent: () =>
           import('./pages/final-components/profile/profile.component').then(
             (m) => m.ProfileComponent
           ),
       },
+<<<<<<< HEAD
       {
         path: 'evaluacion/:id', 
         component: EvaluacionDetailComponent,
@@ -80,3 +99,30 @@ export const routes: Routes = [
     redirectTo: '', // Redirige cualquier ruta no encontrada a la Landing Page
   },
 ];
+=======
+    ],
+  },
+  {
+    path: '',
+    component: BlankComponent,
+    children: [
+      {
+        path: 'authentication',
+        loadChildren: () =>
+          import('./pages/authentication/authentication.routes').then(
+            (m) => m.AuthenticationRoutes
+          ),
+      },
+    ],
+  },
+      {
+      path: 'profile',
+      loadComponent: () =>
+        import('./pages/final-components/profile/profile.component').then(m => m.ProfileComponent),
+    },
+  {
+    path: '**',
+    redirectTo: 'authentication/error',
+  },
+];
+>>>>>>> dae56bda09222a7943d6f2bed32053550878ec49

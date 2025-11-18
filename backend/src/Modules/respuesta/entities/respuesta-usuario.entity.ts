@@ -1,0 +1,45 @@
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { DetalleEvaluacion } from '../../evaluacion/entities/detalle-evaluacion.entity';
+import { Pregunta } from '../../pregunta/entities/pregunta.entity';
+import { Opcion } from '../../pregunta/entities/opcion.entity';
+
+@Entity('respuesta_usuario')
+export class RespuestaUsuario {
+  @PrimaryGeneratedColumn({ name: 'id_respuesta_usuario' })
+  id: number;
+
+  @ManyToOne(() => DetalleEvaluacion, detalle => detalle.respuestas, { eager: true })
+  @JoinColumn({ name: 'id_detalle_evaluacion' })
+  detalleEvaluacion: DetalleEvaluacion;
+
+  @ManyToOne(() => Pregunta, { eager: true })
+  @JoinColumn({ name: 'id_pregunta' })
+  pregunta: Pregunta;
+
+  @ManyToOne(() => Opcion, { nullable: true, eager: true })
+  @JoinColumn({ name: 'id_opcion_seleccionada' })
+  opcionSeleccionada: Opcion| null;
+
+  @Column({ name: 'respuesta_abierta', type: 'text', nullable: true })
+  respuestaAbierta: string;
+
+  @Column({ name: 'es_correcta', nullable: true })
+  esCorrecta: boolean;
+
+  @Column({ name: 'tiempo_por_pregunta', type: 'interval', nullable: true })
+  tiempoPorPregunta: any;
+
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
+}

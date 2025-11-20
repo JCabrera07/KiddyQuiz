@@ -6,10 +6,7 @@ import { EvaluacionService } from '../services/evaluacion.service';
 import { CreateEvaluacionDto } from '../dto/create-evaluacion.dto';
 import cloudinary from 'src/cloudinary.config';
 import { UpdateEvaluacionDto } from '../dto/update-evaluacion.dto';
-<<<<<<< HEAD
 import { SubmitEvaluacionDto } from '../dto/submit-evaluacion.dto';
-=======
->>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
 
 @Controller('evaluacion')
 export class EvaluacionController {
@@ -62,14 +59,11 @@ export class EvaluacionController {
     return this.evaluacionService.findByUsuarioId(usuarioId);
   }
 
-<<<<<<< HEAD
   @Get(':id/quiz')
 async findQuiz(@Param('id', ParseIntPipe) id: number) {
   return this.evaluacionService.findQuizById(id);
 }
 
-=======
->>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
   // ACTUALIZAR EVALUACION (con imagen opcional)
   @Put(':id')
   @UseInterceptors(FileInterceptor('imagen'))
@@ -92,7 +86,6 @@ async findOne(@Param('id') id: number) {
   return this.evaluacionService.findOne(+id);
 }
 
-<<<<<<< HEAD
 @Post(':id/submit')
   async submitEvaluacion(
     @Param('id', ParseIntPipe) id: number,
@@ -103,8 +96,6 @@ async findOne(@Param('id') id: number) {
     return this.evaluacionService.calificarEvaluacion(id, submitEvaluacionDto);
   }
 
-=======
->>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
 
 }
 

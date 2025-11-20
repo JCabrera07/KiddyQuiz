@@ -1,19 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-<<<<<<< HEAD
 import { tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router'; 
-=======
->>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-<<<<<<< HEAD
   private apiUrl = 'http://localhost:3000/auth'; 
 
   // --- CORRECCIÓN AQUÍ ---
@@ -69,15 +65,3 @@ export class AuthService {
     this.router.navigate(['/']);
   }
 }
-=======
-private apiUrl = 'http://localhost:3000/auth/login'; 
-
-  constructor(private http: HttpClient) { }
-
-  login(username: string, password: string): Observable<any> {
-    const body = { username, password };
-    return this.http.post(this.apiUrl, body);
-  }
-}
-
->>>>>>> dae56bda09222a7943d6f2bed32053550878ec49

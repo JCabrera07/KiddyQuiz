@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // src/app/models/evaluacion.model.ts
 
 // 1. Definimos la pieza más pequeña: una Opción
@@ -17,8 +16,6 @@ export interface Pregunta {
 }
 
 // 3. Definimos la Evaluación base (la "portada del libro")
-=======
->>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
 export interface Evaluacion {
   id: number;
   titulo: string;
@@ -30,11 +27,8 @@ export interface Evaluacion {
   createdAt: string;
   updatedAt: string | null;
 }
-<<<<<<< HEAD
 
 // 4. Finalmente, definimos la Evaluación completa, que está hecha de Preguntas
 export interface EvaluacionConPreguntas extends Evaluacion {
   preguntas: Pregunta[];
 }
-=======
->>>>>>> dae56bda09222a7943d6f2bed32053550878ec49

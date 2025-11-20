@@ -27,11 +27,7 @@
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
-<<<<<<< HEAD
               "src/styles.css",
-=======
-              "src/styles.scss",
->>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
               "src/assets/scss/style.scss"
             ],
             "scripts": [],
@@ -87,11 +83,7 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
-<<<<<<< HEAD
             "styles": ["src/styles.css"],
-=======
-            "styles": ["src/styles.scss"],
->>>>>>> dae56bda09222a7943d6f2bed32053550878ec49
             "scripts": []
           }
         }

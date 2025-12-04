@@ -39,7 +39,8 @@ export class ClaseService {
       nombre: dto.nombre,
       codigoVinculacion: codigo,
       docente: docente,
-      grado: { id: dto.gradoId } 
+      grado: { id: dto.gradoId },
+      imagenUrl: dto.imagenUrl
     });
 
     return await this.claseRepo.save(nuevaClase);
@@ -53,13 +54,32 @@ export class ClaseService {
     });
   }
 
+  // --- MEJORADO: Listar con relaciones completas ---
   async listarClasesEstudiante(idEstudiante: number) {
+    // Usamos find para cargar relaciones anidadas desde la perspectiva del usuario
+    // O podemos hacer una query directa sobre la tabla intermedia si queremos optimizar,
+    // pero TypeORM lo maneja bien así para volúmenes normales.
+    
+    // Opción A: Buscar el usuario y sus clases (y dentro de sus clases, el docente y grado)
     const usuario = await this.usuarioRepo.findOne({
       where: { id: idEstudiante },
-      relations: ['clasesInscritas', 'clasesInscritas.docente', 'clasesInscritas.grado']
+      relations: [
+        'clasesInscritas', 
+        'clasesInscritas.docente', // Traer nombre del profesor
+        'clasesInscritas.docente.personas', // Para tener nombres y apellidos reales (si usas Persona)
+        'clasesInscritas.grado'    // Traer nombre del grado
+      ],
+      order: {
+        clasesInscritas: {
+          createdAt: 'DESC'
+        }
+      }
     });
     
     if (!usuario) throw new NotFoundException('Estudiante no encontrado');
+    
+    // Mapeamos para devolver una estructura limpia si es necesario, 
+    // o devolvemos el array directo.
     return usuario.clasesInscritas;
   }
 

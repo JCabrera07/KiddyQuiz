@@ -15,6 +15,9 @@ export class Clase {
   @Column({ name: 'codigo_vinculacion', length: 20, unique: true })
   codigoVinculacion: string;
 
+  @Column({ name: 'imagen_url', nullable: true })
+  imagenUrl: string;
+
   @ManyToOne(() => Usuario, (usuario) => usuario.clasesCreadas)
   @JoinColumn({ name: 'id_docente' })
   docente: Usuario;

@@ -9,4 +9,8 @@ export class CreateClaseDto {
   @IsOptional()
   @IsNumber()
   gradoId?: number;
+
+  @IsOptional()
+  @IsString()
+  imagenUrl?: string;
 }

@@ -1,24 +1,64 @@
-import { Controller, Get, Post, Body, Param, UseGuards, Request, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseGuards, Request, ParseIntPipe, UseInterceptors, BadRequestException, UploadedFile } from '@nestjs/common';
 import { ClaseService } from '../services/clase.service';
 import { CreateClaseDto } from '../dto/create-clase.dto';
 import { JoinClaseDto } from '../dto/join-clase.dto';
 import { JwtAuthGuard } from 'src/Modules/auth/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import { v2 as cloudinary } from 'cloudinary';
 
 @Controller('clase')
 @UseGuards(JwtAuthGuard)
 export class ClaseController {
   constructor(private readonly claseService: ClaseService) {}
-
-  // --- DOCENTE ---
+ // --- DOCENTE ---
   @Post()
-  crear(@Request() req, @Body() createClaseDto: CreateClaseDto) {
-    // CORRECCIÓN: Leemos 'id' que es lo que vimos en tu consola
+  @UseInterceptors(
+    FileInterceptor('imagen', {
+      storage: diskStorage({
+        destination: './uploads', // Asegúrate de que esta carpeta exista
+        filename: (req, file, cb) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const ext = extname(file.originalname);
+          cb(null, `clase-${uniqueSuffix}${ext}`);
+        },
+      }),
+      fileFilter: (req, file, cb) => {
+        if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
+          return cb(new BadRequestException('Solo se permiten archivos JPG, JPEG o PNG'), false);
+        }
+        cb(null, true);
+      },
+      limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+    }),
+  )
+  async crear(
+    @Request() req, 
+    @Body() createClaseDto: CreateClaseDto,
+    @UploadedFile() file: Express.Multer.File
+  ) {
     const idDocente = req.user.id || req.user.userId || req.user.sub;
-    
-    // Un log de seguridad para que verifiques que ahora sí llega el número 14
-    console.log('ID Docente capturado:', idDocente);
+    console.log('ID Docente creando clase:', idDocente);
 
-    return this.claseService.crearClase(idDocente, createClaseDto);
+    let imagenUrl: string | undefined = undefined;
+
+    // Si se subió un archivo, lo enviamos a Cloudinary
+    if (file) {
+      try {
+        const uploaded = await cloudinary.uploader.upload(file.path);
+        imagenUrl = uploaded.secure_url;
+      } catch (error) {
+        console.error('Error subiendo a Cloudinary:', error);
+        // Opcional: lanzar excepción si la imagen es obligatoria
+      }
+    }
+
+    // Llamamos al servicio pasando el DTO actualizado con la URL
+    // Nota: Asegúrate de que tu servicio acepte este parámetro extra o inyéctalo en el DTO
+    const dtoConImagen = { ...createClaseDto, imagenUrl };
+
+    return this.claseService.crearClase(idDocente, dtoConImagen);
   }
 
   @Get('docente/mis-clases')

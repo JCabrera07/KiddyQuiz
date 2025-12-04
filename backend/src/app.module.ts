@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsuarioModule } from './Modules/usuario/usuario.module';
-import { GradoModule } from './Modules/grado/grado.module';
+import { ExtraModule } from './Modules/extra/extra.module';
 import { EvaluacionModule } from './Modules/evaluacion/evaluacion.module';
 import { PreguntaModule } from './Modules/pregunta/pregunta.module';
 import { RespuestaModule } from './Modules/respuesta/respuesta.module';
@@ -17,12 +17,12 @@ import { AuthModule } from './Modules/auth/auth.module';
       port: 5432,
       username: 'postgres',
       password: '123456',
-      database: 'KiddyQuiz_Final',
+      database: 'KiddyFinalDB',
       autoLoadEntities: true,
       synchronize: false, // en desarrollo, no usar en producción
     }),
     UsuarioModule,
-    GradoModule,
+    ExtraModule,
     EvaluacionModule, 
     PreguntaModule,
     RespuestaModule,

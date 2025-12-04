@@ -31,6 +31,8 @@ export class HeaderComponent {
   @Input() toggleChecked = false;
   @Output() toggleMobileNav = new EventEmitter<void>();
 
+  
+
     constructor(private authService: AuthService) {}
     logout(): void {
     this.authService.logout();

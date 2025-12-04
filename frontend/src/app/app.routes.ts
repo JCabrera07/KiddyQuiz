@@ -2,27 +2,33 @@ import { Routes } from '@angular/router';
 import { BlankComponent } from './layouts/blank/blank.component';
 import { FullComponent } from './layouts/full/full.component';
 
-// --- 1. IMPORTA TU GUARDIA Y EL NUEVO COMPONENTE ---
-import { authGuard } from 'src/app/auth/auth.guard'; // Asegúrate de que la ruta sea correcta
-import { LandingComponent } from './pages/landing/landing.component'; // Asegúrate de que la ruta sea correcta
+// --- 1. IMPORTAMOS AMBOS GUARDIAS ---
+import { authGuard } from 'src/app/auth/auth.guard'; 
+// Asegúrate de que la ruta sea correcta (si lo pusiste en otra carpeta, ajusta aquí)
+import { loginGuard } from 'src/app/auth/login.guard'; 
+
+import { LandingComponent } from './pages/landing/landing.component'; 
 
 // Tus otros componentes de página
-import { QuizViewComponent } from './pages/final-components/quiz-view/quiz-view.component';
-import { EvaluacionDetailComponent } from './pages/final-components/evaluacion-detail/evaluacion-detail.component';
-import { QuizResultsComponent } from './pages/final-components/quiz-results/quiz-results.component';
+import { QuizViewComponent } from './pages/student/quiz-view/quiz-view.component';
+import { EvaluacionDetailComponent } from './pages/student/evaluacion-detail/evaluacion-detail.component';
+import { QuizResultsComponent } from './pages/student/quiz-results/quiz-results.component';
 
 export const routes: Routes = [
-  // --- 2. RUTAS PÚBLICAS (No requieren login) ---
+  // --- 2. RUTAS PÚBLICAS ---
   {
     path: '',
-    component: BlankComponent, // Usan el layout simple, sin sidebar
+    component: BlankComponent, 
     children: [
       {
-        path: '', // La ruta raíz (ej: localhost:4200) ahora muestra la Landing Page
+        path: '', 
         component: LandingComponent,
       },
       {
         path: 'authentication',
+        // AQUI APLICAMOS EL GUARDIA INVERSO:
+        // Si ya tiene sesión, NO lo deja entrar aquí y lo manda al Dashboard
+        canActivate: [loginGuard], 
         loadChildren: () =>
           import('./pages/authentication/authentication.routes').then(
             (m) => m.AuthenticationRoutes
@@ -30,11 +36,12 @@ export const routes: Routes = [
       },
     ],
   },
+  
   // --- 3. RUTAS PROTEGIDAS (Requieren login) ---
   {
     path: '',
-    component: FullComponent, // Usan el layout completo con sidebar
-    canActivate: [authGuard], // <-- APLICAMOS EL GUARDIA A TODO ESTE GRUPO
+    component: FullComponent, 
+    canActivate: [authGuard], // <-- PROTEGE EL DASHBOARD (Si NO tiene sesión, lo manda al Login)
     children: [
       {
         path: 'dashboard',
@@ -74,9 +81,10 @@ export const routes: Routes = [
       },
     ],
   },
-  // --- 4. RUTA COMODÍN (WILD CARD) ---
+  
+  // --- 4. RUTA COMODÍN ---
   {
     path: '**',
-    redirectTo: '', // Redirige cualquier ruta no encontrada a la Landing Page
+    redirectTo: '', 
   },
 ];

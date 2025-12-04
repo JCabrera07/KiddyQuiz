@@ -17,4 +17,9 @@ export class CreatePreguntaDto {
   @IsOptional()
   @IsString()
   urlContenido?: string; // será la URL de Cloudinary si se sube archivo
+
+  // Campo opcional para asociar la pregunta a una competencia (tema)
+  @IsOptional()
+  @IsNumber()
+  competenciaId?: number; 
 }

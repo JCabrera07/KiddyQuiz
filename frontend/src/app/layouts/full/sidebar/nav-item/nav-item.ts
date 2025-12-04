@@ -10,4 +10,6 @@ export interface NavItem {
   chipClass?: string;
   external?: boolean;
   subItemIcon?: boolean;
+  // AGREGA ESTO:
+    roles?: string[];
 }

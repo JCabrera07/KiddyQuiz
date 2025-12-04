@@ -5,8 +5,14 @@
       <li><a (click)="scrollTo('home')">Inicio</a></li>
       <li><a (click)="scrollTo('portfolio')">Beneficios</a></li>
       <li><a (click)="scrollTo('about')">Equipo</a></li>
-      <li><a routerLink="/authentication/login" class="login-button-nav">Iniciar Sesión</a></li>
+      
+      @if (estaLogueado) {
+        <li><a routerLink="/dashboard" class="login-button-nav">Evaluaciones</a></li>
+      } @else {
+        <li><a routerLink="/authentication/login" class="login-button-nav">Iniciar Sesión</a></li>
+      }
     </ul>
+    
     <div class="mobile-menu-toggle" id="mobileMenuToggle" (click)="toggleMobileMenu()" [ngClass]="{'active': isMobileMenuOpen}">
       <div class="hamburger"></div>
       <div class="hamburger"></div>
@@ -20,7 +26,12 @@
     <li><a (click)="scrollTo('home')">Inicio</a></li>
     <li><a (click)="scrollTo('portfolio')">Beneficios</a></li>
     <li><a (click)="scrollTo('about')">Equipo</a></li>
-    <li><a routerLink="/authentication/login" (click)="closeMobileMenu()">Iniciar Sesión</a></li>
+    
+    @if (estaLogueado) {
+      <li><a routerLink="/dashboard" (click)="closeMobileMenu()">Evaluaciones</a></li>
+    } @else {
+      <li><a routerLink="/authentication/login" (click)="closeMobileMenu()">Iniciar Sesión</a></li>
+    }
   </ul>
 </div>
 

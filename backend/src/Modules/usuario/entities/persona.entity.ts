@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn } from 'typeorm';
 import { Usuario } from './usuario.entity';
 import { Rol } from './rol.entity';
-import { Grado } from '../../grado/entities/grado.entity';
+import { Grado } from '../../extra/entities/grado.entity';
 
 @Entity('persona')
 export class Persona {

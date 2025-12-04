@@ -5,6 +5,13 @@ import { tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router'; 
 
+export interface MyTokenPayload {
+  username: string;
+  sub: number;
+  role: string; // 'ADMIN', 'DOCENTE', 'ESTUDIANTE', etc.
+  exp: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -52,6 +59,19 @@ export class AuthService {
       }
     }
     return null;
+  }
+
+  // 3. Método para obtener el ROL actual
+  getUserRole(): string | null {
+    const token = this.getToken(); // Asumo que tienes un método que retorna el string del localStorage
+    if (!token) return null;
+
+    try {
+      const decoded = jwtDecode<MyTokenPayload>(token);
+      return decoded.role; // Retorna 'DOCENTE', 'ESTUDIANTE', etc.
+    } catch (error) {
+      return null;
+    }
   }
 
   /**

@@ -1,5 +1,5 @@
 import { BreakpointObserver, MediaMatcher } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 import { CoreService } from 'src/app/services/core.service';
@@ -13,18 +13,15 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { AppNavItemComponent } from './sidebar/nav-item/nav-item.component';
-import { navItems } from './sidebar/sidebar-data';
 
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
 
-
 @Component({
   selector: 'app-full',
+  standalone: true,
   imports: [
     RouterModule,
-    AppNavItemComponent,
     MaterialModule,
     CommonModule,
     SidebarComponent,
@@ -36,14 +33,14 @@ const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
   styleUrls: [],
   encapsulation: ViewEncapsulation.None,
 })
-export class FullComponent implements OnInit {
-  navItems = navItems;
+export class FullComponent implements OnInit, OnDestroy {
 
   @ViewChild('leftsidenav')
-  public sidenav: MatSidenav;
+  public sidenav!: MatSidenav;
   resView = false;
 
   @ViewChild('content', { static: true }) content!: MatSidenavContent;
+
   //get options from service
   options = this.settings.getOptions();
   private layoutChangesSubscription = Subscription.EMPTY;
@@ -74,7 +71,6 @@ export class FullComponent implements OnInit {
       });
 
     // Initialize project theme with options
-
 
     // This is for scroll to top
     this.router.events

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Grado } from './entities/grado.entity';
+import { Grado } from '../entities/grado.entity';
 
 @Injectable()
 export class GradoService {

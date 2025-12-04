@@ -1,20 +1,25 @@
-import { Component, AfterViewInit, OnDestroy, HostListener, ElementRef, ViewChildren, QueryList, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, OnInit, HostListener, ElementRef, ViewChildren, QueryList, Inject, ViewEncapsulation } from '@angular/core';
 import { DOCUMENT, CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './landing.component.html',
-  styleUrls: ['./landing.component.css'], // o .scss si renombraste el archivo
-  encapsulation: ViewEncapsulation.None // Necesario si los estilos están aquí y no en styles.scss
+  styleUrls: ['./landing.component.css'], 
+  encapsulation: ViewEncapsulation.None 
 })
-export class LandingComponent implements AfterViewInit, OnDestroy {
+export class LandingComponent implements OnInit, AfterViewInit, OnDestroy { // Agregamos OnInit aquí
+  
   // --- ESTADO DEL COMPONENTE ---
   isMobileMenuOpen = false;
   isNavbarScrolled = false;
+  
+  // NUEVO: Variable para controlar qué botón mostrar
+  estaLogueado: boolean = false; 
 
   // Propiedades para los modales
   modalVideoActivo: number | null = null;
@@ -30,35 +35,16 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
   // Inyectamos servicios de Angular en el constructor
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private authService: AuthService // Inyectamos el servicio de autenticación
   ) {}
 
-  // --- ESCUCHADORES DE EVENTOS GLOBALES ---
-
-  @HostListener('window:scroll', [])
-  onWindowScroll(): void {
-    // Lógica para cambiar el estilo de la barra de navegación
-    this.isNavbarScrolled = window.scrollY > 50;
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    // Cierra el menú móvil si se hace clic fuera de él
-    if (this.isMobileMenuOpen && !target.closest('#mobileMenuToggle') && !target.closest('#mobileMenu')) {
-      this.closeMobileMenu();
-    }
-  }
-
-  @HostListener('document:keydown.escape', [])
-  onKeydownHandler(): void {
-    // Cierra el menú móvil al presionar la tecla 'Escape'
-    if (this.isMobileMenuOpen) {
-      this.closeMobileMenu();
-    }
-  }
-
   // --- MÉTODOS DEL CICLO DE VIDA DE ANGULAR ---
+
+  // NUEVO: Se ejecuta al iniciar el componente
+  ngOnInit(): void {
+    this.verificarSesion();
+  }
 
   ngAfterViewInit(): void {
     // Iniciamos el observador de animaciones después de que la vista se haya renderizado
@@ -71,6 +57,16 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
   }
 
   // --- MÉTODOS PARA LA LÓGICA DEL COMPONENTE ---
+
+  // NUEVO: Método auxiliar para verificar si hay token
+  verificarSesion(): void {
+    // Opción A: Si ya tienes un método en tu AuthService (Recomendado)
+    // this.estaLogueado = this.authService.isAuthenticated();
+
+    // Opción B: Si aún no tienes el método en el servicio, verificamos localStorage directamente aquí:
+    const token = localStorage.getItem('access_token'); 
+    this.estaLogueado = !!token; // Convierte el string a boolean (true si existe, false si es null)
+  }
 
   toggleMobileMenu(): void {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -111,6 +107,31 @@ export class LandingComponent implements AfterViewInit, OnDestroy {
 
   cerrarTexto(): void {
     this.modalTextoActivo = null;
+  }
+
+  // --- ESCUCHADORES DE EVENTOS GLOBALES ---
+
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    // Lógica para cambiar el estilo de la barra de navegación
+    this.isNavbarScrolled = window.scrollY > 50;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    // Cierra el menú móvil si se hace clic fuera de él
+    if (this.isMobileMenuOpen && !target.closest('#mobileMenuToggle') && !target.closest('#mobileMenu')) {
+      this.closeMobileMenu();
+    }
+  }
+
+  @HostListener('document:keydown.escape', [])
+  onKeydownHandler(): void {
+    // Cierra el menú móvil al presionar la tecla 'Escape'
+    if (this.isMobileMenuOpen) {
+      this.closeMobileMenu();
+    }
   }
 
   // Método para inicializar el IntersectionObserver para las animaciones

@@ -15,6 +15,7 @@ import { TipoContenido } from './entities/tipo-contenido.entity';
 import { TipoPregunta } from './entities/tipo-pregunta.entity';
 import { OpcionController } from './controller/opcion.controller';
 import { OpcionService } from './services/opcion.service';
+import { Competencia } from '../extra/entities/competencia.entity';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { OpcionService } from './services/opcion.service';
       Opcion,
       TipoContenido,
       TipoPregunta,
+      Competencia,
     ]),
   ],
   controllers: [

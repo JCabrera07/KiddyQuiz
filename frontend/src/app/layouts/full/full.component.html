@@ -6,34 +6,31 @@
     <!-- ============================================================== -->
     <mat-sidenav #leftsidenav [mode]="isOver ? 'over' : 'side'" [opened]="!isOver"
       (openedChange)="onSidenavOpenedChange($event)" (closedStart)="onSidenavClosedStart()" class="sidebarNav">
+      
       <div class="flex-layout">
-        <app-sidebar (toggleMobileNav)="sidenav.toggle()" [showToggle]="isOver"></app-sidebar>
-        <ng-scrollbar class="position-relative" style="height: 100%">
-          <mat-nav-list class="sidebar-list">
-            @for(item of navItems; track item) {
-            <app-nav-item [item]="item" (notify)="sidenav.toggle()">
-            </app-nav-item>
-            }
-          </mat-nav-list>
-        </ng-scrollbar>
+        <!-- AQUÍ ESTÁ LA SOLUCIÓN: -->
+        <!-- Agregamos (toggleCollapsed)="toggleCollapsed()" -->
+        <!-- Esto conecta el clic de tu flecha con la función que encoge el menú -->
+        <app-sidebar 
+          (toggleMobileNav)="sidenav.toggle()" 
+          (toggleCollapsed)="toggleCollapsed()"  
+          [showToggle]="isOver">
+        </app-sidebar>
       </div>
+      
     </mat-sidenav>
 
     <!-- ============================================================== -->
     <!-- Main Content -->
     <!-- ============================================================== -->
     <mat-sidenav-content class="contentWrapper" #content>
-      <!-- ============================================================== -->
-      <!-- VerticalHeader -->
-      <!-- ============================================================== -->
+      
+      <!-- Header -->
       <app-header [showToggle]="!isOver" (toggleCollapsed)="toggleCollapsed()"
         (toggleMobileNav)="sidenav.toggle()"></app-header>
 
       <div class="body-wrapper">
         <main class="pageWrapper maxWidth">
-          <!-- ============================================================== -->
-          <!-- Outlet -->
-          <!-- ============================================================== -->
           <router-outlet></router-outlet>
         </main>
       </div>
@@ -43,6 +40,5 @@
       </div>
 
     </mat-sidenav-content>
-
   </mat-sidenav-container>
 </div>

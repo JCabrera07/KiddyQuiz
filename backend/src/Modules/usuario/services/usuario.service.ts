@@ -4,7 +4,7 @@ import { Persona } from '../entities/persona.entity';
 import { Usuario } from '../entities/usuario.entity';
 import { Rol } from '../entities/rol.entity';
 import { Repository } from 'typeorm';
-import { Grado } from 'src/Modules/grado/entities/grado.entity';
+import { Grado } from 'src/Modules/extra/entities/grado.entity';
 import { CreatePersonaDto } from '../dto/create-persona.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdatePersonaDto } from '../dto/update-persona.dto';

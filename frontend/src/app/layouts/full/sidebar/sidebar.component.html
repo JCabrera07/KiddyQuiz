@@ -1,6 +1,7 @@
 <div class="d-flex align-items-center justify-content-between">
   <div class="branding"><app-branding></app-branding></div>
 
+  <!-- Botón de cierre (X) SOLO visible en móvil -->
   @if(showToggle) {
   <a href="javascript:void(0)" (click)="toggleMobileNav.emit()"
     class="d-flex justify-content-center ng-star-inserted icon-40 align-items-center">
@@ -8,3 +9,14 @@
   </a>
   }
 </div>
+
+<!-- Lista de items con Scroll -->
+<!-- Restamos 70px para dejar espacio al footer/botón de colapsar -->
+<ng-scrollbar class="position-relative" style="height: calc(100% - 70px)">
+  <mat-nav-list class="sidebar-list">
+    @for(item of navItems; track item) {
+       <!-- Usamos onItemSelected() para controlar el cierre -->
+       <app-nav-item [item]="item" (click)="onItemSelected()"></app-nav-item>
+    }
+  </mat-nav-list>
+</ng-scrollbar>

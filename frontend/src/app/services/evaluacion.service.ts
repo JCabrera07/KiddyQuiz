@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 // Asegúrate de que la ruta al modelo sea correcta y que el archivo contenga todas las interfaces.
 import { Evaluacion, EvaluacionConPreguntas } from '../models/evaluacion.model'; 
 @Injectable({
@@ -43,4 +43,9 @@ export class EvaluacionService {
     const url = `${this.apiUrl}/${id}/submit`;
     return this.http.post(url, respuestas);
   }
+
+    generarComentarioIA(idDetalle: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/detalle-evaluacion/${idDetalle}/comentario-ia`, {});
+  }
+
 }

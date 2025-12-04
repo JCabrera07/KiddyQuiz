@@ -47,4 +47,9 @@ export class ClaseController {
     const idEstudiante = req.user.id || req.user.userId || req.user.sub;
     return this.claseService.listarClasesEstudiante(idEstudiante);
   }
+
+    @Get(':id/evaluaciones')
+  obtenerEvaluaciones(@Param('id', ParseIntPipe) id: number) {
+    return this.claseService.obtenerEvaluacionesDeClase(id);
+  }
 }

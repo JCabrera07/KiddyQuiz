@@ -111,4 +111,16 @@ export class ClaseService {
     if (!clase) throw new NotFoundException('Clase no encontrada');
     return clase;
   }
+
+   // --- NUEVO: OBTENER EVALUACIONES DE UNA CLASE ---
+  async obtenerEvaluacionesDeClase(idClase: number) {
+    const clase = await this.claseRepo.findOne({
+      where: { id: idClase },
+      relations: ['evaluaciones'] // <--- MAGIA AQUÍ
+    });
+
+    if (!clase) throw new NotFoundException('Clase no encontrada');
+    
+    return clase.evaluaciones;
+  }
 }

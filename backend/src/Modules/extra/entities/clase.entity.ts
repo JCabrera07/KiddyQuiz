@@ -1,7 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, JoinTable, JoinColumn } from 'typeorm';
 import { Usuario } from '../../usuario/entities/usuario.entity';
-// Importamos Grado
 import { Grado } from './grado.entity';
+// IMPORTAR EVALUACION
+import { Evaluacion } from '../../evaluacion/entities/evaluacion.entity';
 
 @Entity('clase')
 export class Clase {
@@ -29,13 +30,27 @@ export class Clase {
   })
   estudiantes: Usuario[];
 
-  // --- NUEVA RELACIÓN ---
   @ManyToOne(() => Grado)
   @JoinColumn({ name: 'id_grado' })
   grado: Grado;
 
   @Column({ name: 'id_grado', nullable: true })
   idGrado: number;
+
+  // --- NUEVA RELACIÓN ---
+@ManyToMany(() => Evaluacion, (evaluacion) => evaluacion.clases)
+  @JoinTable({
+    name: 'clase_evaluacion', // <--- DEBE LLAMARSE IGUAL QUE EN SQL
+    joinColumn: {
+      name: 'id_clase',       // <--- Columna que apunta a esta entidad (Clase)
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'id_evaluacion',  // <--- Columna que apunta a la otra entidad (Evaluacion)
+      referencedColumnName: 'id'
+    }
+  })
+  evaluaciones: Evaluacion[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

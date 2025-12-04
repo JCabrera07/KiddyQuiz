@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany } from 'typeorm';
 import { EvaluacionPregunta } from './evaluacion-pregunta.entity';
 import { DetalleEvaluacion } from './detalle-evaluacion.entity';
+import { Clase } from 'src/Modules/extra/entities/clase.entity';
 
 @Entity('evaluacion')
 export class Evaluacion {
@@ -36,4 +37,7 @@ export class Evaluacion {
 
   @OneToMany(() => DetalleEvaluacion, de => de.evaluacion)
   detalles: DetalleEvaluacion[];
+  
+  @ManyToMany(() => Clase, (clase) => clase.evaluaciones)
+  clases: Clase[];
 }

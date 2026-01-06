@@ -4,6 +4,7 @@ import {
   importProvidersFrom,
 } from '@angular/core';
 import {
+  HTTP_INTERCEPTORS,
   provideHttpClient,
   withInterceptorsFromDi,
 } from '@angular/common/http';
@@ -26,6 +27,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 //Import all material modules
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -39,6 +41,16 @@ export const appConfig: ApplicationConfig = {
       withComponentInputBinding()
     ),
     provideHttpClient(withInterceptorsFromDi()),
+
+    // 👇 Necesario para soportar interceptores DI
+    provideHttpClient(withInterceptorsFromDi()),
+
+    // 👇 AÑADE ESTO
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
     provideAnimationsAsync(),
     importProvidersFrom(
       FormsModule,
@@ -47,5 +59,6 @@ export const appConfig: ApplicationConfig = {
       TablerIconsModule.pick(TablerIcons),
       NgScrollbarModule,
     ),
+    
   ],
 };

@@ -8,7 +8,7 @@ import {
 import { BrandingComponent } from './branding.component';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { MaterialModule } from 'src/app/material.module';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { NavItem } from './nav-item/nav-item';
 import { navItems as MENU_DATA } from './sidebar-data';
 import { AppNavItemComponent } from './nav-item/nav-item.component';
@@ -25,32 +25,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     NgScrollbarModule
   ],
   templateUrl: './sidebar.component.html',
-  styles: [`
-    :host {
-      display: block;
-      height: 100%;
-      width: 100%;
-    }
-    .sidebar-list {
-      padding-top: 0;
-    }
-    /* Estilo para el botón de colapsar en escritorio */
-    .collapse-btn {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      cursor: pointer;
-      background: rgba(0,0,0,0.05);
-      border-radius: 50%;
-      padding: 8px;
-      transition: all 0.3s;
-      z-index: 9999; /* <--- CAMBIO: Forzamos que esté por encima de todo */
-      pointer-events: auto; /* <--- CAMBIO: Aseguramos que reciba clics */
-    }
-    .collapse-btn:hover {
-      background: rgba(0,0,0,0.1);
-    }
-  `]
+  styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
   

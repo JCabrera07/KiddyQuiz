@@ -1,0 +1,107 @@
+<div class="blank-layout-container justify-content-center align-items-center bg-light">
+  <div class="position-relative row w-100 h-100 bg-gredient justify-content-center">
+    <div class="col-lg-7 d-flex align-items-center"> 
+      <mat-card class="cardWithShadow boxed-auth w-100" style="max-width: 700px;">
+        <mat-card-content class="p-32">
+          
+          <!-- Logo -->
+          <div class="text-center">
+            <a [routerLink]="['/estudiante/mis-clases']">
+              <img src="./assets/images/logos/horizontal.png" 
+                   style="width: 220px; height: auto;" 
+                   class="align-middle m-2" alt="logo" />
+            </a>
+          </div>
+
+          <!-- Formulario -->
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="m-t-30">
+  <!-- Columna izquierda -->
+   <div class="row"> 
+  <div class="col-md-6">
+     <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Nombres</mat-label>
+    <mat-form-field appearance="outline" class="w-100" color="primary">
+      <input matInput  formControlName="nombres"/>
+    </mat-form-field>
+
+     <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Ciudad</mat-label>
+    <mat-form-field appearance="outline" class="w-100" color="primary">
+      <input matInput  formControlName="ciudad"/>
+    </mat-form-field>
+
+     <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Fecha de nacimiento</mat-label>
+    <mat-form-field appearance="outline" class="w-100" color="primary">
+      <input matInput [matDatepicker]="picker" formControlName="fechaNacimiento">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+     <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Edad</mat-label>
+    <mat-form-field appearance="outline" class="w-100" color="primary">
+      <input matInput type="number" formControlName="edad"/>
+    </mat-form-field>
+
+     <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Rol</mat-label>
+    <mat-form-field appearance="outline" class="w-100" color="primary">
+      <mat-select formControlName="rol">
+        <mat-option *ngFor="let rol of roles" [value]="rol.id">
+          {{ rol.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <!-- Columna derecha -->
+  <div class="col-md-6">
+     <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Apellidos</mat-label>
+    <mat-form-field appearance="outline" class="w-100" color="primary">
+      <input matInput formControlName="apellidos"/>
+    </mat-form-field>
+
+     <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Sexo</mat-label>
+    <mat-form-field appearance="outline" class="w-100" color="primary">
+      <mat-select formControlName="sexo">
+        <mat-option value="M">Masculino</mat-option>
+        <mat-option value="F">Femenino</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+     <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Usuario</mat-label>
+    <mat-form-field appearance="outline" class="w-100" color="primary">
+      <input matInput formControlName="usuario"/>
+    </mat-form-field>
+
+     <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Contraseña</mat-label>
+    <mat-form-field appearance="outline" class="w-100" color="primary">
+      <input matInput type="password" formControlName="password"/>
+    </mat-form-field>
+
+     <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Grado</mat-label>
+    <mat-form-field appearance="outline" class="w-100" color="primary">
+      <mat-select formControlName="grado">
+        <mat-option *ngFor="let grado of grados" [value]="grado.id">
+          {{ grado.nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  </div>
+
+  <button type="submit" mat-flat-button color="primary" class="w-100 custom-button m-t-20">
+    Registrarme
+  </button>
+</form>
+
+
+          <!-- Enlace login -->
+          <span class="d-block f-w-500 text-center m-t-24">
+            ¿Ya tienes una cuenta?
+            <a [routerLink]="['/authentication/login']" class="text-decoration-none text-secondary f-w-500 f-s-14">
+              Inicia sesión
+            </a>
+          </span>
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

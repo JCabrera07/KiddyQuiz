@@ -1,6 +1,7 @@
 import { NavItem } from './nav-item/nav-item';
 
 export const navItems: NavItem[] = [
+
   // ==============================================
   // SECCIÓN ESTUDIANTE
   // ==============================================
@@ -11,19 +12,19 @@ export const navItems: NavItem[] = [
   {
     displayName: 'Inicio',
     iconName: 'solar:home-angle-line-duotone',
-    route: '/dashboard', // Ruta a tus tarjetas de evaluación
+    route: '/estudiante/mis-clases',
     roles: ['Estudiante']
   },
   {
     displayName: 'Mi Progreso',
     iconName: 'solar:chart-square-line-duotone',
-    route: '/dashboard/student/student-progress', // Ruta a calificaciones y gráficos
+    route: '/estudiante/mi-progreso',    
     roles: ['Estudiante']
   },
   {
     displayName: 'Zona de Refuerzo',
     iconName: 'solar:dumbbell-large-minimalistic-line-duotone',
-    route: '/dashboard/student/reinforcement', // Ruta a ejercicios de IA
+    route: '/estudiante/refuerzo',   
     roles: ['Estudiante']
   },
 
@@ -37,19 +38,20 @@ export const navItems: NavItem[] = [
   {
     displayName: 'Panel de Control',
     iconName: 'solar:widget-2-line-duotone',
-    route: '/dashboard/teacher/teacher-analytics', // Resumen y alertas
+    route: '/docente/analytics',       // ← corregido
     roles: ['Maestro']
   },
   {
     displayName: 'Mis Evaluaciones',
     iconName: 'solar:document-add-line-duotone',
-    route: '/dashboard/teacher/evaluation-list', // Crear y editar exámenes
+    route: '/docente/evaluaciones',    // ← corregido
     roles: ['Maestro']
   },
   {
     displayName: 'Mis Estudiantes',
     iconName: 'solar:users-group-rounded-line-duotone',
-    route: '/dashboard/teacher/student-list', // Lista de alumnos
+    route: '/docente/estudiantes',     // ← corregido
     roles: ['Maestro']
   },
 ];
+

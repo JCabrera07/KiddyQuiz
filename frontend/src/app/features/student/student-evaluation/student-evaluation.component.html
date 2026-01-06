@@ -1,0 +1,96 @@
+<div class="row justify-content-center page-background g-4">
+
+  <!-- Estado vacío -->
+  <div
+    *ngIf="!loading && evaluaciones.length === 0"
+    class="col-12 text-center p-5"
+  >
+    <h3 class="empty-title">📭 No hay evaluaciones disponibles</h3>
+    <p class="text-muted">
+      Espera a que tu profe publique una nueva evaluación 🚀
+    </p>
+  </div>
+
+  @for (evaluacion of evaluaciones; track evaluacion.id) {
+    <div class="col-sm-6 col-lg-4 card-col">
+
+      <mat-card
+        class="cardWithShadow clickable-card h-20 position-relative overflow-hidden"
+      >
+        <!-- Link general -->
+        <a
+          [routerLink]="['/evaluacion', evaluacion.id]"
+          class="stretched-link"
+          aria-label="Entrar a la evaluación"
+        ></a>
+
+        <!-- Imagen -->
+        <div class="card-image-wrapper">
+          <img
+            mat-card-image
+            [src]="evaluacion.imagenUrl || defaultImage"
+            [alt]="evaluacion.titulo"
+            class="card-img-fixed"
+          />
+        </div>
+
+        <!-- Contenido -->
+        <mat-card-content class="card-content">
+
+          <!-- Título -->
+          <mat-card-title class="card-title font-title text-truncate">
+            📝 {{ evaluacion.titulo }}
+          </mat-card-title>
+
+          <!-- Información -->
+          <div class="card-info">
+            <span>
+              ⏰ <strong>Inicio:</strong>
+              {{ evaluacion.fechaInicio | date:'mediumDate' }}
+            </span>
+
+            <span>
+              🏁 <strong>Fin:</strong>
+              {{ evaluacion.fechaFin | date:'mediumDate' }}
+            </span>
+          </div>
+
+          <!-- Descripción -->
+          <p class="text-muted text-truncate-2">
+            {{ evaluacion.descripcion || 'Sin descripción' }}
+          </p>
+
+          <!-- Progreso (opcional, si luego lo manejas) -->
+          <!--
+          <div class="progress-container">
+            <div class="progress-bar" style="width: 0%"></div>
+          </div>
+          -->
+
+          <!-- Footer -->
+          <div class="card-footer">
+            <span class="date">
+              🗓️ {{ evaluacion.createdAt | date:'mediumDate' }}
+            </span>
+
+            <!-- Botón tipo juego -->
+            <a
+              class="badge-kenney"
+              [routerLink]="['/evaluacion', evaluacion.id]"
+              (click)="$event.stopPropagation()"
+            >
+              <img
+                src="assets/kenney/Vector/Yellow/button_rectangle_depth_flat.svg"
+                alt=""
+              />
+              <span class="badge-text">Iniciar</span>
+            </a>
+          </div>
+
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  }
+</div>
+

@@ -1,0 +1,48 @@
+/* Panel del diálogo personalizado */
+.custom-dialog-panel {
+  display: inline-block;    // permite que el contenido defina el tamaño
+  max-width: 90vw;          // ancho máximo relativo a la ventana
+  width: auto !important;   // ancho automático según contenido
+  padding: 0;               // quitar padding extra del panel
+  box-sizing: border-box;
+}
+
+/* Tarjeta interna */
+.ai-card {
+  display: flex;
+  flex-direction: column;
+  width: auto;              // ancho según contenido
+  max-width: 100%;          // no excede la ventana
+  box-sizing: border-box;
+}
+
+/* Contenido de la tarjeta */
+.ai-card-content {
+  overflow-y: auto;         // scroll vertical si el contenido es demasiado alto
+  max-height: 80vh;         // altura máxima antes de activar scroll
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Comentario de IA */
+.ai-content {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #333;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 12px;
+  border-left: 5px solid #673ab7;
+
+  strong {
+    color: #673ab7;
+  }
+}
+
+/* Spinner mientras se carga */
+.spinner {
+  text-align: center;
+  padding: 50px 0;
+}
+

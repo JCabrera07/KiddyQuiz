@@ -1,6 +1,52 @@
-/* You can add global styles to this file, and also import other style files */
 @charset "utf-8";
-/* CSS Document */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Altura base */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+/* Fuente global (lectura para niños) */
+body {
+  font-family: 'Nunito', 'Poppins', sans-serif;
+  background-color: #f4f6f8;
+}
+
+/* =========================
+   FUENTE KENNEY (BOTONES)
+   ========================= */
+@font-face {
+  font-family: 'KenneyUI';
+  src: url('/assets/kenney/Font/Kenney-Future.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KenneyUI';
+  src: url('/assets/kenney/Font/Kenney-Future-Narrow.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* =========================
+   CLASES REUTILIZABLES
+   ========================= */
+
+/* Texto normal */
+.font-body {
+  font-family: 'Nunito', sans-serif;
+}
+
+/* Títulos */
+.font-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+}
+
+/* Botones tipo juego */
+.font-kenney {
+  font-family: 'KenneyUI', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}

@@ -2,7 +2,7 @@ import { BreakpointObserver, MediaMatcher } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
-import { CoreService } from 'src/app/services/core.service';
+import { CoreService } from 'src/app/core/services/core.service';
 
 import { filter } from 'rxjs/operators';
 import { NavigationEnd, Router } from '@angular/router';

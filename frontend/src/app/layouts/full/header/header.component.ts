@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { MatBadgeModule } from '@angular/material/badge';
-import { AuthService } from 'src/app/services/auth.service'; 
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-header',

@@ -1,0 +1,28 @@
+<mat-card class="p-4 ai-card">
+  <mat-card-title>Comentario generado por IA</mat-card-title>
+
+  <mat-card-content class="ai-card-content">
+
+    <!-- Spinner mientras se carga -->
+    <ng-container *ngIf="loading; else showComentario">
+      <div class="spinner">
+        <mat-spinner></mat-spinner>
+        <p class="mt-2">Generando comentario...</p>
+      </div>
+    </ng-container>
+
+    <!-- Comentario IA -->
+    <ng-template #showComentario>
+      <div class="ai-content" [innerHTML]="comentario | markdown"></div>
+    </ng-template>
+
+  </mat-card-content>
+
+<mat-card-actions>
+  <button mat-flat-button color="primary" (click)="cerrar()">
+    Volver
+  </button>
+</mat-card-actions>
+
+</mat-card>
+

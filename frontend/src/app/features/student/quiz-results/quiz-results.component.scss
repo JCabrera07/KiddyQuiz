@@ -1,14 +1,258 @@
+@use 'sass:color';
+
+/* ========================= */
+/* VARIABLES "FUN" */
+/* ========================= */
+// CAMBIO 1: Fondo blanco en lugar de amarillo pastel
+$color-bg-page:     #ffffff; 
+$color-primary-fun: #4FC3F7; // Azul cielo
+$color-accent-fun:  #FFB74D; // Naranja
+$color-success:     #66BB6A; // Verde
+$color-danger:      #EF5350; // Rojo suave
+$color-text-fun:    #5D4037; // Marrón
+$color-white:       #ffffff;
+
+/* ========================= */
+/* CONTENEDOR PRINCIPAL */
+/* ========================= */
+.container {
+  min-height: 100vh;
+  // CAMBIO 3: Más espacio arriba (80px) y alineación superior
+  padding: 20px 20px 40px 20px; 
+  background-color: $color-bg-page;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; // Alinea la tarjeta hacia arriba
+}
+
+/* ========================= */
+/* TARJETA DE RESULTADOS */
+/* ========================= */
+.fun-result-card {
+  width: 100%;
+  max-width: 500px;
+  background-color: $color-white;
+  border-radius: 40px;
+  border: 6px solid $color-primary-fun;
+  /* Sombra sólida estilo cartoon */
+  box-shadow: 10px 10px 0px rgba(79, 195, 247, 0.4);
+  overflow: hidden;
+  position: relative;
+  text-align: center;
+  padding-bottom: 30px;
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ========================= */
+/* HEADER (Sin trofeo) */
+/* ========================= */
+.result-header {
+  background-color: #E1F5FE;
+  padding: 30px 20px;
+  border-bottom: 4px dashed color.adjust($color-primary-fun, $lightness: -10%);
+  position: relative;
+}
+
+// CAMBIO 2: Se eliminaron las clases .trophy-icon y @keyframes float
+
+.result-title {
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: $color-primary-fun;
+  margin: 0;
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+}
+
+.result-subtitle {
+  font-size: 1.1rem;
+  color: color.adjust($color-text-fun, $lightness: 20%);
+  margin-top: 5px;
+  font-weight: 600;
+}
+
+/* ========================= */
+/* ANILLO DE PUNTUACIÓN */
+/* ========================= */
+.score-wrapper {
+  margin: 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.score-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+/* Ajuste del mat-spinner */
+::ng-deep .mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #{$color-success};
+}
+
+/* Cuando es baja nota (rojo) */
+.low-score ::ng-deep .mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #{$color-danger};
+}
+
+/* Cuando es media nota (naranja) */
+.mid-score ::ng-deep .mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: #{$color-accent-fun};
+}
+
+.score-center {
+  position: absolute;
+  text-align: center;
+}
+
+.score-value {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: $color-text-fun;
+  display: block;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #90A4AE;
+  text-transform: uppercase;
+}
+
+/* ========================= */
+/* MÉTRICAS (CAJITAS) */
+/* ========================= */
+.metrics-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.metric-box {
+  background-color: #FAFAFA;
+  border: 3px solid #EEEEEE;
+  border-radius: 15px;
+  padding: 10px 15px;
+  min-width: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.metric-box.correct {
+  border-color: color.adjust($color-success, $lightness: 20%);
+  background-color: color.adjust($color-success, $lightness: 45%);
+  strong { color: $color-success; }
+}
+
+.metric-box.incorrect {
+  border-color: color.adjust($color-danger, $lightness: 20%);
+  background-color: color.adjust($color-danger, $lightness: 40%);
+  strong { color: $color-danger; }
+}
+
+.metric-box strong {
+  font-size: 1.5rem;
+  font-weight: 800;
+  display: block;
+}
+
+.metric-box span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $color-text-fun;
+  text-transform: uppercase;
+}
+
+/* ========================= */
+/* BOTONES 3D */
+/* ========================= */
+.quiz-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 0 30px;
+}
+
+.btn-fun {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none; /* Para el link */
+}
+
+/* Botón IA (Morado mágico) */
+.btn-ai {
+  background-color: #AB47BC;
+  color: white;
+  border-bottom: 5px solid color.adjust(#AB47BC, $lightness: -15%);
+  box-shadow: 0 5px 0 color.adjust(#AB47BC, $lightness: -20%);
+
+  &:hover { margin-top: -2px; border-bottom-width: 7px; }
+  &:active { margin-top: 5px; border-bottom-width: 0; box-shadow: none; }
+}
+
+/* Botón Volver (Azul) */
+.btn-back {
+  background-color: $color-primary-fun;
+  color: white;
+  border-bottom: 5px solid color.adjust($color-primary-fun, $lightness: -15%);
+  box-shadow: 0 5px 0 color.adjust($color-primary-fun, $lightness: -20%);
+
+  &:hover { margin-top: -2px; border-bottom-width: 7px; }
+  &:active { margin-top: 5px; border-bottom-width: 0; box-shadow: none; }
+}
+
+/* ========================= */
+/* OVERLAY CARGA */
+/* ========================= */
 .spinner-overlay {
-  position: absolute;         // se coloca sobre el mat-card
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.85); // semitransparente
+  background-color: rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 10;               // sobre todos los elementos del card
-  border-radius: 4px;        // opcional: mismo borde del card
+  z-index: 20;
+  border-radius: 35px; /* Coincide con el card */
+
+  p {
+    font-family: 'Comic Sans MS', cursive;
+    font-weight: 700;
+    color: $color-text-fun;
+    margin-top: 15px;
+  }
 }

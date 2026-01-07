@@ -7,6 +7,7 @@ export interface Persona {
   sexo: string;
   rol: string; // "Estudiante", "Docente", etc.
   grado?: string; // Opcional
+  id_grado: number;
 }
 
 export interface UserProfile {

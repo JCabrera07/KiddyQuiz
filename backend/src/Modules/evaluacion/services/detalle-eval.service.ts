@@ -82,6 +82,7 @@ export class DetalleEvaluacionService {
         'respuestas',
         'respuestas.pregunta',
         'respuestas.opcionSeleccionada',
+        'respuestas.pregunta.competencia',
       ],
     });
 

@@ -1,0 +1,308 @@
+@use 'sass:color';
+
+/* ========================= */
+/* VARIABLES */
+/* ========================= */
+$color-primary-fun: #4FC3F7;
+$color-success:     #66BB6A;
+$color-white:       #ffffff;
+$color-bg-option:   #F5F5F5;
+$color-text:        #37474F;
+
+/* ========================= */
+/* CONTENEDOR FULL SCREEN */
+/* ========================= */
+.quiz-container {
+  width: 100vw;
+  /* Usamos 100dvh para que en móviles respete la barra de navegación del navegador */
+  height: 100dvh; 
+  padding: 0;
+  margin: 0;
+  background-color: $color-white;
+  overflow: hidden; 
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================= */
+/* TARJETA SIN BORDES */
+/* ========================= */
+.quiz-card {
+  width: 100%;
+  height: 100%; 
+  max-width: none;
+  max-height: none;
+  
+  border-radius: 0;
+  border: none;    
+  box-shadow: none;
+  
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================= */
+/* HEADER (FIJO ARRIBA) */
+/* ========================= */
+.quiz-header {
+  background-color: #E1F5FE;
+  padding: 10px 15px !important;
+  border-bottom: 4px solid #B3E5FC;
+  flex-shrink: 0; /* No se encoge nunca */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Altura controlada en header */
+  min-height: 60px; 
+}
+
+.quiz-header-content {
+  text-align: center;
+}
+
+::ng-deep .mat-mdc-card-title {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-size: 1.3rem !important;
+  color: #0277BD;
+  margin: 0;
+  line-height: 1.2;
+}
+
+::ng-deep .mat-mdc-card-subtitle {
+  margin: 0;
+  font-size: 0.9rem !important;
+  color: #0288D1;
+}
+
+/* ========================= */
+/* CONTENIDO (SCROLLABLE EN MEDIO) */
+/* ========================= */
+.quiz-content {
+  flex: 1; /* Ocupa todo el espacio disponible entre header y footer */
+  padding: 0 !important;
+  overflow: hidden; /* Ocultamos scroll global, lo manejamos dentro del bloque */
+  position: relative;
+}
+
+/* EL BLOQUE MÁGICO (GRID VS FLEX) */
+.question-block {
+  display: grid;
+  /* DESKTOP POR DEFECTO: 2 Columnas */
+  grid-template-columns: 40% 60%; 
+  grid-template-rows: 1fr; 
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 1. ZONA IZQUIERDA (Pregunta + Imagen) */
+.question-left-zone {
+  grid-column: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centrado vertical */
+  gap: 20px;
+  overflow-y: auto; /* Si la imagen es gigante, scrollea solo este lado */
+}
+
+.question-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: $color-text;
+  margin: 0;
+  text-align: center;
+}
+
+.question-image-wrapper {
+  width: 100%;
+  max-height: 40vh; /* Altura máxima en desktop */
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  border: 3px solid #B0BEC5;
+  border-radius: 20px;
+  background: #ECEFF1;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.question-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* 2. ZONA DERECHA (Opciones) */
+.options-right-zone {
+  grid-column: 2;
+  background-color: #FAFAFA; /* Un gris muy sutil para diferenciar zona */
+  border-left: 2px dashed #CFD8DC;
+  padding: 20px;
+  
+  overflow-y: auto; /* Scroll independiente para las opciones */
+  
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-auto-rows: minmax(100px, auto); /* Altura mínima de botón */
+  gap: 15px;
+  align-content: center; /* Centrado vertical del bloque de opciones */
+}
+
+/* TARJETAS DE OPCIÓN */
+.option-card {
+  position: relative;
+  background-color: $color-white;
+  border: 3px solid #E0E0E0;
+  border-radius: 15px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  box-shadow: 0 4px 0 #E0E0E0;
+  min-height: 100px;
+  
+  &:hover {
+    transform: translateY(-2px);
+    border-color: #90CAF9;
+    background-color: #E3F2FD;
+  }
+  
+  &:active {
+    transform: translateY(2px);
+    box-shadow: none;
+  }
+}
+
+.option-card.selected {
+  background-color: #E8F5E9;
+  border-color: $color-success;
+  box-shadow: 0 4px 0 #66BB6A; /* Sombra verde */
+  
+  &::after {
+    content: '✅';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 1.2rem;
+  }
+}
+
+.option-image {
+  max-height: 80px;
+  object-fit: contain;
+  margin-bottom: 5px;
+}
+
+/* ========================= */
+/* FOOTER (FIJO ABAJO) */
+/* ========================= */
+.quiz-actions {
+  background-color: #FAFAFA;
+  padding: 15px 20px !important;
+  border-top: 2px solid #EEEEEE;
+  display: flex;
+  justify-content: space-between; /* Espacio entre timer (si pones) y botones */
+  align-items: center;
+  flex-direction: row-reverse; /* Botones a la derecha */
+  flex-shrink: 0;
+  gap: 15px;
+  min-height: 70px;
+}
+
+.btn-fun {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 12px 24px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: white;
+  white-space: nowrap;
+}
+
+.btn-next {
+  background-color: $color-primary-fun;
+  box-shadow: 0 4px 0 #0288D1;
+  &:active { transform: translateY(4px); box-shadow: none; }
+}
+
+.btn-finish {
+  background-color: $color-success;
+  box-shadow: 0 4px 0 #388E3C;
+  &:active { transform: translateY(4px); box-shadow: none; }
+}
+
+/* ========================= */
+/* 📱 MEDIA QUERIES (MÓVIL) */
+/* ========================= */
+@media (max-width: 900px) {
+
+  /* Cambiamos el Grid a Flex Columna */
+  .question-block {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Ahora el scroll es global para el contenido */
+  }
+
+  /* 1. Ajuste Zona Superior (Pregunta) */
+  .question-left-zone {
+    padding: 15px;
+    gap: 10px;
+    flex: 0 0 auto; /* No expandir, tomar altura necesaria */
+  }
+
+  .question-text {
+    font-size: 1.2rem; /* Texto un poco más pequeño */
+  }
+
+  .question-image-wrapper {
+    max-height: 200px; /* Imagen más pequeña en móvil */
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  
+  .question-image {
+    max-height: 200px;
+    border-radius: 10px;
+  }
+
+  /* 2. Ajuste Zona Inferior (Opciones) */
+  .options-right-zone {
+    border-left: none;
+    border-top: 2px dashed #CFD8DC; /* Separador arriba en vez de izquierda */
+    padding: 15px;
+    background-color: white;
+    
+    /* En móvil, una columna o dos pequeñas */
+    grid-template-columns: 1fr 1fr; 
+    gap: 10px;
+    
+    /* Permitir que crezca */
+    flex: 1 0 auto; 
+  }
+  
+  .option-card {
+    min-height: 80px; /* Botones un poco más compactos */
+    padding: 8px;
+  }
+
+  /* Footer en móvil */
+  .quiz-actions {
+    padding: 10px 15px !important;
+  }
+  
+  .btn-fun {
+    font-size: 1rem;
+    padding: 10px 20px;
+    width: 100%; /* Botón ancho completo en móvil */
+  }
+}

@@ -1,0 +1,143 @@
+@use 'sass:color'; /* IMPORTANTE: Esto debe ir en la línea 1 */
+
+// Variables de colores divertidos
+$color-primary-fun: #4FC3F7; // Azul cielo claro
+$color-accent-fun: #FFB74D;  // Naranja suave
+$color-bg-fun: #ffffff;      // Amarillo pastel para el fondo de la burbuja
+$color-text-fun: #5D4037;    // Marrón suave para texto
+$color-white: #ffffff;
+$color-btn-back: #FF7043;    // Naranja rojizo para el botón volver
+
+.fun-card {
+  border-radius: 25px !important;
+  border: 4px solid $color-primary-fun;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1) !important;
+  overflow: hidden;
+  background-color: $color-white;
+  max-width: 1000px;
+  margin: 20px auto; 
+}
+
+.fun-card-header {
+  background-color: $color-primary-fun;
+  padding: 15px;
+  text-align: center;
+  /* CORREGIDO: darken() -> color.adjust con -10% de lightness */
+  border-bottom: 4px solid color.adjust($color-primary-fun, $lightness: -10%);
+}
+
+.fun-title {
+  margin: 0;
+  color: $color-white;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-size: 1.5rem;
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+}
+
+.fun-content {
+  padding: 30px !important;
+  min-height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #E1F5FE;
+}
+
+// Estilos para el estado de carga
+.fun-spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.fun-loading-text {
+  /* CORREGIDO: darken() -> color.adjust con -20% de lightness */
+  color: color.adjust($color-primary-fun, $lightness: -20%);
+  font-weight: bold;
+  font-size: 1.1rem;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+// Burbuja del comentario
+.fun-comment-bubble {
+  background-color: $color-bg-fun;
+  border: 3px solid $color-accent-fun;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 4px 4px 0px rgba($color-accent-fun, 0.3);
+  position: relative;
+  width: 100%;
+
+  .ai-content {
+    color: $color-text-fun;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    
+    // Estilos básicos para el markdown renderizado dentro de la burbuja
+    ::ng-deep h1, ::ng-deep h2, ::ng-deep h3 {
+      /* CORREGIDO: darken() -> color.adjust */
+      color: color.adjust($color-primary-fun, $lightness: -15%);
+    }
+    ::ng-deep strong {
+      /* CORREGIDO: darken() -> color.adjust */
+      color: color.adjust($color-accent-fun, $lightness: -15%);
+    }
+  }
+}
+
+.fun-actions {
+  padding: 15px 20px !important;
+  background-color: #F0F0F0;
+  border-top: 3px solid #E0E0E0;
+  justify-content: flex-start !important;
+}
+
+// Botón volver
+.btn-fun-back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background-color: $color-btn-back;
+  color: white;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-decoration: none;
+  border-radius: 30px;
+  
+  /* CORREGIDO: darken() -> color.adjust */
+  border: 3px solid color.adjust($color-btn-back, $lightness: -10%);
+  
+  /* CORREGIDO: darken() -> color.adjust */
+  box-shadow: 0 4px 0 color.adjust($color-btn-back, $lightness: -20%);
+  
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  .icon {
+    margin-right: 10px;
+    font-size: 1.3rem;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    /* CORREGIDO: darken() -> color.adjust */
+    box-shadow: 0 6px 0 color.adjust($color-btn-back, $lightness: -20%);
+    
+    /* CORREGIDO: lighten() -> color.adjust con valor positivo */
+    background-color: color.adjust($color-btn-back, $lightness: 5%);
+  }
+
+  &:active {
+    transform: translateY(2px);
+    /* CORREGIDO: darken() -> color.adjust */
+    box-shadow: 0 1px 0 color.adjust($color-btn-back, $lightness: -20%);
+  }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}

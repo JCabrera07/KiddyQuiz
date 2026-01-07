@@ -1,0 +1,186 @@
+@use 'sass:color';
+
+/* ========================= */
+/* VARIABLES DIVERTIDAS */
+/* ========================= */
+$color-primary-fun: #4FC3F7; // Azul cielo claro (Bordes tarjeta)
+$color-card-bg:     #ffffff; 
+$color-content-bg:  #E1F5FE; // Fondo azulito para info
+$color-text-fun:    #5D4037; // Marrón suave
+$color-accent:      #FFB74D; // Naranja para detalles
+$color-btn-action:  #66BB6A; // Verde para botón "Ver/Jugar"
+
+/* ========================= */
+/* FONDO Y LAYOUT */
+/* ========================= */
+.page-background {
+  /* Fondo suave, puedes dejar tu imagen de papel si prefieres, 
+     o usar un color sólido pastel */
+  background-color: #ffffff; // Amarillo pastel fondo general
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.card-col {
+  padding-bottom: 32px;
+}
+
+/* ========================= */
+/* TARJETA ESTILO "FUN" */
+/* ========================= */
+.fun-card {
+  border-radius: 25px;
+  border: 4px solid $color-primary-fun;
+  background-color: $color-card-bg;
+  /* Sombra sólida estilo cartoon */
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 8px 10px 0px rgba(79, 195, 247, 0.4);
+  }
+}
+
+/* ========================= */
+/* IMAGEN */
+/* ========================= */
+.card-image-wrapper {
+  position: relative;
+  border-bottom: 4px solid $color-primary-fun;
+  background-color: #eee;
+}
+
+.card-img-fixed {
+  height: 180px;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ========================= */
+/* CONTENIDO */
+/* ========================= */
+.card-content {
+  padding: 0 !important; /* Reseteamos padding de material */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body-inner {
+  padding: 1.5rem;
+  background-color: $color-content-bg; /* Fondo interior diferenciado */
+  flex: 1;
+}
+
+.card-title {
+  margin: 0 0 0.5rem 0;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  color: color.adjust($color-primary-fun, $lightness: -20%);
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.grade-chip {
+  display: inline-block;
+  background-color: $color-card-bg;
+  border: 2px solid $color-primary-fun;
+  color: $color-text-fun;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-description {
+  color: $color-text-fun;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+  
+  /* Limitar líneas si el texto es muy largo */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;  
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ========================= */
+/* FOOTER */
+/* ========================= */
+.card-footer {
+  background-color: $color-card-bg;
+  border-top: 3px dashed #BDBDBD;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.date {
+  font-size: 0.85rem;
+  color: #90A4AE;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ========================= */
+/* BOTÓN DE ACCIÓN 3D */
+/* ========================= */
+.btn-fun-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 24px;
+  
+  background-color: $color-btn-action;
+  color: white;
+  
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  text-decoration: none;
+  
+  border-radius: 30px;
+  border: 3px solid color.adjust($color-btn-action, $lightness: -10%);
+  box-shadow: 0 4px 0 color.adjust($color-btn-action, $lightness: -15%);
+  
+  transition: all 0.15s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 color.adjust($color-btn-action, $lightness: -15%);
+    background-color: color.adjust($color-btn-action, $lightness: 5%);
+  }
+
+  &:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 color.adjust($color-btn-action, $lightness: -15%);
+  }
+}
+
+/* ========================= */
+/* ESTADO VACÍO */
+/* ========================= */
+.empty-state-container {
+  text-align: center;
+  padding: 4rem 1rem;
+  background-color: rgba(255,255,255,0.6);
+  border-radius: 30px;
+  border: 4px dashed $color-primary-fun;
+  
+  h3 {
+    color: color.adjust($color-primary-fun, $lightness: -20%);
+    font-weight: bold;
+  }
+}

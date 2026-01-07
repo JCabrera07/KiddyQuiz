@@ -1,22 +1,211 @@
-.img-fluid.rounded-start {
-      width: 100%;
-      height: 100%; /* Hace que la imagen intente llenar el contenedor */
-      max-height: 450px; /* Límite para que no sea demasiado alta */
-      object-fit: cover; /* Evita que la imagen se deforme */
-    }
+@use 'sass:color';
 
-/* --- ESTILOS NUEVOS PARA LA IMAGEN ESTÁNDAR --- */
+/* ========================= */
+/* VARIABLES "FUN" */
+/* ========================= */
+$color-bg-page:     #FFF9C4; // Amarillo pastel
+$color-primary-fun: #4FC3F7; // Azul cielo
+$color-accent-fun:  #FFB74D; // Naranja
+$color-text-fun:    #5D4037; // Marrón
+$color-white:       #ffffff;
+$color-btn-play:    #66BB6A; // Verde para jugar
+$color-btn-back:    #FF7043; // Naranja rojizo para volver
 
-    /* 1. Definimos el "marco" con una altura fija */
-    .image-container {
-      height: 300px; /* 👈 PUEDES AJUSTAR ESTA ALTURA A TU GUSTO */
-      border-radius: 8px; /* Redondea las esquinas del marco */
-      overflow: hidden;   /* Oculta las partes de la imagen que se salgan */
-    }
+/* ========================= */
+/* CONTENEDOR PRINCIPAL */
+/* ========================= */
+.container {
+  padding-bottom: 40px;
+}
 
-    /* 2. Hacemos que la imagen llene el marco sin deformarse */
-    .image-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* Esta es la propiedad clave */
-    }
+/* ========================= */
+/* TARJETA DE DETALLE "FUN" */
+/* ========================= */
+.fun-card-detail {
+  max-width: 1000px;
+  margin: 10px auto;
+  border-radius: 30px;
+  border: 5px solid $color-primary-fun;
+  background-color: $color-white;
+  /* Sombra sólida estilo cartoon */
+  box-shadow: 8px 8px 0px rgba(79, 195, 247, 0.4);
+  overflow: hidden;
+  position: relative;
+}
+
+/* ===== HEADER / IMAGEN ===== */
+.quiz-header {
+  background-color: #E1F5FE;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 4px dashed color.adjust($color-primary-fun, $lightness: 10%);
+}
+
+.quiz-image-wrapper {
+  background: $color-white;
+  padding: 15px;
+  border-radius: 25px;
+  border: 3px solid $color-primary-fun;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+  transform: rotate(-2deg); /* Un toque juguetón */
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
+
+  img {
+    max-height: 200px;
+    object-fit: contain;
+    display: block;
+    border-radius: 15px;
+  }
+}
+
+/* ===== CONTENIDO ===== */
+.quiz-content {
+  padding: 30px;
+  text-align: center;
+}
+
+.quiz-title {
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: color.adjust($color-primary-fun, $lightness: -20%);
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+}
+
+.quiz-description {
+  font-size: 1.1rem;
+  color: $color-text-fun;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  background-color: #FFF3E0; /* Fondo naranja muy suave */
+  padding: 15px;
+  border-radius: 15px;
+  display: inline-block;
+  border: 2px solid #FFE0B2;
+}
+
+/* ===== GRID DE INFO (CHIPS) ===== */
+.quiz-info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.info-item {
+  background: $color-white;
+  border: 2px solid $color-primary-fun;
+  border-radius: 15px;
+  padding: 10px 20px;
+  font-weight: 700;
+  color: $color-text-fun;
+  box-shadow: 0 4px 0 rgba(79, 195, 247, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+  
+  .icon {
+    font-size: 1.2rem;
+  }
+}
+
+/* ===== ACCIONES (FOOTER) ===== */
+.quiz-actions-child {
+  padding: 20px 30px 40px 30px;
+  display: flex;
+  justify-content: center;
+  background-color: #FAFAFA;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Estilo base para botones 3D */
+.btn-fun {
+  width: 200px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  border-radius: 30px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Botón JUGAR (Verde) */
+.btn-play {
+  background-color: $color-btn-play;
+  color: white;
+  border: 3px solid color.adjust($color-btn-play, $lightness: -10%);
+  box-shadow: 0 6px 0 color.adjust($color-btn-play, $lightness: -15%);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0 color.adjust($color-btn-play, $lightness: -15%);
+    background-color: color.adjust($color-btn-play, $lightness: 5%);
+  }
+
+  &:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 color.adjust($color-btn-play, $lightness: -15%);
+  }
+}
+
+/* Botón VOLVER (Naranja/Rojo) */
+.btn-back {
+  background-color: $color-btn-back;
+  color: white;
+  border: 3px solid color.adjust($color-btn-back, $lightness: -10%);
+  box-shadow: 0 6px 0 color.adjust($color-btn-back, $lightness: -15%);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0 color.adjust($color-btn-back, $lightness: -15%);
+    background-color: color.adjust($color-btn-back, $lightness: 5%);
+  }
+
+  &:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px 0 color.adjust($color-btn-back, $lightness: -15%);
+  }
+}
+
+/* Loading state */
+.loading-container {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+  p {
+    font-family: 'Comic Sans MS', cursive;
+    color: $color-text-fun;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+}

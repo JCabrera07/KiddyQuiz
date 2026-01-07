@@ -1,17 +1,27 @@
 <nav id="navbar" [ngClass]="{'scrolled': isNavbarScrolled}">
   <div class="nav-container">
     <div class="logo">Kiddy Quiz</div>
-    <ul class="nav-links">
-      <li><a (click)="scrollTo('home')">Inicio</a></li>
-      <li><a (click)="scrollTo('portfolio')">Beneficios</a></li>
-      <li><a (click)="scrollTo('about')">Equipo</a></li>
-      
-      @if (estaLogueado) {
-        <li><a routerLink="/estudiante/mis-clases" class="login-button-nav">Mis Clases</a></li>
-      } @else {
-        <li><a routerLink="/authentication/login" class="login-button-nav">Iniciar Sesión</a></li>
-      }
-    </ul>
+<ul class="nav-links">
+  <li><a (click)="scrollTo('home')">Inicio</a></li>
+  <li><a (click)="scrollTo('portfolio')">Beneficios</a></li>
+  <li><a (click)="scrollTo('about')">Equipo</a></li>
+  
+  <ng-container *ngIf="estaLogueado; else loginLink">
+    <li *ngIf="userRole === 'Maestro'">
+      <a routerLink="/teacher/teacher-analytics" class="login-button-nav">Panel Maestro</a>
+    </li>
+    <li *ngIf="userRole !== 'Maestro'">
+      <a routerLink="/estudiante/mis-clases" class="login-button-nav">Mis Clases</a>
+    </li>
+  </ng-container>
+
+  <ng-template #loginLink>
+    <li>
+      <a routerLink="/authentication/login" class="login-button-nav">Iniciar Sesión</a>
+    </li>
+  </ng-template>
+</ul>
+
     
     <div class="mobile-menu-toggle" id="mobileMenuToggle" (click)="toggleMobileMenu()" [ngClass]="{'active': isMobileMenuOpen}">
       <div class="hamburger"></div>
@@ -22,17 +32,27 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu" [ngClass]="{'active': isMobileMenuOpen}">
-  <ul class="mobile-nav-links">
-    <li><a (click)="scrollTo('home')">Inicio</a></li>
-    <li><a (click)="scrollTo('portfolio')">Beneficios</a></li>
-    <li><a (click)="scrollTo('about')">Equipo</a></li>
-    
-    @if (estaLogueado) {
-      <li><a routerLink="/estudiante/mis-clases" (click)="closeMobileMenu()">Mis Clases</a></li>
-    } @else {
-      <li><a routerLink="/authentication/login" (click)="closeMobileMenu()">Iniciar Sesión</a></li>
-    }
-  </ul>
+<ul class="mobile-nav-links">
+  <li><a (click)="scrollTo('home')">Inicio</a></li>
+  <li><a (click)="scrollTo('portfolio')">Beneficios</a></li>
+  <li><a (click)="scrollTo('about')">Equipo</a></li>
+
+  <ng-container *ngIf="estaLogueado; else loginLinkMobile">
+    <li *ngIf="userRole === 'Maestro'">
+      <a routerLink="/teacher/teacher-analytics" (click)="closeMobileMenu()">Panel Maestro</a>
+    </li>
+    <li *ngIf="userRole !== 'Maestro'">
+      <a routerLink="/estudiante/mis-clases" (click)="closeMobileMenu()">Mis Clases</a>
+    </li>
+  </ng-container>
+
+  <ng-template #loginLinkMobile>
+    <li>
+      <a routerLink="/authentication/login" (click)="closeMobileMenu()">Iniciar Sesión</a>
+    </li>
+  </ng-template>
+</ul>
+
 </div>
 
 <section id="home" class="hero">

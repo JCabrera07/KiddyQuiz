@@ -10,7 +10,7 @@ export const navItems: NavItem[] = [
     roles: ['Estudiante']
   },
   {
-    displayName: 'Inicio',
+    displayName: 'Mis clases',
     iconName: 'solar:home-angle-line-duotone',
     route: '/estudiante/mis-clases',
     roles: ['Estudiante']
@@ -38,19 +38,19 @@ export const navItems: NavItem[] = [
   {
     displayName: 'Panel de Control',
     iconName: 'solar:widget-2-line-duotone',
-    route: '/docente/analytics',       // ← corregido
+    route: '/teacher/teacher-analytics',       // ← corregido
     roles: ['Maestro']
   },
   {
-    displayName: 'Mis Evaluaciones',
+    displayName: 'Mis Clases',
     iconName: 'solar:document-add-line-duotone',
-    route: '/docente/evaluaciones',    // ← corregido
+    route: '/teacher/class',    // ← corregido
     roles: ['Maestro']
   },
   {
     displayName: 'Mis Estudiantes',
     iconName: 'solar:users-group-rounded-line-duotone',
-    route: '/docente/estudiantes',     // ← corregido
+    route: '/teacher/student-list',     // ← corregido
     roles: ['Maestro']
   },
 ];

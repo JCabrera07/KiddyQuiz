@@ -11,11 +11,15 @@ import { ClaseService } from './services/clase.service';
 import { ClaseController } from './controller/clase.controller';
 import { Clase } from './entities/clase.entity';
 import { Usuario } from '../usuario/entities/usuario.entity';
+import { AiModule } from '../common/gemini/ia.module';
+import { ProgresoCompetenciaController } from './controller/progreso-competencia.controller';
+import { ProgresoCompetenciaService } from './services/progreso-competencia.service';
+import { ProgresoCompetencia } from './entities/progreso-competencia.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Grado, Persona, Competencia,Clase,Usuario])],
-  controllers: [GradoController,CompetenciaController,ClaseController],
-  providers: [GradoService,CompetenciaService,ClaseService],
+  imports: [TypeOrmModule.forFeature([Grado, Persona, Competencia,Clase,Usuario,ProgresoCompetencia]), AiModule],
+  controllers: [GradoController,CompetenciaController,ClaseController,ProgresoCompetenciaController],
+  providers: [GradoService,CompetenciaService,ClaseService,ProgresoCompetenciaService],
   exports: [CompetenciaService, GradoService, ClaseService, TypeOrmModule],
 })
 export class ExtraModule {}

@@ -1,86 +1,73 @@
-<div class="row justify-content-center page-background g-4">
+<div class="row justify-content-center page-background g-4 m-0">
 
-  <!-- Estado vacío -->
-  <div *ngIf="!loading && clases.length === 0" class="col-12 text-center p-5">
-    <h3 class="empty-title">🎒 Aún no estás en ninguna clase</h3>
-    <p class="text-muted">
-      Pide el código a tu profe para comenzar tu aventura 🚀
-    </p>
+  <div *ngIf="!loading && clases.length === 0" class="col-12">
+    <div class="empty-state-container">
+      <h3 class="empty-title">🎒 Aún no estás en ninguna clase</h3>
+      <p class="text-muted" style="font-size: 1.1rem;">
+        Pide el código a tu profe para comenzar tu aventura 🚀
+      </p>
+    </div>
   </div>
 
   @for (item of clases; track item.id) {
     <div class="col-sm-6 col-lg-4 card-col">
 
-      <mat-card
-        class="cardWithShadow clickable-card h-100 position-relative overflow-hidden"
-      >
-        <!-- Link general -->
+      <div class="fun-card">
+        
         <a
           [routerLink]="['/estudiante/clase', item.id, 'evaluaciones']"
           class="stretched-link"
+          style="z-index: 1;"
           aria-label="Entrar a la clase"
         ></a>
 
-        <!-- Imagen -->
         <div class="card-image-wrapper">
           <img
-            mat-card-image
             [src]="item.imagenUrl || defaultImage"
             [alt]="item.nombre"
             class="card-img-fixed"
           />
         </div>
 
-        <!-- Contenido -->
-        <mat-card-content class="card-content">
+        <div class="card-content">
+          
+          <div class="card-body-inner">
+            <h3 class="card-title text-truncate">
+              🧩 {{ item.nombre }}
+            </h3>
 
-          <!-- Título -->
-<mat-card-title class="card-title font-title text-truncate">
-  🧩 {{ item.nombre }}
-</mat-card-title>
+            <div class="info-row">
+              <span class="info-chip">
+                👩‍🏫 {{ getDocenteNombre(item) }}
+              </span>
+              <span class="info-chip">
+                🎓 {{ item.grado?.nombre || 'General' }}
+              </span>
+            </div>
 
-
-          <!-- Información -->
-          <div class="card-info">
-            <span>
-              👩‍🏫 <strong>Profesor:</strong> {{ getDocenteNombre(item) }}
-            </span>
-
-            <span>
-              🎒 <strong>Grado:</strong> {{ item.grado?.nombre || 'N/A' }}
-            </span>
+            <div class="fun-progress-container" title="Progreso del curso">
+              <div class="fun-progress-bar" style="width: 60%"></div>
+            </div>
           </div>
 
-          <!-- Progreso -->
-          <div class="progress-container">
-            <div class="progress-bar" style="width: 60%"></div>
-          </div>
-
-          <!-- Footer -->
           <div class="card-footer">
             <span class="date">
-              🗓️ {{ item.createdAt | date : 'mediumDate' }}
+              🗓️ {{ item.createdAt | date : 'dd/MM/yyyy' }}
             </span>
 
-            <!-- Botón tipo juego -->
-           <a
-  class="badge-kenney"
-  [routerLink]="['/estudiante/clase', item.id, 'evaluaciones']"
-  (click)="$event.stopPropagation()"
->
-  <img
-    src="assets/kenney/Vector/Yellow/button_rectangle_depth_flat.svg"
-    alt=""
-  />
-  <span class="badge-text">Iniciar</span>
-</a>
+            <a
+              class="btn-fun-action"
+              [routerLink]="['/estudiante/clase', item.id, 'evaluaciones']"
+              style="position: relative; z-index: 2;"
+            >
+              ¡Entrar! 🚀
+            </a>
           </div>
 
-        </mat-card-content>
-      </mat-card>
+        </div>
+      </div>
 
     </div>
   }
 </div>
-
 

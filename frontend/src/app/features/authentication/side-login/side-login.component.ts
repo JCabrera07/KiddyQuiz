@@ -24,28 +24,40 @@ export class AppSideLoginComponent {
     return this.form.controls;
   }
 
-  submit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      console.log('Formulario inválido:', this.form.value);
-      return;
-    }
-
-    const username = this.f.username.value || '';
-    const password = this.f.password.value || '';
-    console.log('Intentando login con:', username, password);
-
-    this.authService.login(username, password).subscribe({
-      next: (res) => {
-        console.log('Login exitoso', res);
-        // Aquí puedes guardar token si tu backend lo envía
-        this.router.navigate(['/estudiante/mis-clases']);
-      },
-      error: (err) => {
-        console.error('Error en login', err);
-        alert('Usuario o contraseña incorrectos');
-      }
-    });
+submit() {
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    console.log('Formulario inválido:', this.form.value);
+    return;
   }
+
+  const username = this.f.username.value || '';
+  const password = this.f.password.value || '';
+  console.log('Intentando login con:', username, password);
+
+  this.authService.login(username, password).subscribe({
+    next: (res) => {
+      console.log('Login exitoso', res);
+
+      // Obtenemos el rol directamente
+      const role = this.authService.getUserRole(); // string: 'Maestro' o 'Estudiante'
+
+      // Redirección según rol
+      if (role === 'Maestro') {
+        this.router.navigate(['/teacher/teacher-analytics']);
+        console.log('Redirigiendo a Maestro');
+      } else {
+        this.router.navigate(['/estudiante/mis-clases']);
+        console.log('Redirigiendo a Estudiante');
+      }
+    },
+    error: (err) => {
+      console.error('Error en login', err);
+      alert('Usuario o contraseña incorrectos');
+    }
+  });
+}
+
+
 }
 

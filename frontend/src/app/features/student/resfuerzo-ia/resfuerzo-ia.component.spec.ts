@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReinforcementComponent } from './reinforcement.component';
+import { ResfuerzoIAComponent } from './resfuerzo-ia.component';
 
-describe('ReinforcementComponent', () => {
-  let component: ReinforcementComponent;
-  let fixture: ComponentFixture<ReinforcementComponent>;
+describe('ResfuerzoIAComponent', () => {
+  let component: ResfuerzoIAComponent;
+  let fixture: ComponentFixture<ResfuerzoIAComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReinforcementComponent]
+      imports: [ResfuerzoIAComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ReinforcementComponent);
+    fixture = TestBed.createComponent(ResfuerzoIAComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -24,6 +24,8 @@ export interface Evaluacion {
   estado: boolean;
   fechaInicio: string;
   fechaFin: string;
+  totalPreguntas: number;      
+  tiempoEstimado: number;   
   createdAt: string;
   updatedAt: string | null;
 }

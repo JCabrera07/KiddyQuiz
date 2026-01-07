@@ -43,6 +43,19 @@ getMisClases(): Observable<ClaseResponse[]> {
     );
 }
 
+  // Clases del docente
+// Clases del docente
+getMisClasesDocente(): Observable<ClaseResponse[]> {
+  return this.http.get<ClaseResponse[]>(`${this.apiUrl}/clase/docente/mis-clases`)
+    .pipe(
+      catchError((error) => {
+        console.error('Error obteniendo clases del docente', error);
+        return of([]);
+      })
+    );
+}
+
+
   obtenerEvaluaciones(idClase: number) {
     return this.http.get<any[]>(`${this.apiUrl}/clase/${idClase}/evaluaciones`);
   }

@@ -1,0 +1,28 @@
+<mat-card class="p-4 ai-card fun-card">
+  <div class="fun-card-header">
+    <h2 class="fun-title">✨ Comentario Mágico de la IA ✨</h2>
+  </div>
+
+  <mat-card-content class="ai-card-content fun-content">
+    <ng-container *ngIf="loading; else showComentario">
+      <div class="fun-spinner-container">
+        <mat-spinner diameter="50" color="accent"></mat-spinner>
+        <p class="fun-loading-text">¡Pensando ideas geniales...!</p>
+      </div>
+    </ng-container>
+
+    <ng-template #showComentario>
+      <div class="fun-comment-bubble">
+        <div class="ai-content" [innerHTML]="comentario | markdown"></div>
+      </div>
+    </ng-template>
+  </mat-card-content>
+
+  <mat-card-actions class="quiz-actions-child fun-actions">
+    <a class="btn-fun-back" [routerLink]="['/estudiante/refuerzo']">
+      <span class="icon">⬅️</span> Volver a refuerzo
+    </a>
+  </mat-card-actions>
+</mat-card>
+
+

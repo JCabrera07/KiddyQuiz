@@ -44,9 +44,21 @@ export class EvaluacionService {
     return this.http.post(url, respuestas);
   }
 
+getDetalleEvaluacion(id: number): Observable<any> {
+  return this.http.get(`http://localhost:3000/detalle-evaluacion/${id}`);
+}
+
+
   generarComentarioIA(id: number): Observable<any> {
     return this.http.patch(`http://localhost:3000/detalle-evaluacion/${id}/comentario-ia`, {});
   }
+
+  getDetalleconRespuestas(id: number): Observable<any> {
+  return this.http.get(`http://localhost:3000/detalle-evaluacion/${id}/respuestas`);
+}
+
+
+
 
 
 }

@@ -83,7 +83,7 @@ async findQuiz(@Param('id', ParseIntPipe) id: number) {
 
   @Get(':id')
 async findOne(@Param('id') id: number) {
-  return this.evaluacionService.findOne(+id);
+  return this.evaluacionService.findOneWithStats(+id);
 }
 
 @Post(':id/submit')

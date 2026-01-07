@@ -9,6 +9,8 @@ import cloudinary from 'src/cloudinary.config';
 import { SubmitEvaluacionDto } from '../dto/submit-evaluacion.dto';
 import { Opcion } from 'src/Modules/pregunta/entities/opcion.entity';
 import { RespuestaUsuario } from 'src/Modules/respuesta/entities/respuesta-usuario.entity';
+import { EvaluacionPregunta } from '../entities/evaluacion-pregunta.entity';
+
 
 @Injectable()
 export class EvaluacionService {
@@ -23,6 +25,8 @@ export class EvaluacionService {
     private respuestaUsuarioRepository: Repository<RespuestaUsuario>,
     @InjectRepository(Evaluacion)
     private evaluacionRepository: Repository<Evaluacion>,
+    @InjectRepository(EvaluacionPregunta)
+    private readonly evaluacionPreguntaRepo: Repository<EvaluacionPregunta>,
   ) {}
 
   async create(createDto: CreateEvaluacionDto & { imagenUrl: string }) {
@@ -189,5 +193,31 @@ private async guardarResultados(evaluacionId: number, dto: SubmitEvaluacionDto, 
     
     return detalleGuardado;
 }
+
+async findOneWithStats(id: number) {
+  const evaluacion = await this.evaluacionRepo.findOne({
+    where: { id }
+  });
+
+  if (!evaluacion) {
+    throw new NotFoundException(`Evaluación con id ${id} no encontrada`);
+  }
+
+  const totalPreguntas = await this.evaluacionPreguntaRepo
+    .createQueryBuilder('ep')
+    .where('ep.id_evaluacion = :id', { id })
+    .getCount();
+
+  const TIEMPO_POR_PREGUNTA = 4; // minutos
+  const tiempoEstimado = totalPreguntas * TIEMPO_POR_PREGUNTA;
+
+  return {
+    ...evaluacion,
+    totalPreguntas,
+    tiempoEstimado
+  };
+}
+
+
 
 }

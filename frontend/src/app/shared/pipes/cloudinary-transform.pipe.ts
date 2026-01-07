@@ -10,15 +10,13 @@ export class CloudinaryTransformPipe implements PipeTransform {
       return '';
     }
 
-    // Dividimos la URL en la parte antes y después de 'upload/'
     const parts = originalUrl.split('/upload/');
     if (parts.length !== 2) {
-      return originalUrl; // Si no tiene el formato esperado, devolvemos la original
+      return originalUrl;
     }
 
-    const transformations = `w_${width},h_${height},c_fill`;
-    
-    // Unimos todo de nuevo con la transformación en medio
+    // Cambié c_fill por c_fit
+    const transformations = `w_${width},h_${height},c_fit`;
     return `${parts[0]}/upload/${transformations}/${parts[1]}`;
   }
 }

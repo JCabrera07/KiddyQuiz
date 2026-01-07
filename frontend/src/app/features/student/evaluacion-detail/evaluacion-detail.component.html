@@ -1,43 +1,79 @@
 <div class="container mt-4">
+
   @if (isLoading) {
-    <div class="d-flex justify-content-center align-items-center" style="height: 50vh;">
-      <mat-spinner></mat-spinner>
+    <div class="loading-container">
+      <mat-spinner diameter="70" color="accent"></mat-spinner>
+      <p>Preparando la aventura... 🚀</p>
     </div>
   }
 
   @if (evaluacion) {
-    <mat-card class="cardWithShadow p-3">
-      <div class="row g-0 align-items-center">
-  <div class="col-md-5 p-3">
-    <div class="image-container">
-      <img [src]="evaluacion.imagenUrl" alt="{{ evaluacion.titulo }}">
-    </div>
-  </div>
-  <div class="col-md-7 d-flex flex-column">
-          <mat-card-content class="p-24 flex-grow-1">
-            <h2 class="mat-h2">{{ evaluacion.titulo }}</h2>
-            <p class="mat-body-1 text-muted">{{ evaluacion.descripcion }}</p>
+    <div class="fun-card-detail">
 
-            <div class="info-section mt-4">
-              <p><strong><i class="ti ti-calendar"></i> Fecha de inicio:</strong> {{ evaluacion.fechaInicio | date:'fullDate' }}</p>
-              <p><strong><i class="ti ti-calendar-off"></i> Fecha de fin:</strong> {{ evaluacion.fechaFin | date:'fullDate' }}</p>
-              <p><strong><i class="ti ti-question-mark"></i> Número de preguntas:</strong> 16</p>
-              <p><strong><i class="ti ti-clock"></i> Tiempo estimado:</strong> 30 minutos</p>
-            </div>
-          
-          </mat-card-content>
-          
-<mat-card-actions class="p-24 pt-0" style="display: flex; gap: 8px;">
-  <a mat-flat-button color="primary" [routerLink]="['/quiz', evaluacionId]">
-    Iniciar
-  </a>
-  
-  <a mat-stroked-button color="warn" [routerLink]="['/estudiante/mis-clases']">
-    Cancelar
-  </a>
-</mat-card-actions>
+      <div class="quiz-header">
+        <div class="quiz-image-wrapper">
+          <img 
+            [src]="evaluacion.imagenUrl || defaultImage" 
+            alt="{{ evaluacion.titulo }}"
+          >
         </div>
       </div>
-    </mat-card>
+
+      <div class="quiz-content">
+
+        <h2 class="quiz-title">
+          🎯 {{ evaluacion.titulo }}
+        </h2>
+
+        <p class="quiz-description">
+          {{ evaluacion.descripcion || '¡Prepárate para demostrar lo que sabes!' }}
+        </p>
+
+        <div class="quiz-info-grid">
+          <div class="info-item">
+            <span class="icon">❓</span> 
+            <span>{{ evaluacion.totalPreguntas }} Preguntas</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="icon">⏱️</span> 
+            <span>{{ evaluacion.tiempoEstimado }} Minutos</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="icon">📅</span> 
+            <span>Inicio: {{ evaluacion.fechaInicio | date:'dd/MM/yy' }}</span>
+          </div>
+          
+          <div class="info-item">
+            <span class="icon">🏁</span> 
+            <span>Fin: {{ evaluacion.fechaFin | date:'dd/MM/yy' }}</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="quiz-actions-child">
+        <div class="action-buttons">
+
+          <a
+            class="btn-fun btn-back"
+            [routerLink]="['/estudiante/mis-clases']"
+          >
+            ⬅️ Volver
+          </a>
+
+          <a
+            class="btn-fun btn-play"
+            [routerLink]="['/exam-mode/quiz', evaluacionId]"
+          >
+            ¡Empezar! ▶️
+          </a>
+
+        </div>
+      </div>
+
+    </div>
   }
+
 </div>

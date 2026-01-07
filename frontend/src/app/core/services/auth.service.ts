@@ -84,4 +84,5 @@ export class AuthService {
     // Ahora 'this.router' existirá y esta línea funcionará
     this.router.navigate(['/']);
   }
+
 }

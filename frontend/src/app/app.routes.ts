@@ -12,6 +12,9 @@ import { EvaluacionDetailComponent } from './features/student/evaluacion-detail/
 import { QuizResultsComponent } from './features/student/quiz-results/quiz-results.component';
 import { MisClasesComponent } from './features/student/mis-clases/mis-clases.component';
 import { AiFeedbackDialogComponent } from './features/student/ai-feedback-dialog/ai-feedback-dialog.component';
+import { QuizExitGuard } from './core/guards/quiz-exit.guard';
+import { ResfuerzoIAComponent } from './features/student/resfuerzo-ia/resfuerzo-ia.component';
+import { ProfileComponent } from './features/final-components/profile/profile.component';
 
 
 export const routes: Routes = [
@@ -42,9 +45,6 @@ export const routes: Routes = [
     component: FullComponent,
     canActivate: [authGuard],
     children: [
-
-      // Redirección principal
-      { path: '', redirectTo: '/estudiante/mis-clases', pathMatch: 'full' },
 
       // -----------------------------
       // ESTUDIANTE
@@ -86,40 +86,55 @@ export const routes: Routes = [
       // ESTUDIANTE (rutas individuales)
       // -----------------------------
       { path: 'evaluacion/:id', component: EvaluacionDetailComponent },
-      { path: 'quiz/:id', component: QuizViewComponent },
       { path: 'resultado/:id', component: QuizResultsComponent },
       {path: 'estudiante/comentario-ia',component: AiFeedbackDialogComponent},
+      { path: 'estudiante/resfuerzo-ia/:id', component: ResfuerzoIAComponent },
+      { path: 'profile', component: ProfileComponent },
       // -----------------------------
       // DOCENTE
       // -----------------------------
-      {
-        path: 'teacher',
-        children: [
-          {
-            path: 'teacher-analytics',
-            loadComponent: () =>
-              import('./features/teacher/teacher-analytics/teacher-analytics.component')
-                .then(m => m.TeacherAnalyticsComponent),
-            data: { title: 'Panel de Control' }
-          },
-          {
-            path: 'evaluation-list',
-            loadComponent: () =>
-              import('./features/teacher/evaluation-list/evaluation-list.component')
-                .then(m => m.EvaluationListComponent),
-            data: { title: 'Mis Evaluaciones' }
-          },
-          {
-            path: 'student-list',
-            loadComponent: () =>
-              import('./features/teacher/student-list/student-list.component')
-                .then(m => m.StudentListComponent),
-            data: { title: 'Mis Estudiantes' }
-          },
-        ]
-      },
+{
+  path: 'teacher',
+  children: [
+    {
+      path: 'teacher-analytics',
+      loadComponent: () =>
+        import('./features/teacher/teacher-analytics/teacher-analytics.component')
+          .then(m => m.TeacherAnalyticsComponent),
+      data: { title: 'Panel de Control' }
+    },
+    {
+      path: 'class',
+      loadComponent: () =>
+        import('./features/teacher/class/class.component')
+          .then(m => m.ClassComponent),
+      data: { title: 'Mis Evaluaciones' }
+    },
+    {
+      path: 'student-list',
+      loadComponent: () =>
+        import('./features/teacher/student-list/student-list.component')
+          .then(m => m.StudentListComponent),
+      data: { title: 'Mis Estudiantes' }
+    },
+  ]
+},
     ]
   },
+
+{
+  path: 'exam-mode',
+  component: BlankComponent,
+  canActivate: [authGuard],
+  children: [
+    {
+      path: 'quiz/:id',
+      component: QuizViewComponent,
+      canDeactivate: [QuizExitGuard]
+    }
+  ]
+},
+
 
   // ==============================================
   // 3. RUTA COMODÍN

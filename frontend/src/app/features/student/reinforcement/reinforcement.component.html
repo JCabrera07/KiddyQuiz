@@ -1,1 +1,58 @@
-<p>reinforcement works!</p>
+<div class="row justify-content-center page-background g-4 m-0">
+
+  <div *ngIf="!isLoading && competencias.length === 0" class="col-12">
+    <div class="empty-state-container">
+      <h3 class="empty-title">🎒 ¡Mochila vacía!</h3>
+      <p class="text-muted" style="font-size: 1.1rem;">
+        Aún no tienes misiones asignadas. ¡Pide a tu profe que te envíe una aventura! 🚀
+      </p>
+    </div>
+  </div>
+
+  <div *ngFor="let competencia of competencias; trackBy: trackById" class="col-sm-6 col-lg-4 card-col">
+    
+    <div class="fun-card">
+      
+      <div class="card-image-wrapper">
+        <img
+          [src]="defaultImage"
+          [alt]="competencia.nombre"
+          class="card-img-fixed"
+        />
+      </div>
+
+      <div class="card-content">
+        
+        <div class="card-body-inner">
+          <div class="mb-2">
+            <span class="grade-chip">
+              🎓 {{ competencia.grado?.nombre || 'General' }}
+            </span>
+          </div>
+
+          <h3 class="card-title text-truncate">
+            {{ competencia.nombre }}
+          </h3>
+
+          <p class="card-description">
+            {{ competencia.descripcion || '¡Entra para descubrir de qué trata esta misión!' }}
+          </p>
+        </div>
+
+        <div class="card-footer">
+          <span class="date">
+            📅 {{ competencia.createdAt | date : 'dd/MM/yyyy' }}
+          </span>
+
+          <a
+            class="btn-fun-action"
+            [routerLink]="['/estudiante/resfuerzo-ia', competencia.id]"
+          >
+            ¡Aprender! ▶
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

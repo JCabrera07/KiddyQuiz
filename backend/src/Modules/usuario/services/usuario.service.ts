@@ -122,6 +122,7 @@ async findOne(id: number) {
       sexo: p.sexo,
       rol: p.rol?.nombre,
       grado: p.grado?.nombre,
+      id_grado: p.grado?.id,
     })),
   };
 }

@@ -6,11 +6,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
 
 import { EvaluacionService } from 'src/app/core/services/evaluacion.service';
-import { AuthService } from 'src/app/core/services/auth.service';
 import { AiFeedbackDialogComponent } from '../ai-feedback-dialog/ai-feedback-dialog.component';
+import { ProgresoService } from 'src/app/core/services/progreso.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-quiz-results',
@@ -35,13 +35,18 @@ export class QuizResultsComponent implements OnInit {
 
   loadingIA = false;
 
+  // 🔹 MÉTRICAS
+  respuestasCorrectas = 0;
+  respuestasIncorrectas = 0;
+  totalPreguntas = 0;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private evaluacionService: EvaluacionService,
-    private authService: AuthService,
     private dialog: MatDialog,
-    private http: HttpClient
+    private authService: AuthService,
+    private progresoService: ProgresoService
   ) {
     const navigation = this.router.getCurrentNavigation();
     this.resultado = navigation?.extras.state?.['data'];
@@ -51,36 +56,134 @@ export class QuizResultsComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
 
-  get calificacionNumero(): number {
-    return this.resultado?.calificacion ?? 0;
+    if (!id) {
+      console.error('No se recibió id del detalle');
+      return;
+    }
+
+    this.idDetalle = +id;
+
+    // 🔹 1. Cargar detalle básico
+    this.evaluacionService.getDetalleEvaluacion(this.idDetalle)
+      .subscribe({
+        next: (data) => {
+          this.resultado = data;
+        },
+        error: (err) => {
+          console.error('Error cargando resultado:', err);
+        }
+      });
+
+    // 🔹 2. Cargar respuestas para métricas
+    this.cargarMetricas();
   }
 
-verComentarioIA() {
-  if (!this.idDetalle) {
-    console.error("No existe id del detalle");
-    return;
+  // ===============================
+  // MÉTRICAS
+  // ===============================
+  cargarMetricas(): void {
+    if (!this.idDetalle) return;
+
+    this.evaluacionService
+      .getDetalleconRespuestas(this.idDetalle)
+      .subscribe({
+        next: (data: any) => {
+          const respuestas = data.respuestas || [];
+
+          this.totalPreguntas = respuestas.length;
+          this.respuestasCorrectas = respuestas.filter((r: any) => r.esCorrecta).length;
+          this.respuestasIncorrectas =
+            this.totalPreguntas - this.respuestasCorrectas;
+
+          // 🔹 Unificamos para el HTML
+          this.resultado = {
+            ...this.resultado,
+            respuestasCorrectas: this.respuestasCorrectas,
+            totalPreguntas: this.totalPreguntas
+          };
+          this.actualizarProgresoCompetencias(respuestas);
+        },
+        error: (err) => {
+          console.error('Error cargando métricas:', err);
+        }
+      });
   }
 
-  this.loadingIA = true;
+  private actualizarProgresoCompetencias(respuestas: any[]) {
+    const estudianteId = this.authService.getUserIdFromToken(); // Asegúrate de tener este método
+    if (!estudianteId) return;
 
-  this.evaluacionService.generarComentarioIA(this.idDetalle)
-    .subscribe({
-      next: (resp: any) => {
-        this.loadingIA = false;
-        console.log("Comentario generado:", resp);
+    // 1. Agrupar respuestas por ID de Competencia
+    // (Asumimos que 'pregunta' viene dentro de la respuesta y tiene 'id_competencia')
+    const competenciasMap = new Map<number, { total: number, correctas: number }>();
 
-        this.dialog.open(AiFeedbackDialogComponent, {
-          data: { comentario: resp.comentarioIA },
-          width: '500px'
-        });
-      },
-      error: (err) => {
-        this.loadingIA = false;
-        console.error("Error generando comentario IA:", err);
+    respuestas.forEach((r: any) => {
+      // Ajusta 'r.pregunta.id_competencia' según cómo venga tu JSON exacto del backend
+      const compId = r.pregunta?.competencia?.id;
+      
+      if (compId) {
+        const actual = competenciasMap.get(compId) || { total: 0, correctas: 0 };
+        
+        actual.total++;
+        if (r.esCorrecta) {
+          actual.correctas++;
+        }
+        
+        competenciasMap.set(compId, actual);
       }
     });
+console.log('Datos recibidos para procesar:', respuestas);
+    // 2. Enviar actualización al backend por cada competencia encontrada
+    competenciasMap.forEach((datos, compId) => {
+      this.progresoService.actualizarProgreso({
+        estudianteId: estudianteId,
+        competenciaId: compId,
+        totalPreguntas: datos.total,
+        preguntasCorrectas: datos.correctas,
+        detalleEvaluacionId: this.idDetalle || undefined
+      }).subscribe({
+        next: (res) => console.log(`Progreso actualizado para competencia ${compId}`, res),
+        error: (err) => console.error(`Error actualizando competencia ${compId}`, err)
+      });
+    });
+  }
+
+  // ===============================
+  // SCORE
+  // ===============================
+  get calificacionNumero(): number {
+    return Number(this.resultado?.calificacion ?? 0);
+  }
+
+  // ===============================
+  // IA
+  // ===============================
+  verComentarioIA() {
+    if (!this.idDetalle) {
+      console.error('No existe id del detalle');
+      return;
+    }
+
+    this.loadingIA = true;
+
+    this.evaluacionService.generarComentarioIA(this.idDetalle)
+      .subscribe({
+        next: (resp: any) => {
+          this.loadingIA = false;
+
+          this.dialog.open(AiFeedbackDialogComponent, {
+            data: { comentario: resp.comentarioIA },
+            width: '500px'
+          });
+        },
+        error: (err) => {
+          this.loadingIA = false;
+          console.error('Error generando comentario IA:', err);
+        }
+      });
+  }
 }
 
-}

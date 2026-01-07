@@ -1,19 +1,49 @@
+@use 'sass:color';
+
 /* ========================= */
-/* CARD GENERAL */
+/* VARIABLES DIVERTIDAS */
 /* ========================= */
-.cardWithShadow {
-  border-radius: 20px;
-  background:
-    url('/assets/textures/cubos.png') repeat,
-    linear-gradient(120deg, #ffffff, #f6f9fc);
-  box-shadow: 0 8px 0 #d6d6d6, 0 15px 25px rgba(0, 0, 0, 0.15);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  animation: floatIn 0.4s ease;
+$color-primary-fun: #4FC3F7; // Azul cielo (Bordes)
+$color-card-bg:     #ffffff; 
+$color-content-bg:  #E1F5FE; // Fondo interior azulito
+$color-text-fun:    #5D4037; // Marrón suave
+$color-accent:      #FFB74D; // Naranja
+$color-btn-action:  #FFA726; // Naranja para "Iniciar Examen" (diferente a clases)
+$color-date-chip:   #B2EBF2; // Cyan muy claro para fechas
+
+/* ========================= */
+/* FONDO Y LAYOUT */
+/* ========================= */
+.page-background {
+  background-color: #ffffff;// Amarillo pastel
+  min-height: 100vh;
+  padding: 20px;
 }
 
-.cardWithShadow:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 12px 0 #cfcfcf, 0 20px 30px rgba(0, 0, 0, 0.25);
+.card-col {
+  padding-bottom: 32px;
+}
+
+/* ========================= */
+/* TARJETA ESTILO "FUN" */
+/* ========================= */
+.fun-card {
+  border-radius: 25px;
+  border: 4px solid $color-primary-fun;
+  background-color: $color-card-bg;
+  /* Sombra sólida estilo cartoon */
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  position: relative; 
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 8px 10px 0px rgba(79, 195, 247, 0.4);
+  }
 }
 
 /* ========================= */
@@ -21,153 +51,149 @@
 /* ========================= */
 .card-image-wrapper {
   position: relative;
+  border-bottom: 4px solid $color-primary-fun;
+  background-color: #eee;
+  height: 180px;
 }
 
 .card-img-fixed {
-  height: 180px;
+  height: 100%;
   width: 100%;
   object-fit: cover;
-  border-radius: 0 0 20px 20px;
-  border: 6px solid #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  display: block;
 }
 
 /* ========================= */
 /* CONTENIDO */
 /* ========================= */
 .card-content {
+  padding: 0 !important; /* Reset padding material */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body-inner {
   padding: 1.5rem;
+  background-color: $color-content-bg;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .card-title {
-  margin-top: 1rem;
+  margin: 0;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  color: color.adjust($color-primary-fun, $lightness: -20%);
   font-weight: 700;
+  font-size: 1.3rem;
+  line-height: 1.2;
 }
 
-.card-info {
+.card-description {
+  color: $color-text-fun;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-top: 5px;
+  
+  /* Truncar texto largo */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 2;  
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Chips para las fechas (Inicio/Fin) */
+.dates-container {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  margin-top: 0.8rem;
-  font-size: 14px;
-  color: #555;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.date-chip {
+  background-color: $color-date-chip;
+  color: color.adjust($color-text-fun, $lightness: 10%);
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid color.adjust($color-date-chip, $lightness: -10%);
 }
 
 /* ========================= */
 /* FOOTER */
 /* ========================= */
 .card-footer {
+  background-color: $color-card-bg;
+  border-top: 3px dashed #BDBDBD;
+  padding: 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 1rem;
-  padding-top: 0.6rem;
-  border-top: 1px dashed #ddd;
+  position: relative; 
+  z-index: 2;
 }
 
-.date {
-  font-size: 12px;
-  color: #888;
-}
-
-/* ========================= */
-/* PROGRESO */
-/* ========================= */
-.progress-container {
-  height: 10px;
-  background: #e0e0e0;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-top: 1rem;
-}
-
-.progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #4caf50, #81c784);
-  border-radius: 10px;
+.created-date {
+  font-size: 0.85rem;
+  color: #90A4AE;
+  font-weight: 600;
 }
 
 /* ========================= */
-/* BOTÓN KENNEY */
+/* BOTÓN DE ACCIÓN 3D (Naranja para Examen) */
 /* ========================= */
-.badge-kenney {
-  position: relative;
-  width: 160px;      /* 👈 controla el ancho */
-  height: 44px;      /* 👈 controla el alto */
+.btn-fun-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: transform 0.15s ease;
+  padding: 10px 24px;
+  
+  background-color: $color-btn-action;
+  color: white;
+  
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
   text-decoration: none;
-}
+  
+  border-radius: 30px;
+  border: 3px solid color.adjust($color-btn-action, $lightness: -10%);
+  box-shadow: 0 4px 0 color.adjust($color-btn-action, $lightness: -15%);
+  
+  transition: all 0.15s ease;
+  cursor: pointer;
 
-
-.badge-kenney img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  pointer-events: none;
-}
-
-
-.badge-kenney .badge-text {
-  position: relative;
-  z-index: 1;
-  font-family: 'KenneyUI', 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 14px;          /* 👈 clave */
-  color: #4a3b00;
-  text-align: center;
-  white-space: nowrap;
-  max-width: 90%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1;
-}
-
-
-.badge-kenney:hover {
-  transform: translateY(-2px);
-}
-
-.badge-kenney:active {
-  transform: translateY(1px) scale(0.96);
-}
-
-.kenney-font {
-  font-family: 'KenneyUI', 'Poppins', 'Nunito', sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-}
-
-.card-title.kenney-font {
-  font-size: 18px;
-  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
-}
-
-
-/* ========================= */
-/* EXTRAS */
-/* ========================= */
-.page-background {
-  background: url('/assets/textures/papel.png') repeat;
-  min-height: 100vh;
-}
-
-.card-col {
-  padding-bottom: 32px;
-}
-
-@keyframes floatIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 color.adjust($color-btn-action, $lightness: -15%);
+    background-color: color.adjust($color-btn-action, $lightness: 5%);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  &:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 color.adjust($color-btn-action, $lightness: -15%);
+  }
+}
+
+/* ========================= */
+/* ESTADO VACÍO */
+/* ========================= */
+.empty-state-container {
+  text-align: center;
+  padding: 4rem 1rem;
+  background-color: rgba(255,255,255,0.6);
+  border-radius: 30px;
+  border: 4px dashed $color-primary-fun;
+  
+  h3 {
+    color: color.adjust($color-primary-fun, $lightness: -20%);
+    font-weight: bold;
   }
 }

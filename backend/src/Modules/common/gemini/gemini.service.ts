@@ -52,6 +52,37 @@ export class GeminiService {
     const result = await this.model.generateContent(prompt);
     return result.response.text();
   }
+
+
+async generarContenidoCompetencia(competencia: any): Promise<string> {
+    // Limpiamos datos que no queremos enviar
+    const datosFiltrados = JSON.parse(
+      JSON.stringify(competencia, (key, value) => {
+        if (['id', 'createdAt', 'updatedAt'].includes(key)) return undefined;
+        return value;
+      })
+    );
+
+    const prompt = `
+Eres un asistente académico infantil.
+Tienes la siguiente información de la competencia:
+${JSON.stringify(datosFiltrados, null, 2)}
+
+Instrucciones:
+1. Genera contenido educativo y divertido para estudiantes.
+2. Describe la competencia en términos claros y con ejemplos sencillos.
+3. Incluye secciones tipo:
+   - Objetivo de la competencia
+   - Actividades sugeridas
+   - Recomendaciones y consejos
+4. Usa Markdown para títulos, listas y resaltar conceptos.
+5. Responde solo con el contenido, sin explicaciones extra.
+`;
+
+    const result = await this.model.generateContent(prompt);
+    return result.response.text();
+  }
+
 }
 
 

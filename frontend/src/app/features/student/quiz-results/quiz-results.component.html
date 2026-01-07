@@ -1,65 +1,81 @@
-<div class="container mt-4 d-flex justify-content-center">
+<div class="container">
 
-  <!-- Verifica que exista resultado -->
   <ng-container *ngIf="resultado; else noResultados">
 
-    <mat-card class="cardWithShadow text-center p-4 position-relative" style="max-width: 500px;">
+    <div class="fun-result-card">
 
-      <mat-card-header class="justify-content-center">
-        <mat-card-title class="mat-h1 mb-3">¡Evaluación Completada!</mat-card-title>
-      </mat-card-header>
+      <div class="result-header">
+        <span class="trophy-icon">🏆</span>
+        <h1 class="result-title">¡Misión Cumplida!</h1>
+        <p class="result-subtitle">Aquí está tu reporte de aventura</p>
+      </div>
       
-      <mat-card-content>
-        <p class="mat-body-1 text-muted">Aquí tienes un resumen de tu desempeño.</p>
+      <div class="score-wrapper">
 
-        <div class="my-4 position-relative d-inline-flex align-items-center justify-content-center">
+        <div class="score-ring" 
+             [class.low-score]="calificacionNumero < 60"
+             [class.mid-score]="calificacionNumero >= 60 && calificacionNumero < 80">
+          
           <mat-progress-spinner
             mode="determinate"
             [value]="calificacionNumero"
             [diameter]="150"
-            [strokeWidth]="10"
-            color="primary">
+            [strokeWidth]="15">
           </mat-progress-spinner>
-          <span class="mat-h1 position-absolute">{{ calificacionNumero | number:'1.0-0' }}%</span>
-        </div>
 
-        <div class="d-flex justify-content-around mt-3">
-          <div class="text-center">
-            <h3 class="mat-h3">{{ resultado.respuestasCorrectas }}</h3>
-            <p class="mat-body-2 text-muted">Respuestas Correctas</p>
-          </div>
-          <div class="text-center">
-            <h3 class="mat-h3">{{ resultado.totalPreguntas }}</h3>
-            <p class="mat-body-2 text-muted">Preguntas Totales</p>
+          <div class="score-center">
+            <span class="score-value">
+              {{ calificacionNumero | number:'1.0-0' }}%
+            </span>
+            <span class="score-label">Puntaje</span>
           </div>
         </div>
 
-      </mat-card-content>
+        <div class="metrics-container">
+          <div class="metric-box correct">
+            <strong>{{ resultado.respuestasCorrectas }}</strong>
+            <span>Correctas</span>
+          </div>
 
-      <!-- Overlay spinner centralizado para comentario IA -->
-      <div *ngIf="loadingIA" class="spinner-overlay">
-        <mat-spinner diameter="60" color="accent"></mat-spinner>
-        <p class="mt-2">Generando comentario IA...</p>
+          <div class="metric-box incorrect">
+            <strong>{{ resultado.totalPreguntas - resultado.respuestasCorrectas }}</strong>
+            <span>Errores</span>
+          </div>
+
+          <div class="metric-box">
+            <strong>{{ resultado.totalPreguntas }}</strong>
+            <span>Totales</span>
+          </div>
+        </div>
+
       </div>
 
-      <mat-card-actions class="justify-content-center mt-3 d-flex flex-column" *ngIf="!loadingIA">
-        <button mat-flat-button color="accent" (click)="verComentarioIA()">
-          Mostrar comentario IA
+      <div *ngIf="loadingIA" class="spinner-overlay">
+        <mat-spinner diameter="60" color="accent"></mat-spinner>
+        <p>Consultando a los sabios... 🤖</p>
+      </div>
+
+      <div class="quiz-actions" *ngIf="!loadingIA">
+        
+        <button class="btn-fun btn-ai" (click)="verComentarioIA()">
+          <span>✨ Ver Consejos Mágicos (IA)</span>
         </button>
 
-        <a mat-flat-button color="primary" 
-           class="mt-3"
-           [routerLink]="['/estudiante/mis-clases']">
-          Volver a mis clases
+        <a class="btn-fun btn-back" [routerLink]="['/estudiante/mis-clases']">
+          <span>🏠 Volver a clases</span>
         </a>
-      </mat-card-actions>
+        
+      </div>
 
-    </mat-card>
+    </div>
 
   </ng-container>
 
   <ng-template #noResultados>
-    <p>No se encontraron los resultados.</p>
+    <div class="fun-result-card p-5">
+      <h3>🚫 No encontramos los resultados</h3>
+      <p>Intenta volver a tus clases.</p>
+    </div>
   </ng-template>
 
 </div>

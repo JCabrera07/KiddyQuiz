@@ -1,0 +1,252 @@
+@use 'sass:color';
+
+/* ========================= */
+/* VARIABLES "FUN" */
+/* ========================= */
+$color-bg-page:     #ffffff;// Amarillo pastel (Fondo general)
+$color-primary:     #4FC3F7; // Azul cielo
+$color-accent:      #FFB74D; // Naranja
+$color-success:     #66BB6A; // Verde victoria
+$color-text:        #5D4037; // Marrón
+$color-white:       #ffffff;
+$color-gray-line:   #B0BEC5; // Color del camino inactivo
+
+/* ========================= */
+/* LAYOUT GENERAL */
+/* ========================= */
+.progress-container {
+  padding: 2rem;
+  background-color: $color-bg-page;
+  min-height: 80vh;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 3rem;
+
+  h2 {
+    color: $color-primary;
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: $color-text;
+    font-size: 1.1rem;
+    background: rgba(255, 255, 255, 0.6);
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 15px;
+  }
+}
+
+/* ========================= */
+/* MAPA (TRACK) */
+/* ========================= */
+.path-wrapper {
+  background: $color-white;
+  border-radius: 30px;
+  border: 5px solid $color-primary;
+  padding: 4rem 2rem; /* Más espacio vertical para los saltos */
+  overflow-x: auto;
+  
+  /* Sombra sólida estilo cartoon */
+  box-shadow: 8px 8px 0px rgba(79, 195, 247, 0.4); 
+  
+  margin-bottom: 3rem;
+  
+  /* Textura de fondo opcional (cuadrícula tenue) */
+  background-image: 
+    linear-gradient(#E1F5FE 1px, transparent 1px),
+    linear-gradient(90deg, #E1F5FE 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.path-track {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  min-width: 800px; /* Asegura scroll si hay muchos items */
+  padding: 0 40px;
+}
+
+/* ===== LÍNEA DE CAMINO (DASHED) ===== */
+.connection-line {
+  position: absolute;
+  top: 40px; /* Alineado al centro de los círculos */
+  left: 60px;
+  right: 60px;
+  height: 0;
+  border-top: 6px dashed $color-gray-line; /* Línea punteada de mapa */
+  z-index: 0;
+}
+
+/* ===== NODO / NIVEL ===== */
+.path-node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140px;
+  text-align: center;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto rebote */
+  
+  &:hover {
+    transform: translateY(-10px) scale(1.05);
+  }
+}
+
+/* ===== CÍRCULO DE PROGRESO (EL NIVEL) ===== */
+.progress-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  
+  /* Gradiente dinámico basado en variable CSS */
+  background: conic-gradient(
+    $color-accent calc(var(--percent) * 1%),
+    #ECEFF1 0
+  );
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  
+  box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+  border: 4px solid white; /* Anillo blanco externo */
+}
+
+/* Estado Completado (Verde) */
+.progress-circle.completed {
+  background: $color-success; // Todo verde
+  border-color: #A5D6A7;
+  box-shadow: 0 0 15px rgba(102, 187, 106, 0.6);
+  animation: pulseSuccess 2s infinite;
+}
+
+/* Estado En Progreso (Naranja) */
+.progress-circle.in-progress {
+  // El fondo ya lo maneja el conic-gradient
+  box-shadow: 0 0 10px rgba(255, 183, 77, 0.5);
+}
+
+/* ===== CÍRCULO INTERIOR (NUMERO/ICONO) ===== */
+.inner-circle {
+  width: 60px;
+  height: 60px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: $color-gray-line;
+  border: 3px solid #ECEFF1;
+}
+
+/* Texto interior cuando hay progreso */
+.progress-circle.in-progress .inner-circle {
+  color: $color-accent;
+  border-color: #FFE0B2;
+}
+
+/* Icono cuando está completado */
+.progress-circle.completed .inner-circle {
+  background-color: #E8F5E9; // Fondo verde muy claro
+  color: $color-success;
+  border-color: $color-success;
+  font-size: 1.8rem;
+}
+
+/* ===== TEXTO DEL NODO ===== */
+.node-info {
+  margin-top: 15px;
+  background: rgba(255,255,255,0.9);
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.node-title {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: $color-text;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.node-percent {
+  font-size: 0.85rem;
+  color: #90A4AE;
+  font-weight: 600;
+}
+
+.node-percent.text-success {
+  color: $color-success !important;
+  text-shadow: 0px 0px 1px $color-success;
+}
+
+/* ===== GRID DE DETALLES (TARJETAS INFERIORES) ===== */
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.detail-card {
+  border-radius: 20px !important;
+  border: 3px solid $color-primary;
+  box-shadow: 5px 5px 0px rgba(0,0,0,0.1) !important;
+  background: white;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.card-title-fun {
+  font-weight: 700;
+  color: color.adjust($color-primary, $lightness: -20%);
+  margin-bottom: 5px;
+}
+
+/* ===== BADGE ===== */
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 2px solid transparent;
+}
+
+/* Badge: En Progreso */
+.status-badge:not(.done) {
+  background: #FFF3E0;
+  color: $color-accent;
+  border-color: $color-accent;
+}
+
+/* Badge: Completado */
+.status-badge.done {
+  background: #E8F5E9;
+  color: $color-success;
+  border-color: $color-success;
+}
+
+/* Animación sutil para completados */
+@keyframes pulseSuccess {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}

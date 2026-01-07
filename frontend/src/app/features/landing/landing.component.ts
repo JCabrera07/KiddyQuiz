@@ -18,7 +18,7 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy { // A
   isMobileMenuOpen = false;
   isNavbarScrolled = false;
   
-  // NUEVO: Variable para controlar qué botón mostrar
+  userRole: string | null = null;
   estaLogueado: boolean = false; 
 
   // Propiedades para los modales
@@ -65,7 +65,8 @@ export class LandingComponent implements OnInit, AfterViewInit, OnDestroy { // A
 
     // Opción B: Si aún no tienes el método en el servicio, verificamos localStorage directamente aquí:
     const token = localStorage.getItem('access_token'); 
-    this.estaLogueado = !!token; // Convierte el string a boolean (true si existe, false si es null)
+    this.estaLogueado = !!token;
+    this.userRole = this.authService.getUserRole();
   }
 
   toggleMobileMenu(): void {

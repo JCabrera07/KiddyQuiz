@@ -13,7 +13,7 @@ async function bootstrap() {
   app.enableCors({
   origin: [
     'http://localhost:4200',
-    'https://kiddyquiz.onrender.com'
+    'https://grand-begonia-774f68.netlify.app'
   ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   });

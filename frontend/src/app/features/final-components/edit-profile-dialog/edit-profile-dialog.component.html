@@ -1,36 +1,42 @@
-<h2 mat-dialog-title>Editar Información</h2>
+<h2 mat-dialog-title 
+    [class.student-dialog]="isStudent" 
+    [class.teacher-dialog]="!isStudent"
+    class="dialog-title">
+  @if (isStudent) {
+    🎨 Editar mi Carnet
+  } @else {
+    Editar Información Personal
+  }
+</h2>
 
-<mat-dialog-content>
+<mat-dialog-content [class.student-dialog]="isStudent" [class.teacher-dialog]="!isStudent">
   <form [formGroup]="form" class="profile-form">
     
-    <!-- 1. Fila Única: Username -->
-    <mat-form-field appearance="outline">
-      <mat-label>Usuario</mat-label>
+    <mat-form-field appearance="fill">
+      <mat-label>{{ isStudent ? 'Alias de Jugador' : 'Nombre de Usuario' }}</mat-label>
       <input matInput formControlName="username" readonly>
-      <mat-hint>El nombre de usuario no se puede cambiar</mat-hint>
+      <mat-hint *ngIf="!isStudent">El nombre de usuario no es modificable por seguridad.</mat-hint>
     </mat-form-field>
 
-    <!-- 2. Grilla de 2 Columnas: Nombres y Apellidos -->
     <div class="form-grid-2">
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="fill">
         <mat-label>Nombres</mat-label>
         <input matInput formControlName="nombres">
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="fill">
         <mat-label>Apellidos</mat-label>
         <input matInput formControlName="apellidos">
       </mat-form-field>
     </div>
 
-    <!-- 3. Grilla de 3 Columnas: Edad, Sexo, Ciudad -->
     <div class="form-grid-3">
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="fill">
         <mat-label>Edad</mat-label>
         <input matInput type="number" formControlName="edad">
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="fill">
         <mat-label>Sexo</mat-label>
         <mat-select formControlName="sexo">
           <mat-option value="M">Masculino</mat-option>
@@ -38,8 +44,8 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Ciudad</mat-label>
+      <mat-form-field appearance="fill">
+        <mat-label>{{ isStudent ? 'Base / Ciudad' : 'Ciudad de Residencia' }}</mat-label>
         <input matInput formControlName="ciudad">
       </mat-form-field>
     </div>
@@ -47,9 +53,23 @@
   </form>
 </mat-dialog-content>
 
-<mat-dialog-actions align="end">
-  <button mat-button (click)="cancelar()">Cancelar</button>
-  <button mat-flat-button color="primary" (click)="guardar()" [disabled]="loading">
-    {{ loading ? 'Guardando...' : 'Guardar' }}
-  </button>
+<mat-dialog-actions align="end" 
+  [class.student-actions]="isStudent" 
+  [class.teacher-actions]="!isStudent">
+  
+  @if (isStudent) {
+    <button mat-flat-button class="btn-fun btn-cancel-fun" (click)="cancelar()">
+      Cancelar ❌
+    </button>
+    <button mat-flat-button class="btn-fun btn-save-fun" (click)="guardar()" [disabled]="loading">
+      {{ loading ? 'Guardando...' : '¡Guardar! ✅' }}
+    </button>
+  }
+
+  @else {
+    <button mat-stroked-button color="warn" (click)="cancelar()">Cancelar</button>
+    <button mat-flat-button color="primary" (click)="guardar()" [disabled]="loading" class="ms-2">
+      {{ loading ? 'Guardando cambios...' : 'Guardar Cambios' }}
+    </button>
+  }
 </mat-dialog-actions>

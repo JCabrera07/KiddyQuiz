@@ -79,6 +79,12 @@ export class OpcionController {
     return this.opcionService.findOne(+id);
   }
 
+  // NUEVO ENDPOINT
+  @Get('pregunta/:idPregunta')
+  findByPregunta(@Param('idPregunta', ParseIntPipe) id: number) {
+    return this.opcionService.findByPregunta(id);
+  }
+
     // Ruta para eliminar
   @Delete(':id')
   remove(@Param('id') id: number) {

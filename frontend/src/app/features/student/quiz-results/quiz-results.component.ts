@@ -32,6 +32,10 @@ export class QuizResultsComponent implements OnInit {
   resultado: any;
   comentarioIA: string | null = null;
   idDetalle: number | null = null;
+  
+  // NUEVA VARIABLE PARA EL COMENTARIO CORTO
+  comentarioCorto: string | null = null; 
+  loadingCorto = false; // Para mostrar un mini loader si tarda
 
   loadingIA = false;
 
@@ -71,6 +75,10 @@ export class QuizResultsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.resultado = data;
+          
+          // Si ya existe un comentario guardado previamente, úsalo (opcional)
+          // Si no, generamos uno nuevo corto
+          this.obtenerComentarioCorto(); 
         },
         error: (err) => {
           console.error('Error cargando resultado:', err);
@@ -79,6 +87,25 @@ export class QuizResultsComponent implements OnInit {
 
     // 🔹 2. Cargar respuestas para métricas
     this.cargarMetricas();
+  }
+
+  // NUEVO MÉTODO PARA CONSUMIR TU ENDPOINT
+  obtenerComentarioCorto() {
+    if (!this.idDetalle) return;
+    
+    this.loadingCorto = true;
+    
+    this.evaluacionService.generarComentarioCortoIA(this.idDetalle).subscribe({
+      next: (resp: any) => {
+        // Asumimos que tu backend devuelve { comentarioIA: "..." }
+        this.comentarioCorto = resp.comentarioIA;
+        this.loadingCorto = false;
+      },
+      error: (err) => {
+        console.error('Error obteniendo feedback corto', err);
+        this.loadingCorto = false;
+      }
+    });
   }
 
   // ===============================
@@ -98,7 +125,6 @@ export class QuizResultsComponent implements OnInit {
           this.respuestasIncorrectas =
             this.totalPreguntas - this.respuestasCorrectas;
 
-          // 🔹 Unificamos para el HTML
           this.resultado = {
             ...this.resultado,
             respuestasCorrectas: this.respuestasCorrectas,
@@ -113,15 +139,12 @@ export class QuizResultsComponent implements OnInit {
   }
 
   private actualizarProgresoCompetencias(respuestas: any[]) {
-    const estudianteId = this.authService.getUserIdFromToken(); // Asegúrate de tener este método
+    const estudianteId = this.authService.getUserIdFromToken();
     if (!estudianteId) return;
 
-    // 1. Agrupar respuestas por ID de Competencia
-    // (Asumimos que 'pregunta' viene dentro de la respuesta y tiene 'id_competencia')
     const competenciasMap = new Map<number, { total: number, correctas: number }>();
 
     respuestas.forEach((r: any) => {
-      // Ajusta 'r.pregunta.id_competencia' según cómo venga tu JSON exacto del backend
       const compId = r.pregunta?.competencia?.id;
       
       if (compId) {
@@ -135,8 +158,7 @@ export class QuizResultsComponent implements OnInit {
         competenciasMap.set(compId, actual);
       }
     });
-console.log('Datos recibidos para procesar:', respuestas);
-    // 2. Enviar actualización al backend por cada competencia encontrada
+    
     competenciasMap.forEach((datos, compId) => {
       this.progresoService.actualizarProgreso({
         estudianteId: estudianteId,
@@ -151,16 +173,10 @@ console.log('Datos recibidos para procesar:', respuestas);
     });
   }
 
-  // ===============================
-  // SCORE
-  // ===============================
   get calificacionNumero(): number {
     return Number(this.resultado?.calificacion ?? 0);
   }
 
-  // ===============================
-  // IA
-  // ===============================
   verComentarioIA() {
     if (!this.idDetalle) {
       console.error('No existe id del detalle');

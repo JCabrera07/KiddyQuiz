@@ -9,20 +9,90 @@ $color-content-bg:  #E1F5FE; // Fondo interior suave
 $color-text-fun:    #5D4037; // Marrón
 $color-accent:      #FFB74D; // Naranja
 $color-btn-action:  #29B6F6; // Azul para "Iniciar Clase"
-$color-progress-bg: #e0e0e0;
+$color-progress-bg: #ffffff;
 $color-progress-fill:#66BB6A; // Verde vida
+
+/* ========================= */
+/* HEADER Y TITULOS */
+/* ========================= */
+.header-container {
+  padding: 0 15px;
+  /* Asegura que el botón y el texto se alineen bien */
+  display: flex; 
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-title {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-weight: 800;
+  color: $color-text-fun;
+  margin-bottom: 0;
+  font-size: 1.8rem; /* Un poco más grande para impacto */
+}
+
+.page-subtitle {
+  color: #90A4AE;
+  font-weight: 600;
+  margin-bottom: 0;
+}
 
 /* ========================= */
 /* FONDO Y LAYOUT */
 /* ========================= */
 .page-background {
-  background-color: #ffffff; // Amarillo pastel
+  /* CAMBIO: Puse un amarillo muy suave (Crema) en lugar de blanco puro para dar calidez */
+  background-color: #ffffff; 
   min-height: 100vh;
   padding: 20px;
 }
 
 .card-col {
   padding-bottom: 32px;
+}
+
+/* ========================= */
+/* BOTÓN "UNIRSE A CLASE" (GLOBAL) */
+/* ========================= */
+/* CORRECCIÓN: Ahora está fuera de .empty-state-container para que funcione en el header */
+.btn-join-game {
+  margin: 20px; 
+  background-color: $color-accent; /* Naranja vibrante */
+  color: $color-text-fun;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+  border: 3px solid #F57C00; /* Naranja oscuro */
+  border-radius: 50px;
+  padding: 10px 25px;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 4px 0 #E65100; /* Sombra 3D */
+  transition: all 0.1s;
+  cursor: pointer;
+  text-decoration: none; /* Por si acaso */
+
+  mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    background-color: color.adjust($color-accent, $lightness: 10%);
+    box-shadow: 0 6px 0 #E65100;
+  }
+
+  &:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #E65100;
+  }
 }
 
 /* ========================= */
@@ -46,9 +116,6 @@ $color-progress-fill:#66BB6A; // Verde vida
   }
 }
 
-/* ========================= */
-/* IMAGEN */
-/* ========================= */
 .card-image-wrapper {
   position: relative;
   border-bottom: 4px solid $color-primary-fun;
@@ -64,7 +131,7 @@ $color-progress-fill:#66BB6A; // Verde vida
 }
 
 /* ========================= */
-/* CONTENIDO */
+/* CONTENIDO TARJETA */
 /* ========================= */
 .card-content {
   padding: 0 !important;
@@ -91,7 +158,6 @@ $color-progress-fill:#66BB6A; // Verde vida
   line-height: 1.2;
 }
 
-/* Info Chips (Profesor / Grado) */
 .info-row {
   display: flex;
   flex-wrap: wrap;
@@ -112,7 +178,7 @@ $color-progress-fill:#66BB6A; // Verde vida
 }
 
 /* ========================= */
-/* PROGRESO DIVERTIDO */
+/* PROGRESO */
 /* ========================= */
 .fun-progress-container {
   height: 18px;
@@ -127,9 +193,7 @@ $color-progress-fill:#66BB6A; // Verde vida
 .fun-progress-bar {
   height: 100%;
   background-color: $color-progress-fill;
-  /* CORREGIDO: darken() -> color.adjust */
   border-right: 2px solid color.adjust($color-progress-fill, $lightness: -10%);
-  
   background-image: repeating-linear-gradient(
     45deg,
     transparent,
@@ -140,7 +204,7 @@ $color-progress-fill:#66BB6A; // Verde vida
 }
 
 /* ========================= */
-/* FOOTER */
+/* FOOTER TARJETA */
 /* ========================= */
 .card-footer {
   background-color: $color-card-bg;
@@ -159,27 +223,20 @@ $color-progress-fill:#66BB6A; // Verde vida
   font-weight: 600;
 }
 
-/* ========================= */
-/* BOTÓN DE ACCIÓN 3D (Estilo Iniciar) */
-/* ========================= */
 .btn-fun-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 10px 24px;
-  
   background-color: $color-btn-action;
   color: white;
-  
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
   font-weight: bold;
   font-size: 1rem;
   text-decoration: none;
-  
   border-radius: 30px;
   border: 3px solid color.adjust($color-btn-action, $lightness: -10%);
   box-shadow: 0 4px 0 color.adjust($color-btn-action, $lightness: -15%);
-  
   transition: all 0.15s ease;
   cursor: pointer;
 
@@ -196,17 +253,36 @@ $color-progress-fill:#66BB6A; // Verde vida
 }
 
 /* ========================= */
-/* ESTADO VACÍO */
+/* ESTADO VACÍO (Empty State) */
 /* ========================= */
 .empty-state-container {
   text-align: center;
   padding: 4rem 1rem;
-  background-color: rgba(255,255,255,0.6);
+  background-color: rgba(255,255,255,0.8); /* Un poco más opaco */
   border-radius: 30px;
   border: 4px dashed $color-primary-fun;
+  margin-top: 20px;
   
   h3 {
     color: color.adjust($color-primary-fun, $lightness: -20%);
     font-weight: bold;
+    font-size: 1.5rem;
+  }
+}
+
+/* ========================= */
+/* RESPONSIVE */
+/* ========================= */
+@media (max-width: 576px) {
+  .header-container {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+    align-items: center !important;
+  }
+  
+  .btn-join-game {
+    width: 100%;
+    justify-content: center;
   }
 }

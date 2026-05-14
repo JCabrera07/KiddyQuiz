@@ -1,0 +1,77 @@
+<div class="pro-container">
+  
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="pro-title">Banco de Preguntas</h2>
+      <p class="text-muted mb-0">Gestiona las preguntas para esta evaluación.</p>
+    </div>
+    
+    <div class="d-flex align-items-center gap-2">
+      <button mat-button class="btn-pro-back" (click)="volver()">
+        <mat-icon class="me-2">arrow_back</mat-icon> Volver
+      </button>
+      <button mat-flat-button color="primary" class="btn-pro-create" (click)="crearPregunta()">
+        <mat-icon class="me-2">add</mat-icon> Agregar Pregunta
+      </button>
+    </div>
+  </div>
+
+  <div class="question-list-container">
+    
+    <div *ngIf="cargando" class="text-center py-5">
+      <p class="text-muted">Cargando preguntas...</p>
+    </div>
+
+    <div *ngIf="!cargando && preguntas.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">quiz</mat-icon>
+      <h3>No hay preguntas aún</h3>
+      <p>Comienza agregando la primera pregunta para este examen.</p>
+    </div>
+
+    <mat-accordion multi>
+      <mat-expansion-panel *ngFor="let item of preguntas; let i = index" class="mb-3 cardWithShadow">
+        
+        <mat-expansion-panel-header>
+          <mat-panel-title class="d-flex align-items-center">
+            <span class="question-number me-3">#{{ i + 1 }}</span>
+            <span class="fw-bold text-truncate">{{ item.pregunta.texto }}</span>
+          </mat-panel-title>
+          <mat-panel-description class="d-none d-md-flex justify-content-end">
+            <mat-chip-set>
+                <mat-chip class="small-chip">{{ item.pregunta.puntos || 1 }} Pto(s)</mat-chip>
+            </mat-chip-set>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="p-3">
+          <p class="text-muted mb-3">Opciones de respuesta:</p>
+<div class="options-grid">
+  <div *ngFor="let op of item.pregunta.opciones" 
+       class="option-pill" 
+       [class.is-correct]="op.esCorrecta">
+    
+    <span class="option-text">{{ op.texto }}</span>
+    
+    <mat-icon *ngIf="op.esCorrecta" class="correct-icon">check_circle</mat-icon>
+
+  </div>
+</div>
+
+          <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+            <button mat-stroked-button color="primary" (click)="gestionarOpciones(item.pregunta)" class="me-2">
+              <mat-icon>list</mat-icon> Opciones
+            </button>
+            <button mat-stroked-button color="accent" (click)="editarPregunta(item)">
+              <mat-icon>edit</mat-icon> Editar
+            </button>
+            <button mat-stroked-button color="warn" (click)="eliminarPregunta(item)">
+              <mat-icon>delete</mat-icon> Quitar
+            </button>
+          </div>
+        </div>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+
+  </div>
+</div>

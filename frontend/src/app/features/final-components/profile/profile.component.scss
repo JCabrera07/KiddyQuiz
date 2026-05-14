@@ -1,0 +1,316 @@
+@use 'sass:color';
+
+/* ========================================= */
+/* VARIABLES ESTUDIANTE (FUN) - MANTENIDAS */
+/* ========================================= */
+$color-fun-primary: #4FC3F7;
+$color-fun-accent:  #FFB74D;
+$color-fun-bg:      #FFFFFF;
+$color-fun-card:    #FFFFFF;
+$color-fun-text:    #5D4037;
+
+/* ========================================= */
+/* VARIABLES PROFESIONAL (DOCENTE/ADMIN)   */
+/* ========================================= */
+$color-pro-bg:      #F5F7FA; // Gris muy claro, típico de dashboards
+$color-pro-card:    #FFFFFF;
+$color-pro-border:  #E0E0E0; // Bordes sutiles
+$color-pro-primary: #1565C0; // Azul corporativo oscuro
+$color-pro-text:    #263238; // Gris oscuro casi negro
+
+/* ========================================= */
+/* ESTILO ESTUDIANTE (INFANTIL) - IGUAL */
+/* ========================================= */
+.student-container {
+  background-color: $color-fun-bg;
+  padding: 20px;
+  border-radius: 30px;
+  min-height: 80vh;
+}
+
+.student-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: $color-fun-card;
+  border: 6px solid $color-fun-primary;
+  border-radius: 35px;
+  box-shadow: 10px 10px 0px rgba(79, 195, 247, 0.4);
+  overflow: hidden;
+  position: relative;
+}
+
+.student-header {
+  background-color: #E1F5FE;
+  padding: 30px;
+  text-align: center;
+  border-bottom: 4px dashed color.adjust($color-fun-primary, $lightness: -10%);
+}
+
+.student-avatar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.student-avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 5px solid $color-fun-accent;
+  object-fit: cover;
+  background-color: white;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+}
+
+.level-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: $color-fun-accent;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 0.9rem;
+  border: 2px solid white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.student-name {
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  color: $color-fun-text;
+  font-size: 2rem;
+  font-weight: 900;
+  margin: 15px 0 5px 0;
+}
+
+.student-role-tag {
+  background-color: #B3E5FC;
+  color: #0277BD;
+  padding: 6px 16px;
+  border-radius: 15px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+
+.student-body {
+  padding: 30px;
+}
+
+.fun-info-box {
+  background-color: #FAFAFA;
+  border: 3px solid #EEEEEE;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.fun-title {
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 1.3rem;
+  color: $color-fun-primary;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fun-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 2px dashed #eee;
+  font-size: 1.1rem;
+  color: $color-fun-text;
+  
+  &:last-child { border-bottom: none; }
+}
+
+.fun-label {
+  font-weight: 700;
+  color: #90A4AE;
+}
+
+.btn-fun {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  font-family: 'Comic Sans MS', cursive;
+  font-weight: 800;
+  font-size: 1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.btn-fun-primary {
+  background-color: $color-fun-primary;
+  border-bottom: 5px solid color.adjust($color-fun-primary, $lightness: -15%);
+  &:active { margin-top: 5px; border-bottom: 0; }
+}
+
+.btn-fun-accent {
+  background-color: $color-fun-accent;
+  border-bottom: 5px solid color.adjust($color-fun-accent, $lightness: -15%);
+  &:active { margin-top: 5px; border-bottom: 0; }
+}
+
+/* ========================================= */
+/* ESTILO PROFESIONAL (DOCENTE) - NUEVO */
+/* ========================================= */
+.pro-container {
+  background-color: $color-pro-bg;
+  min-height: 100vh;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.pro-card {
+  max-height: 600px;
+  width: 100%;
+  max-width: 900px;
+  background-color: $color-pro-card;
+  border-radius: 8px; /* Bordes sutiles, no redondos */
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05); /* Sombra difusa y elegante */
+  display: flex;
+  overflow: hidden;
+  border: 1px solid $color-pro-border;
+}
+
+/* Sidebar Izquierdo (Identidad) */
+.pro-sidebar {
+  width: 300px;
+  background-color: #F8F9FA;
+  border-right: 1px solid $color-pro-border;
+  padding: 40px 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.pro-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 3px solid white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.pro-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: $color-pro-text;
+  margin: 0 0 5px 0;
+  line-height: 1.2;
+}
+
+.pro-role {
+  font-size: 0.9rem;
+  color: #78909C;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+  display: block;
+}
+
+.pro-actions {
+  width: 100%;
+  margin-top: auto; /* Empuja los botones al fondo */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Contenido Derecho (Detalles) */
+.pro-content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+}
+
+.pro-section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: $color-pro-primary;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #E3F2FD;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Grid de datos estilo formulario */
+.pro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.pro-data-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.pro-label {
+  font-size: 0.8rem;
+  color: #90A4AE;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.pro-value {
+  font-size: 1rem;
+  color: $color-pro-text;
+  font-weight: 500;
+  padding: 10px 12px;
+  background-color: #FAFAFA;
+  border: 1px solid #EEEEEE;
+  border-radius: 6px;
+}
+
+/* Botones Pro */
+.btn-pro {
+  width: 100%;
+  padding: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 6px; /* Bordes cuadrados */
+  text-transform: none;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Responsive para móvil */
+@media (max-width: 768px) {
+  .pro-card {
+    flex-direction: column;
+  }
+  .pro-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid $color-pro-border;
+  }
+  .pro-grid {
+    grid-template-columns: 1fr;
+  }
+}

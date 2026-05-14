@@ -15,16 +15,15 @@ export class DetalleEvaluacionController {
     return this.detalleService.create(dto);
   }
 
-    // ✅ ENDPOINT: GET /detalle-evaluacion
   @Get()
   async findAll() {
     return this.detalleService.findAll();
   }
 
   @Get(':id')
-findOne(@Param('id') id: string) {
-  return this.detalleService.findOne(+id);
-}
+  findOne(@Param('id') id: string) {
+    return this.detalleService.findOne(+id);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
@@ -36,7 +35,7 @@ findOne(@Param('id') id: string) {
     return this.detalleService.findWithRespuestas(id);
   }
 
-
+  // ✅ ENDPOINT ORIGINAL (Comentario Largo)
   @Patch(':id/comentario-ia')
   async generarComentarioIA(
     @Param('id', ParseIntPipe) id: number,
@@ -44,7 +43,7 @@ findOne(@Param('id') id: string) {
     // 1. Traer el detalle con todas las relaciones
     const detalle = await this.detalleService.findWithRespuestas(id);
 
-    // 2. Generar comentario con Gemini
+    // 2. Generar comentario con Gemini (Largo)
     const comentarioIA = await this.geminiService.generarComentarioIA(detalle);
 
     // 3. Guardar el comentario en la BD
@@ -52,6 +51,27 @@ findOne(@Param('id') id: string) {
 
     return {
       message: 'Comentario IA actualizado exitosamente',
+      comentarioIA,
+      detalleActualizado: actualizado,
+    };
+  }
+
+  // ✅ NUEVO ENDPOINT (Comentario Corto - Máx 2 líneas)
+  @Patch(':id/comentario-ia-corto')
+  async generarComentarioCortoIA(
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    // 1. Traer el detalle con todas las relaciones
+    const detalle = await this.detalleService.findWithRespuestas(id);
+
+    // 2. Generar comentario con Gemini (NUEVO MÉTODO CORTO)
+    const comentarioIA = await this.geminiService.generarComentarioCortoIA(detalle);
+
+    // 3. Guardar el comentario en la BD (Reutilizamos el servicio existente)
+    const actualizado = await this.detalleService.actualizarComentarioIA(id, comentarioIA);
+
+    return {
+      message: 'Comentario IA corto actualizado exitosamente',
       comentarioIA,
       detalleActualizado: actualizado,
     };

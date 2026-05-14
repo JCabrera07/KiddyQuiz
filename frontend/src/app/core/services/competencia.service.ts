@@ -34,4 +34,8 @@ getCompetenciasByGrado(idGrado: number): Observable<Competencia[]> {
   return this.http.get(`http://localhost:3000/competencia/${id}/contenido-ia`);
 }
 
+  findAll(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
+  }
+
 }

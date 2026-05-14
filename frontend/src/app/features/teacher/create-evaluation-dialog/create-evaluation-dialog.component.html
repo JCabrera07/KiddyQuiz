@@ -1,0 +1,87 @@
+<h2 mat-dialog-title class="dialog-title">
+  <div class="d-flex align-items-center">
+    <mat-icon class="me-2">{{ isEditMode ? 'edit_calendar' : 'assignment_add' }}</mat-icon>
+    <span>{{ isEditMode ? 'Editar Evaluación' : 'Nueva Evaluación' }}</span>
+  </div>
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  <form [formGroup]="evalForm" class="grid-layout">
+    
+    <div class="inputs-column">
+      
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Título de la Evaluación</mat-label>
+        <input matInput formControlName="titulo" placeholder="Ej. Examen Parcial 1">
+        <mat-icon matSuffix>title</mat-icon>
+        <mat-error *ngIf="evalForm.get('titulo')?.hasError('required')">El título es requerido</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Descripción / Instrucciones</mat-label>
+        <textarea matInput formControlName="descripcion" rows="4" placeholder="Instrucciones para el estudiante..."></textarea>
+      </mat-form-field>
+
+      <div class="row g-2">
+        <div class="col-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Fecha Inicio</mat-label>
+            <input matInput [matDatepicker]="pickerStart" formControlName="fechaInicio">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
+            <mat-datepicker #pickerStart></mat-datepicker>
+          </mat-form-field>
+        </div>
+        
+        <div class="col-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Fecha Fin</mat-label>
+            <input matInput [matDatepicker]="pickerEnd" formControlName="fechaFin">
+            <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEnd></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="image-column">
+      <div class="file-upload-container">
+        <label class="file-label">Imagen de Portada</label>
+        
+        <div class="upload-area" (click)="fileInput.click()">
+          <input 
+            #fileInput 
+            type="file" 
+            hidden 
+            accept="image/png, image/jpeg, image/jpg"
+            (change)="onFileSelected($event)">
+          
+          <div *ngIf="!imagePreview" class="placeholder-content">
+            <mat-icon class="upload-icon">add_photo_alternate</mat-icon>
+            <span>Subir Portada</span>
+            <small>JPG/PNG - Max 5MB</small>
+          </div>
+
+          <div *ngIf="imagePreview" class="preview-content">
+            <img [src]="imagePreview" alt="Vista previa">
+            <div class="overlay">
+              <mat-icon>edit</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button 
+    mat-flat-button 
+    color="primary" 
+    [disabled]="evalForm.invalid"
+    (click)="guardar()">
+    {{ isEditMode ? 'Guardar Cambios' : 'Crear Evaluación' }}
+  </button>
+</mat-dialog-actions>

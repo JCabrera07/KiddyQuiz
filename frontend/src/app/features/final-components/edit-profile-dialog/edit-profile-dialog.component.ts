@@ -24,41 +24,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatSnackBarModule
   ],
   templateUrl: './edit-profile-dialog.component.html',
-  styles: [`
-    /* Estilo general del formulario */
-    .profile-form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px; /* Espacio vertical entre filas */
-      padding-top: 10px;
-    }
-
-    mat-form-field {
-      width: 100%;
-    }
-
-    /* GRILLA DE 2 COLUMNAS (Nombres, Apellidos) */
-    .form-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
-      gap: 16px; /* Espacio entre columnas */
-    }
-
-    /* GRILLA DE 3 COLUMNAS (Edad, Sexo, Ciudad) */
-    .form-grid-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr; /* Tres columnas iguales */
-      gap: 16px;
-    }
-
-    /* RESPONSIVO: En celular, todo se vuelve de 1 sola columna */
-    @media (max-width: 600px) {
-      .form-grid-2, .form-grid-3 {
-        grid-template-columns: 1fr; /* Una sola columna */
-        gap: 10px;
-      }
-    }
-  `]
+  styleUrls: ['./edit-profile-dialog.component.scss'] // 👈 Conectamos el SCSS externo
 })
 export class EditProfileDialogComponent implements OnInit {
   
@@ -74,13 +40,18 @@ export class EditProfileDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any 
   ) {
     this.form = this.fb.group({
-      username: [{value: '', disabled: true}], // Usuario no editable usualmente
+      username: [{value: '', disabled: true}], 
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required],
       edad: ['', [Validators.required, Validators.min(1)]],
       ciudad: ['', Validators.required],
       sexo: ['', Validators.required]
     });
+  }
+
+  // Getter para verificar si es estudiante basado en la data inyectada
+  get isStudent(): boolean {
+    return this.data?.isStudent === true;
   }
 
   ngOnInit(): void {
@@ -103,12 +74,13 @@ export class EditProfileDialogComponent implements OnInit {
     const userId = this.authService.getUserIdFromToken();
     
     if (userId) {
-      // Usamos getRawValue() para incluir el username aunque esté disabled (si la API lo exige)
       const payload = this.form.getRawValue(); 
       
       this.userService.updateProfile(userId, payload).subscribe({
         next: () => {
-          this.snackBar.open('Perfil actualizado', 'Cerrar', { duration: 3000 });
+          // Mensaje personalizado según el rol
+          const msg = this.isStudent ? '¡Carnet Actualizado! 🚀' : 'Perfil actualizado correctamente';
+          this.snackBar.open(msg, 'Cerrar', { duration: 3000 });
           this.loading = false;
           this.dialogRef.close(true);
         },

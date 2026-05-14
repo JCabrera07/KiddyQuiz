@@ -1,0 +1,45 @@
+<div class="game-dialog-container">
+  
+  <div class="header-banner">
+    <mat-icon class="icon-spin">videogame_asset</mat-icon>
+    <h2>Nueva Aventura</h2>
+  </div>
+
+  <mat-dialog-content class="content-area">
+    <p class="instruction-text">
+      Ingresa el <strong>Código Secreto</strong> que te dio tu profesor para desbloquear la clase.
+    </p>
+
+    <form [formGroup]="joinForm" (ngSubmit)="unirse()">
+      <div class="pixel-input-wrapper">
+        <mat-icon class="input-icon">vpn_key</mat-icon>
+        <input 
+          type="text" 
+          formControlName="codigo" 
+          placeholder="CÓDIGO AQUÍ" 
+          class="pixel-input"
+          maxlength="20"
+          autocomplete="off">
+      </div>
+      
+      <div *ngIf="joinForm.get('codigo')?.invalid && joinForm.get('codigo')?.touched" class="error-msg">
+        ¡Necesitamos el código para despegar! 🛸
+      </div>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center" class="actions-area">
+    <button type="button" class="btn-retro btn-cancel" (click)="cerrar()">
+      Cancelar
+    </button>
+    
+    <button 
+      type="button" 
+      class="btn-retro btn-confirm" 
+      [disabled]="joinForm.invalid || loading"
+      (click)="unirse()">
+      <span *ngIf="!loading">🚀 Desbloquear</span>
+      <span *ngIf="loading">Cargando...</span>
+    </button>
+  </mat-dialog-actions>
+</div>

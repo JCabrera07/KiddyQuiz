@@ -60,4 +60,26 @@ getMisClasesDocente(): Observable<ClaseResponse[]> {
     return this.http.get<any[]>(`${this.apiUrl}/clase/${idClase}/evaluaciones`);
   }
 
+  crearClase(data: FormData): Observable<any> {
+    // No hace falta configurar headers manualmente para FormData, 
+    // Angular lo detecta y pone 'multipart/form-data' automáticamente.
+    return this.http.post(`${this.apiUrl}/clase`, data);
+  }
+
+  unirseAClase(codigo: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/clase/unirse`, { codigo });
+  }
+
+  // DENTRO DE ClaseService:
+
+// editarClase recibe el ID y el FormData (porque puede llevar archivo)
+editarClase(id: number, data: FormData): Observable<any> {
+  return this.http.patch(`${this.apiUrl}/clase/${id}`, data);
+}
+
+// En clase.service.ts (Frontend)
+eliminarClase(id: number): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/clase/${id}`);
+}
+
 }

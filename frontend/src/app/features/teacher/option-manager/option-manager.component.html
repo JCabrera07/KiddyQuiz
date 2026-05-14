@@ -1,0 +1,60 @@
+<h2 mat-dialog-title class="dialog-title">
+  <div class="d-flex justify-content-between align-items-center w-100">
+    <span>Gestionar Opciones</span>
+    <button mat-mini-fab color="primary" (click)="crearOpcion()" matTooltip="Agregar opción">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  
+  <p class="text-muted mb-3">Pregunta: <strong>{{ data.pregunta.enunciado }}</strong></p>
+
+  <div *ngIf="loading" class="text-center py-4">Cargando opciones...</div>
+
+  <div *ngIf="!loading && opciones.length === 0" class="text-center py-5 text-muted">
+    <mat-icon style="font-size: 48px; width: 48px; height: 48px;">list</mat-icon>
+    <p>No hay opciones creadas para esta pregunta.</p>
+  </div>
+
+  <div class="options-list" *ngIf="!loading && opciones.length > 0">
+    
+    <div *ngFor="let op of opciones" class="option-card" [class.is-correct]="op.esCorrecta">
+      
+      <div class="option-img" *ngIf="op.urlContenido">
+        <img [src]="op.urlContenido" alt="img">
+      </div>
+      <div class="option-img placeholder" *ngIf="!op.urlContenido">
+        <mat-icon>image_not_supported</mat-icon>
+      </div>
+
+      <div class="option-info">
+        <div class="d-flex align-items-center gap-2">
+            <span class="fw-bold">{{ op.texto }}</span>
+            
+            <span *ngIf="op.esCorrecta" class="badge-correcta">
+                <mat-icon class="tiny-icon">check</mat-icon> Correcta
+            </span>
+
+        </div>
+      </div>
+
+      <div class="option-actions">
+        <button mat-icon-button color="primary" (click)="editarOpcion(op)">
+            <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="eliminarOpcion(op.id)">
+            <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button (click)="cerrar()">Cerrar</button>
+</mat-dialog-actions>

@@ -1,7 +1,7 @@
-import { Component, ViewEncapsulation } from '@angular/core'; // Importar ViewEncapsulation
+import { Component, Inject } from '@angular/core'; // Inyectamos MAT_DIALOG_DATA
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,28 +21,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatSnackBarModule
   ],
   templateUrl: './change-password-dialog.component.html',
-  encapsulation: ViewEncapsulation.None, // <--- ESTO FUERZA LOS ESTILOS
-  styles: [`
-    /* Contenedor principal del formulario */
-    .password-form {
-      display: flex;
-      flex-direction: column; /* Apila los elementos verticalmente */
-      width: 100%;
-      padding-top: 10px;
-      gap: 16px; /* Espacio entre campos */
-    }
-
-    /* Forzamos a cada campo a ocupar todo el ancho disponible */
-    .password-form mat-form-field {
-      width: 100%;
-      display: block;
-    }
-    
-    /* Aseguramos que el input dentro del mat-form-field también se estire */
-    .password-form mat-form-field .mat-form-field-wrapper {
-      width: 100%;
-    }
-  `]
+  // Conectamos el archivo SCSS y quitamos estilos inline y ViewEncapsulation
+  styleUrls: ['./change-password-dialog.component.scss'] 
 })
 export class ChangePasswordDialogComponent {
   
@@ -53,13 +33,19 @@ export class ChangePasswordDialogComponent {
     private fb: FormBuilder,
     private userService: UserService,
     private dialogRef: MatDialogRef<ChangePasswordDialogComponent>,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public data: any // Recibimos datos
   ) {
     this.form = this.fb.group({
       oldPassword: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required]
     }, { validators: this.passwordsMatchValidator });
+  }
+
+  // Getter para saber si es estudiante
+  get isStudent(): boolean {
+    return this.data?.isStudent === true;
   }
 
   passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
@@ -77,15 +63,17 @@ export class ChangePasswordDialogComponent {
 
     this.userService.changePassword(payload).subscribe({
       next: () => {
-        this.snackBar.open('Contraseña actualizada con éxito', 'Cerrar', { duration: 3000 });
+        const msg = this.isStudent ? '¡Llave secreta actualizada! 🔐' : 'Contraseña actualizada con éxito';
+        this.snackBar.open(msg, 'Cerrar', { duration: 3000 });
         this.loading = false;
         this.dialogRef.close(true);
       },
       error: (err) => {
         console.error('Error cambiando password', err);
-        let msg = 'Error al cambiar la contraseña';
+        let msg = this.isStudent ? '¡Ups! Algo salió mal 😵' : 'Error al cambiar la contraseña';
+        
         if (err.status === 400 || err.status === 401) {
-          msg = 'La contraseña actual es incorrecta';
+          msg = this.isStudent ? 'La llave actual no es correcta 🗝️' : 'La contraseña actual es incorrecta';
         }
         this.snackBar.open(msg, 'Cerrar', { duration: 3000 });
         this.loading = false;

@@ -11,6 +11,7 @@ import { UserProfile, Persona } from 'src/app/core/models/user-profile.model';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { EditProfileDialogComponent } from '../edit-profile-dialog/edit-profile-dialog.component';
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-profile',
@@ -22,35 +23,19 @@ import { ChangePasswordDialogComponent } from '../change-password-dialog/change-
     MatIconModule,
     MatDividerModule,
     MatDialogModule,
-    TablerIconsModule
+    TablerIconsModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './profile.component.html',
-  styles: [`
-    .profile-avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 8px 0;
-      border-bottom: 1px solid #f0f0f0;
-    }
-    .info-label {
-      font-weight: 600;
-      color: #666;
-    }
-  `]
+  // IMPORTANTE: Asegúrate de que apunte a tu archivo SCSS externo
+  styleUrls: ['./profile.component.scss'] 
 })
 export class ProfileComponent implements OnInit {
   
   userProfile: UserProfile | null = null;
   personaData: Persona | null = null; 
   loading = true;
+  userRole: string = ''; // 1. Variable para el rol
 
   constructor(
     private userService: UserService,
@@ -58,7 +43,14 @@ export class ProfileComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
+  // 2. Getter para facilitar la condicional en el HTML
+get isStudent(): boolean {
+    return (this.userRole || '').toUpperCase() === 'ESTUDIANTE';
+  }
+
   ngOnInit(): void {
+    // 3. Obtenemos el rol antes de cargar el perfil
+    this.userRole = this.authService.getUserRole() || '';
     this.loadProfile();
   }
 
@@ -84,11 +76,13 @@ export class ProfileComponent implements OnInit {
 
   openEditProfileModal() {
     const dialogRef = this.dialog.open(EditProfileDialogComponent, {
-      width: '600px',
+      width: this.isStudent ? '500px' : '600px', // Modal un poco más pequeño para niños
       maxWidth: '95vw',
+      // Puedes pasar el dato 'isStudent' al modal si quieres personalizarlo también
       data: { 
         userProfile: this.userProfile, 
-        personaData: this.personaData 
+        personaData: this.personaData,
+        isStudent: this.isStudent 
       }
     });
 
@@ -99,11 +93,14 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-  // 2. IMPLEMENTAR LA APERTURA DEL MODAL
-  openChangePasswordModal() {
+openChangePasswordModal() {
     this.dialog.open(ChangePasswordDialogComponent, {
-      width: '400px', // Más pequeño que el de perfil
-      maxWidth: '95vw'
+      width: this.isStudent ? '450px' : '400px', // Un poco más ancho para niños
+      maxWidth: '95vw',
+      // 👇 ¡IMPORTANTE! Pasar el dato aquí
+      data: { 
+        isStudent: this.isStudent 
+      }
     });
   }
 }

@@ -1,0 +1,153 @@
+@use 'sass:color';
+
+/* Variables Corporativas (Mismas que en ClassComponent) */
+$pro-primary: #1565C0;
+$pro-bg: #F5F7FA;
+$pro-border: #E0E0E0;
+$pro-text: #263238;
+$pro-text-light: #78909C;
+
+.pro-container {
+  padding: 20px;
+  background-color: $pro-bg;
+  min-height: 100%;
+}
+
+.pro-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  color: $pro-text;
+  margin-bottom: 5px;
+}
+
+.pro-card {
+  border-radius: 8px;
+  border: 1px solid $pro-border;
+  background: white;
+  overflow: hidden;
+}
+
+.btn-pro-create {
+  padding: 0 24px;
+  height: 45px;
+  border-radius: 6px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.table-toolbar {
+  background-color: white;
+}
+
+::ng-deep .density-compact .mat-mdc-form-field-flex {
+  height: 45px;
+  align-items: center;
+}
+
+.pro-table {
+  width: 100%;
+  
+  th.mat-header-cell {
+    background-color: #F8F9FA;
+    color: $pro-text-light;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    border-bottom: 1px solid $pro-border;
+  }
+
+  tr.mat-row {
+    transition: background-color 0.2s;
+    height: 70px;
+  }
+
+  tr.pro-row:hover {
+    background-color: #F5F9FF;
+  }
+
+  td.mat-cell {
+    border-bottom: 1px solid #F1F3F5;
+    color: $pro-text;
+    font-size: 0.95rem;
+  }
+}
+
+.img-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid $pro-border;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.badge-pro-gray {
+  background-color: #ECEFF1;
+  color: #455A64;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.empty-state {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: $pro-text-light;
+
+  .empty-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 15px;
+    opacity: 0.5;
+  }
+
+  h3 { margin-bottom: 5px; font-weight: 600; }
+  p { margin-bottom: 20px; font-size: 0.9rem; }
+}
+
+.mat-mdc-slide-toggle {
+  font-family: 'Roboto', sans-serif;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.responsive-table-container {
+  overflow-x: auto;
+}
+
+/* --- NUEVO: Estilo para el botón Volver --- */
+.btn-pro-back {
+  /* 1. Mismas dimensiones y tipografía que el botón de crear */
+  padding: 0 24px;
+  height: 45px;
+  border-radius: 6px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin: 12px; 
+  
+  /* 2. Colores distintos (Estilo secundario/neutro) */
+  background-color: white;       /* Fondo blanco */
+  border: 1px solid #CFD8DC;     /* Borde gris suave */
+  color: #546E7A;                /* Texto gris azulado */
+  
+  /* 3. Efecto Hover */
+  &:hover {
+    background-color: #F5F7FA;   /* Fondo muy clarito al pasar mouse */
+    border-color: #B0BEC5;       /* Borde un poco más oscuro */
+    color: #37474F;              /* Texto más oscuro */
+  }
+}

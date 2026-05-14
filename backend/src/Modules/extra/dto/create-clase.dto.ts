@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { IsString, IsNotEmpty, Length, IsOptional, IsNumber } from 'class-validator';
 
 export class CreateClaseDto {
@@ -8,6 +9,7 @@ export class CreateClaseDto {
 
   @IsOptional()
   @IsNumber()
+  @Transform(({ value }) => parseInt(value))
   gradoId?: number;
 
   @IsOptional()

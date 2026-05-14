@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Clase } from '../entities/clase.entity';
 import { Usuario } from '../../usuario/entities/usuario.entity';
 import { CreateClaseDto } from '../dto/create-clase.dto';
+import { UpdateClaseDto } from '../dto/update-clase.dto';
 
 @Injectable()
 export class ClaseService {
@@ -45,6 +46,32 @@ export class ClaseService {
 
     return await this.claseRepo.save(nuevaClase);
   }
+
+  async actualizarClase(id: number, idDocente: number, dto: UpdateClaseDto) {
+  // 1. Buscamos la clase y verificamos que pertenezca al docente (seguridad)
+  const clase = await this.claseRepo.findOne({ 
+    where: { id, idDocente }, // Solo si el docente es dueño
+    relations: ['grado']
+  });
+
+  if (!clase) throw new NotFoundException('Clase no encontrada o no tienes permisos');
+
+  // 2. Actualizamos campos simples
+  if (dto.nombre) clase.nombre = dto.nombre;
+  
+  // 3. Actualizamos Grado si viene
+  if (dto.gradoId) {
+    clase.grado = { id: dto.gradoId } as any;
+  }
+
+  // 4. Actualizamos Imagen SOLO si viene una nueva en el DTO
+  // (El controlador se encargará de pasar la URL si se subió archivo)
+  if (dto.imagenUrl) {
+    clase.imagenUrl = dto.imagenUrl;
+  }
+
+  return await this.claseRepo.save(clase);
+}
 
   async listarClasesDocente(idDocente: number) {
     return await this.claseRepo.find({
@@ -143,4 +170,27 @@ export class ClaseService {
     
     return clase.evaluaciones;
   }
+
+  // En clase.service.ts
+async eliminarClase(id: number, idDocente: number) {
+  // 1. Buscamos la clase, asegurando que sea del docente Y cargando sus evaluaciones
+  const clase = await this.claseRepo.findOne({
+    where: { id, idDocente },
+    relations: ['evaluaciones'] 
+  });
+
+  if (!clase) {
+    throw new NotFoundException('No se encontró la clase o no tienes permisos para eliminarla.');
+  }
+
+  // 2. VALIDACIÓN DE SEGURIDAD
+  if (clase.evaluaciones && clase.evaluaciones.length > 0) {
+    // Retornamos un error 400 (Bad Request) con un mensaje claro
+    throw new BadRequestException(`No puedes eliminar la clase "${clase.nombre}" porque tiene evaluaciones registradas. Elimina las evaluaciones primero.`);
+  }
+
+  // 3. Si pasa la validación, eliminamos
+  await this.claseRepo.remove(clase);
+  return { message: 'Clase eliminada exitosamente' };
+}
 }

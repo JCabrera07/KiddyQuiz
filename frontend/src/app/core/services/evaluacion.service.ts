@@ -27,6 +27,20 @@ export class EvaluacionService {
     return this.http.get<Evaluacion>(url);
   }
 
+  // Crear (Usa FormData para imagen + datos)
+  crearEvaluacion(data: FormData): Observable<any> {
+    return this.http.post(this.apiUrl, data);
+  }
+
+  // Editar
+  editarEvaluacion(id: number, data: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, data);
+  }
+
+  // Eliminar
+  eliminarEvaluacion(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
   /**
    * Obtiene la evaluación completa con sus preguntas y opciones para iniciar el quiz.
    * NOTA: Requiere un endpoint en tu backend como /api/evaluaciones/:id/quiz
@@ -57,7 +71,11 @@ getDetalleEvaluacion(id: number): Observable<any> {
   return this.http.get(`http://localhost:3000/detalle-evaluacion/${id}/respuestas`);
 }
 
-
+// Agrega esto en tu EvaluacionService
+generarComentarioCortoIA(idDetalle: number) {
+  // Llama a tu nuevo endpoint PATCH
+  return this.http.patch(`http://localhost:3000/detalle-evaluacion/${idDetalle}/comentario-ia-corto`, {});
+}
 
 
 

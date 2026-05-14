@@ -3,11 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Persona } from '../entities/persona.entity';
 import { Usuario } from '../entities/usuario.entity';
 import { Rol } from '../entities/rol.entity';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { Grado } from 'src/Modules/extra/entities/grado.entity';
 import { CreatePersonaDto } from '../dto/create-persona.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdatePersonaDto } from '../dto/update-persona.dto';
+import { Clase } from 'src/Modules/extra/entities/clase.entity';
+
 
 
 @Injectable()
@@ -17,6 +19,7 @@ export class UsuarioService {
     @InjectRepository(Usuario) private usuarioRepo: Repository<Usuario>,
     @InjectRepository(Rol) private rolRepo: Repository<Rol>,
     @InjectRepository(Grado) private gradoRepo: Repository<Grado>,
+    @InjectRepository(Clase) private claseRepo: Repository<Clase>,
   ) {}
 
   async create(dto: CreatePersonaDto) {
@@ -174,5 +177,41 @@ async updateUser(userId: number, dto: UpdatePersonaDto) {
   };
 }
 
+async findStudentsByTeacher(docenteId: number) {
+    // Usamos QueryBuilder para hacer el "join" mágico
+    const usuarios = await this.usuarioRepo.createQueryBuilder('usuario')
+      // 1. Unimos con las clases inscritas (tabla intermedia clase_estudiante)
+      .innerJoin('usuario.clasesInscritas', 'clase') 
+      // 2. Filtramos donde el docente de esa clase sea el ID que buscamos
+      .where('clase.idDocente = :docenteId', { docenteId })
+      // 3. Traemos los datos personales para la tabla
+      .leftJoinAndSelect('usuario.personas', 'persona')
+      .leftJoinAndSelect('persona.rol', 'rol')
+      .leftJoinAndSelect('persona.grado', 'grado')
+      // 4. Aseguramos que sea rol Estudiante (opcional, por seguridad)
+      .andWhere('rol.nombre = :rolNombre', { rolNombre: 'Estudiante' })
+      .getMany();
 
+    // 5. Eliminamos duplicados (si un alumno está en 2 clases del mismo profe, saldría 2 veces)
+    // Usamos un Map por ID para dejar usuarios únicos
+    const usuariosUnicos = Array.from(new Map(usuarios.map(u => [u.id, u])).values());
+
+    // 6. Formateamos la salida para tu tabla
+    return usuariosUnicos.map(u => ({
+      id: u.id,
+      username: u.nombre,
+      persona: u.personas.map(p => ({
+        nombres: p.nombres,
+        apellidos: p.apellidos,
+        edad: p.edad,
+        ciudad: p.ciudad,
+        sexo: p.sexo,
+        rol: p.rol?.nombre,
+        grado: p.grado?.nombre,
+        id_grado: p.grado?.id
+      }))
+    }));
+  }
 }
+
+

@@ -1,0 +1,116 @@
+@use 'sass:color';
+
+/* Variables */
+$pro-bg: #F5F7FA;
+$pro-text: #263238;
+$pro-border: #E0E0E0;
+
+.pro-container {
+  padding: 20px;
+  background-color: $pro-bg;
+  min-height: 100%;
+}
+
+.pro-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  color: $pro-text;
+  font-size: 1.5rem;
+}
+
+.cardWithShadow {
+  border-radius: 8px;
+  border: 1px solid $pro-border;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+}
+
+/* KPIS */
+.kpi-card {
+  padding: 20px;
+  transition: transform 0.2s;
+  
+  &:hover { transform: translateY(-3px); }
+}
+
+.kpi-icon-wrapper {
+  width: 50px; height: 50px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  mat-icon { font-size: 28px; width: 28px; height: 28px; }
+
+  &.primary { background-color: #E3F2FD; color: #1565C0; }
+  &.accent { background-color: #E0F2F1; color: #00897B; }
+  &.warn { background-color: #FFEBEE; color: #D32F2F; }
+  &.success { background-color: #F1F8E9; color: #558B2F; }
+}
+
+/* GRÁFICOS */
+.chart-title {
+  font-weight: 600; color: #455A64; font-size: 1.1rem;
+}
+
+.chart-container {
+  display: block; height: 300px; width: 100%;
+}
+
+.chart-container-doughnut {
+  display: block; height: 250px; width: 100%;
+  display: flex; justify-content: center;
+}
+
+/* ESTILOS DONA CENTRADA */
+.position-relative { position: relative; }
+
+.doughnut-center-text {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -40%); /* Ajuste visual vertical */
+  text-align: center;
+  pointer-events: none; /* Importante para que no bloquee el tooltip */
+  z-index: 0;
+}
+
+/* Puntos Leyenda */
+.dot {
+  width: 10px; height: 10px; border-radius: 50%; display: inline-block;
+}
+.bg-success { background-color: #66BB6A; }
+.bg-warning { background-color: #FFA726; }
+.bg-danger { background-color: #EF5350; }
+
+/* TABLA PRO */
+.pro-table {
+  width: 100%;
+  th.mat-header-cell {
+    background-color: #F8F9FA;
+    color: #78909C;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    border-bottom: 1px solid $pro-border;
+  }
+  tr.mat-row { height: 65px; } /* Un poco más alto para el avatar */
+  tr.pro-row:hover { background-color: #F5F9FF; }
+}
+
+/* UTILS TABLA */
+.avatar-circle {
+  width: 36px; height: 36px;
+  background-color: #E3F2FD; color: #1565C0;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold; font-size: 0.9rem;
+}
+
+.badge-gray {
+  background: #F5F5F5; color: #616161;
+  padding: 4px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: 500;
+}
+
+/* Barra Progreso Redondeada */
+::ng-deep .rounded-progress {
+  border-radius: 4px;
+  height: 6px !important;
+  .mat-mdc-progress-bar-buffer { background-color: #E0E0E0; }
+}

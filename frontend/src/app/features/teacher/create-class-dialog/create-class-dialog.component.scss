@@ -1,0 +1,148 @@
+@use 'sass:color';
+
+/* Título */
+.dialog-title {
+  color: #1565C0;
+  border-bottom: 1px solid #E0E0E0;
+  padding: 5px 24px;
+  margin: 0; 
+  font-size: 1.2rem;
+  font-weight: 600;
+  background-color: #FAFAFA; /* Fondo sutil para el header */
+}
+
+.dialog-content {
+  padding: 24px !important;
+  overflow-y: hidden; /* Evita scroll innecesario si cabe todo */
+}
+
+/* --- GRID LAYOUT PRINCIPAL --- */
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px; // Izquierda flexible, Derecha fija (imagen)
+  gap: 24px; /* Espacio entre columnas */
+  align-items: start; /* <--- ESTO EVITA QUE LOS INPUTS SE ESTIREN VERTICALMENTE */
+}
+
+/* Columna de Inputs */
+.inputs-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; // Espacio vertical entre inputs
+}
+
+.info-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 5px;
+  opacity: 0.8;
+  
+  .tiny-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #1565C0;
+  }
+}
+
+/* Columna de Imagen */
+.image-column {
+  height: 100%;
+}
+
+.file-upload-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .file-label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #455A64;
+    font-size: 0.9rem;
+  }
+
+  .upload-area {
+    border: 2px dashed #CFD8DC;
+    border-radius: 8px;
+    /* Hacemos que el área de upload sea alta para equilibrar visualmente */
+    height: 180px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: #FFF;
+    transition: all 0.2s ease;
+    overflow: hidden;
+
+    &:hover {
+      border-color: #1565C0;
+      background-color: #F5F9FF;
+    }
+
+    .placeholder-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      color: #78909C;
+
+      .upload-icon {
+        font-size: 48px;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 10px;
+        color: #B0BEC5;
+      }
+      
+      span { font-weight: 500; }
+      small { font-size: 0.75rem; margin-top: 4px; }
+    }
+
+    .preview-content {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.2s;
+        mat-icon { color: white; font-size: 32px; }
+      }
+
+      &:hover .overlay { opacity: 1; }
+    }
+  }
+}
+
+/* Footer de acciones */
+.dialog-actions {
+  padding: 16px 24px;
+  border-top: 1px solid #E0E0E0;
+  margin: 0; 
+  background-color: #FAFAFA;
+  
+  button {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  
+  .btn-save {
+    padding: 0 24px; 
+    height: 40px;
+  }
+}

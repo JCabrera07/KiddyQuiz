@@ -1,20 +1,40 @@
-<div class="row justify-content-center page-background g-4 m-0">
-
-  <div *ngIf="!loading && clases.length === 0" class="col-12">
-    <div class="empty-state-container">
-      <h3 class="empty-title">🎒 Aún no estás en ninguna clase</h3>
-      <p class="text-muted" style="font-size: 1.1rem;">
-        Pide el código a tu profe para comenzar tu aventura 🚀
-      </p>
+<div class="page-background"> <div class="d-flex justify-content-between align-items-center mb-4 header-container">
+    <div class="header-text">
+      <h2 class="page-title">🗺️ Mis Aventuras</h2>
+      <p class="page-subtitle">Explora tus mundos de aprendizaje</p>
     </div>
+    
+    <button class="btn-join-game" (click)="abrirDialogoUnirse()">
+      <mat-icon class="me-2">add_circle</mat-icon>
+      Unirse a Clase
+    </button>
   </div>
 
-  @for (item of clases; track item.id) {
-    <div class="col-sm-6 col-lg-4 card-col">
+  <div class="row g-4 m-0 justify-content-center">
+    
+    <div *ngIf="loading" class="col-12 text-center py-5">
+      <div class="spinner-grow text-info" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-2 text-muted fw-bold">Cargando mapa...</p>
+    </div>
 
-      <div class="fun-card">
-        
-        <a
+    <div *ngIf="!loading && clases.length === 0" class="col-12">
+      <div class="empty-state-container">
+        <h3 class="empty-title">🎒 Tu mochila está vacía</h3>
+        <p class="text-muted mb-4" style="font-size: 1.1rem;">
+          Pide el código a tu profe para comenzar tu primera misión.
+        </p>
+        <button class="btn-join-game" (click)="abrirDialogoUnirse()">
+          ¡Ingresar Código Ahora!
+        </button>
+      </div>
+    </div>
+
+    @for (item of clases; track item.id) {
+      <div class="col-sm-6 col-lg-4 card-col">
+        <div class="fun-card">
+          <a
           [routerLink]="['/estudiante/clase', item.id, 'evaluaciones']"
           class="stretched-link"
           style="z-index: 1;"
@@ -65,9 +85,9 @@
           </div>
 
         </div>
+        </div>
       </div>
-
-    </div>
-  }
+    }
+  </div>
 </div>
 

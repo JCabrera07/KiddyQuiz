@@ -1,0 +1,173 @@
+@use 'sass:color';
+
+.dialog-title {
+  color: #1565C0;
+  border-bottom: 1px solid #E0E0E0;
+  padding: 20px 24px;
+  background-color: #FAFAFA;
+  margin: 0;
+}
+
+.dialog-content {
+  padding: 24px !important;
+  overflow: hidden;
+}
+
+/* GRID: Izquierda Forms, Derecha Imagen */
+.grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px; /* Ancho fijo para la imagen */
+  gap: 24px;
+  align-items: start;
+}
+
+.inputs-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.file-upload-container {
+  height: 100%;
+  
+  .file-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #455A64;
+  }
+.upload-area {
+    border: 2px dashed #CFD8DC;
+    border-radius: 12px; // Bordes más redondeados
+    height: 220px; // Un poco menos alto para dar espacio al botón de abajo
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FAFAFA;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    // Clase para forzar el cursor
+    &.clickable {
+        cursor: pointer;
+    }
+
+    // Efecto Hover
+    &:hover {
+        border-color: #2196F3;
+        background: #E3F2FD;
+        box-shadow: 0 4px 12px rgba(33, 150, 243, 0.1);
+
+        .upload-icon { color: #2196F3; transform: translateY(-5px); }
+    }
+
+    // Contenido cuando no hay imagen
+    .placeholder-content {
+        text-align: center; color: #90A4AE; display: flex; flex-direction: column; align-items: center;
+        .upload-icon { font-size: 56px; width: 56px; height: 56px; margin-bottom: 10px; transition: all 0.3s; color: #B0BEC5; }
+        span { font-weight: 500; font-size: 1.1rem; }
+    }
+
+    // Contenido con imagen
+    .preview-content {
+        width: 100%; height: 100%; position: relative;
+        img { width: 100%; height: 100%; object-fit: contain; }
+
+        // Overlay "Cambiar" al pasar el mouse sobre la imagen
+        .overlay {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.5); color: white;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.2s; font-weight: 500;
+            mat-icon { font-size: 32px; margin-bottom: 5px;}
+        }
+        &:hover .overlay { opacity: 1; }
+        
+        // Botón 'X' para eliminar
+        .remove-btn {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(255, 255, 255, 0.9); border: none; border-radius: 50%;
+            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10; // Asegurar que esté sobre el overlay
+            &:hover { background: white; color: #d32f2f; }
+        }
+    }
+}
+
+/* --- ESTILOS ARASAAC --- */
+.arasaac-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-box {
+    input {
+        border-radius: 20px;
+        padding-left: 15px;
+        border: 1px solid #E0E0E0;
+    }
+}
+
+.results-area {
+    border: 1px solid #EEEEEE;
+    border-radius: 8px;
+    height: 200px; /* Altura del área de resultados */
+    overflow-y: auto;
+    background: #FAFAFA;
+    padding: 10px;
+}
+
+.pic-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+    gap: 8px;
+}
+
+.pic-item {
+    background: white;
+    border: 1px solid #E0E0E0;
+    border-radius: 6px;
+    padding: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    aspect-ratio: 1; /* Cuadrados */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    &:hover {
+        border-color: #1565C0;
+        transform: scale(1.05);
+    }
+
+    &.selected {
+        border: 2px solid #1565C0;
+        background-color: #E3F2FD;
+    }
+}
+
+.selected-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #E8F5E9;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.dialog-actions { padding: 16px 24px; border-top: 1px solid #E0E0E0; background-color: #FAFAFA; }
+}
+
+.dialog-actions {
+  padding: 16px 24px;
+  border-top: 1px solid #E0E0E0;
+  background-color: #FAFAFA;
+}

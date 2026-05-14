@@ -15,6 +15,8 @@ import { AiFeedbackDialogComponent } from './features/student/ai-feedback-dialog
 import { QuizExitGuard } from './core/guards/quiz-exit.guard';
 import { ResfuerzoIAComponent } from './features/student/resfuerzo-ia/resfuerzo-ia.component';
 import { ProfileComponent } from './features/final-components/profile/profile.component';
+import { EvaluationListComponent } from './features/teacher/evaluation-list/evaluation-list.component';
+import { QuestionListComponent } from './features/teacher/question-list/question-list.component';
 
 
 export const routes: Routes = [
@@ -108,7 +110,7 @@ export const routes: Routes = [
       loadComponent: () =>
         import('./features/teacher/class/class.component')
           .then(m => m.ClassComponent),
-      data: { title: 'Mis Evaluaciones' }
+      data: { title: 'Mis Clases' }
     },
     {
       path: 'student-list',
@@ -117,8 +119,15 @@ export const routes: Routes = [
           .then(m => m.StudentListComponent),
       data: { title: 'Mis Estudiantes' }
     },
+    {
+            path: 'clase/:id/evaluaciones', 
+            loadComponent: () => import('./features/teacher/evaluation-list/evaluation-list.component').then(m => m.EvaluationListComponent),
+            data: { title: 'Evaluaciones de la Clase' }
+          },
+          { path: 'evaluacion/:id/preguntas', component: QuestionListComponent }
   ]
 },
+
     ]
   },
 

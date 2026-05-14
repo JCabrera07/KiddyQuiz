@@ -1,0 +1,153 @@
+@use 'sass:color';
+
+$primary-color: #4FC3F7; // Azul cielo
+$accent-color: #FFB74D;  // Naranja
+$text-color: #5D4037;    // Marrón
+$success-color: #66BB6A; // Verde
+
+.game-dialog-container {
+  background-color: #FFF;
+  border: 4px solid $primary-color;
+  border-radius: 20px;
+  overflow: hidden;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+/* Header animado */
+.header-banner {
+  background-color: $primary-color;
+  padding: 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-bottom: 4px solid color.adjust($primary-color, $lightness: -15%);
+
+  h2 {
+    margin: 0;
+    font-weight: 900;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+    font-size: 1.5rem;
+  }
+
+  .icon-spin {
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+    animation: wiggle 2s infinite;
+  }
+}
+
+.content-area {
+  padding: 25px 20px !important;
+}
+
+.instruction-text {
+  color: $text-color;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+/* Input estilo Arcade */
+.pixel-input-wrapper {
+  position: relative;
+  max-width: 300px;
+  margin: 0 auto;
+
+  .input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #AAA;
+  }
+}
+
+.pixel-input {
+  width: 100%;
+  padding: 15px 15px 15px 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: 3px dashed #BDBDBD;
+  border-radius: 15px;
+  background-color: #FAFAFA;
+  color: $text-color;
+  outline: none;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+
+  &:focus {
+    border-color: $accent-color;
+    background-color: #FFF3E0;
+    transform: scale(1.02);
+  }
+}
+
+.error-msg {
+  color: #E53935;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Botones 3D Retro */
+.actions-area {
+  display: flex;
+  gap: 15px;
+  padding: 0 20px;
+}
+
+.btn-retro {
+  border: none;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  text-transform: uppercase;
+  font-family: inherit;
+  
+  &:active {
+    transform: translateY(4px);
+    box-shadow: none !important;
+  }
+}
+
+.btn-cancel {
+  background-color: #E0E0E0;
+  color: #757575;
+  border-bottom: 4px solid #BDBDBD;
+  
+  &:hover {
+    background-color: #D6D6D6;
+  }
+}
+
+.btn-confirm {
+  background-color: $success-color;
+  color: white;
+  border-bottom: 4px solid color.adjust($success-color, $lightness: -15%);
+  flex-grow: 1;
+
+  &:hover:not([disabled]) {
+    background-color: color.adjust($success-color, $lightness: 5%);
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    background-color: #A5D6A7;
+    border-color: #81C784;
+    cursor: not-allowed;
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+}

@@ -16,7 +16,7 @@ import {
 } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideClientHydration } from '@angular/platform-browser';
-
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 // icons
 import { TablerIconsModule } from 'angular-tabler-icons';
 import * as TablerIcons from 'angular-tabler-icons/icons';
@@ -44,7 +44,7 @@ export const appConfig: ApplicationConfig = {
 
     // 👇 Necesario para soportar interceptores DI
     provideHttpClient(withInterceptorsFromDi()),
-
+provideCharts(withDefaultRegisterables()),
     // 👇 AÑADE ESTO
     {
       provide: HTTP_INTERCEPTORS,

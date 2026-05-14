@@ -47,26 +47,36 @@ export class OpcionService {
     return this.opcionRepo.save(opcion);
   }
 
-  async update(id: number, updateDto: UpdateOpcionDto, file?: Express.Multer.File) {
+async update(id: number, updateDto: UpdateOpcionDto, file?: Express.Multer.File) {
     const opcion = await this.opcionRepo.findOne({ where: { id }, relations: ['tipoContenido'] });
     if (!opcion) throw new BadRequestException('Opción no encontrada');
 
+    // Actualizar relaciones
     if (updateDto.idTipoContenido) {
       const tipoContenido = await this.tipoContenidoRepo.findOne({ where: { id: updateDto.idTipoContenido } });
       if (!tipoContenido) throw new BadRequestException('Tipo de contenido no encontrado');
       opcion.tipoContenido = tipoContenido;
+    } else if (updateDto.idTipoContenido === null) {
+      // Opcional: Si quieres permitir quitar el tipo de contenido
+      opcion.tipoContenido = null;
     }
 
+    // --- LÓGICA DE IMAGEN CORREGIDA ---
     if (file) {
+      // Prioridad 1: Si subió archivo físico
       const result = await cloudinary.uploader.upload(file.path, { folder: 'opciones' });
       opcion.urlContenido = result.secure_url;
+    } else if (updateDto.urlContenido !== undefined) {
+      // Prioridad 2: Si mandó URL (Arasaac) o string vacío
+      opcion.urlContenido = updateDto.urlContenido;
     }
 
+    // Actualizar campos simples
     if (updateDto.texto !== undefined) opcion.texto = updateDto.texto;
     if (updateDto.esCorrecta !== undefined) opcion.esCorrecta = updateDto.esCorrecta;
 
     return this.opcionRepo.save(opcion);
-  }
+}
 
   // Listar todas las opciones
 async findAll() {
@@ -74,6 +84,14 @@ async findAll() {
     relations: ['pregunta', 'tipoContenido'],
   });
 }
+
+async findByPregunta(preguntaId: number) {
+    return this.opcionRepo.find({
+      where: { pregunta: { id: preguntaId } },
+      relations: ['tipoContenido'], // Traemos el tipo de contenido si existe
+      order: { id: 'ASC' }
+    });
+  }
 
 // Listar opción por ID
 async findOne(id: number) {

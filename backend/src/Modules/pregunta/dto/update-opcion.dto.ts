@@ -1,4 +1,5 @@
 import { IsOptional, IsString, IsBoolean, IsInt } from 'class-validator';
+import { Transform } from 'class-transformer'; // <--- IMPORTAR ESTO
 
 export class UpdateOpcionDto {
   @IsOptional()
@@ -7,9 +8,16 @@ export class UpdateOpcionDto {
 
   @IsOptional()
   @IsBoolean()
+  // --- ESTA ES LA SOLUCIÓN ---
+  @Transform(({ value }) => value === 'true' || value === true)
   esCorrecta?: boolean;
 
   @IsOptional()
   @IsInt()
-  idTipoContenido?: number; // Para actualizar relación con tipoContenido
+  @Transform(({ value }) => parseInt(value))
+  idTipoContenido?: number;
+
+  @IsOptional()
+  @IsString()
+  urlContenido?: string;
 }

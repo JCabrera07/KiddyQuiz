@@ -18,6 +18,7 @@ import { Opcion } from '../pregunta/entities/opcion.entity';
 import { EvaluacionPreguntaService } from './services/evaluacion-pregunta.service';
 import { EvaluacionPreguntaController } from './controller/evaluacion-pregunta.controller';
 import { AiModule } from '../common/gemini/ia.module'; // 👈 módulo que exporta GeminiService
+import { Clase } from '../extra/entities/clase.entity';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { AiModule } from '../common/gemini/ia.module'; // 👈 módulo que expor
       Usuario,
       RespuestaUsuario,
       Pregunta,
-      Opcion
+      Opcion,
+      Clase
     ]),
     MulterModule.register({
       dest: './uploads',

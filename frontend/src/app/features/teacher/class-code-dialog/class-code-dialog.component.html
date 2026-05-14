@@ -1,0 +1,28 @@
+<div class="code-dialog-container">
+  
+  <div class="success-icon-wrapper">
+    <mat-icon>check_circle</mat-icon>
+  </div>
+
+  <h2 mat-dialog-title>¡Clase Creada!</h2>
+  
+  <mat-dialog-content class="text-center">
+    <p class="text-muted mb-4">
+      La clase <strong>"{{ data.nombre }}"</strong> está lista. Comparte este código con tus estudiantes para que puedan unirse.
+    </p>
+
+    <div class="code-box" (click)="copiarCodigo()" matTooltip="Clic para copiar">
+      <span class="code-text">{{ data.codigo }}</span>
+      <mat-icon class="copy-icon">content_copy</mat-icon>
+    </div>
+
+    <p class="small-hint">Clic en el código para copiar</p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="center" class="pb-4">
+    <button mat-flat-button color="primary" class="btn-done" (click)="cerrar()">
+      Entendido, finalizar
+    </button>
+  </mat-dialog-actions>
+
+</div>

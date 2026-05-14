@@ -14,6 +14,14 @@ export class UsuarioController {
     return this.usuarioService.create(dto);
   }
 
+@UseGuards(JwtAuthGuard)
+  @Get('mis-estudiantes')
+  async findMyStudents(@Request() req) {
+    // El ID del docente viene del Token JWT
+    const docenteId = req.user.id || req.user.userId || req.user.sub;
+    return this.usuarioService.findStudentsByTeacher(docenteId);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Post('change-password')
   async changePassword(@Request() req, @Body() dto: ChangePasswordDto) {

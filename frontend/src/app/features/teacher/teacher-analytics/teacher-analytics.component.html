@@ -1,1 +1,169 @@
-<p>teacher-analytics works!</p>
+<div class="pro-container">
+  
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="pro-title">Panel de Control</h2>
+      <p class="text-muted mb-0">Resumen del rendimiento académico de tus cursos.</p>
+    </div>
+    <button mat-stroked-button color="primary">
+      <mat-icon class="me-2">download</mat-icon>
+      Exportar Reporte
+    </button>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-3" *ngFor="let kpi of kpis">
+      <mat-card class="kpi-card cardWithShadow">
+        <div class="d-flex align-items-center">
+          <div class="kpi-icon-wrapper" [ngClass]="kpi.color">
+            <mat-icon>{{ kpi.icon }}</mat-icon>
+          </div>
+          <div class="ms-3">
+            <h3 class="mb-0 fw-bold">{{ kpi.value }}</h3>
+            <p class="text-muted small mb-0">{{ kpi.title }}</p>
+          </div>
+        </div>
+        <div class="trend-badge mt-3" *ngIf="kpi.trend">
+          <span class="text-success fw-bold" *ngIf="!kpi.trend.includes('-')">{{ kpi.trend }}</span>
+          <span class="text-danger fw-bold" *ngIf="kpi.trend.includes('-')">{{ kpi.trend }}</span>
+          <span class="text-muted ms-1 small">vs mes anterior</span>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-4">
+    <div class="col-lg-8">
+      <mat-card class="pro-card cardWithShadow h-100 p-4">
+        <h3 class="chart-title mb-4">Rendimiento por Clase</h3>
+        <div class="chart-container">
+          <canvas baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [plugins]="barChartPlugins"
+            [legend]="barChartLegend"
+            [type]="'bar'">
+          </canvas>
+        </div>
+      </mat-card>
+    </div>
+
+    <div class="col-lg-4">
+      <mat-card class="pro-card cardWithShadow h-100 p-4">
+        <h3 class="chart-title mb-4">Estado General</h3>
+        
+        <div class="chart-container-doughnut position-relative">
+          <canvas baseChart
+            [labels]="doughnutChartLabels"
+            [datasets]="doughnutChartDatasets"
+            [options]="doughnutChartOptions"
+            [legend]="true"
+            [type]="'doughnut'">
+          </canvas>
+          
+          <div class="doughnut-center-text">
+            <h2 class="mb-0 fw-bold text-dark">{{ kpis[0].value }}</h2>
+            <small class="text-muted">Total</small>
+          </div>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-center gap-3">
+           <div class="d-flex align-items-center"><span class="dot bg-success"></span> <small class="ms-1">Aprobados</small></div>
+           <div class="d-flex align-items-center"><span class="dot bg-warning"></span> <small class="ms-1">Riesgo</small></div>
+           <div class="d-flex align-items-center"><span class="dot bg-danger"></span> <small class="ms-1">Reprobados</small></div>
+        </div>
+
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <mat-card class="pro-card cardWithShadow">
+        <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+          <h3 class="chart-title mb-0">⚠️ Alerta Temprana: Estudiantes en Riesgo</h3>
+          <button mat-button color="warn">Ver Todos</button>
+        </div>
+        
+        <div class="responsive-table-container">
+          <table mat-table [dataSource]="dataSource" class="w-100 pro-table">
+
+            <ng-container matColumnDef="estudiante">
+              <th mat-header-cell *matHeaderCellDef> Estudiante </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="d-flex align-items-center">
+                  <div class="avatar-circle me-3">{{ element.nombre.charAt(0) }}</div>
+                  <div class="d-flex flex-column">
+                    <span class="fw-bold text-dark"> {{ element.nombre }}</span>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="clase">
+              <th mat-header-cell *matHeaderCellDef> Clase </th>
+              <td mat-cell *matCellDef="let element"> 
+                <span class="badge-gray">{{ element.clase }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="promedio">
+              <th mat-header-cell *matHeaderCellDef> Rendimiento </th>
+              <td mat-cell *matCellDef="let element">
+                <div class="d-flex flex-column" style="width: 140px;">
+                  <div class="d-flex justify-content-between mb-1">
+                     <span class="text-xs fw-bold" [class.text-danger]="element.promedio < 7">
+                      {{ element.promedio }}/10
+                    </span>
+                  </div>
+                  <mat-progress-bar 
+                    mode="determinate" 
+                    [value]="element.promedio * 10" 
+                    [color]="element.promedio < 5 ? 'warn' : (element.promedio < 7 ? 'accent' : 'primary')"
+                    class="rounded-progress">
+                  </mat-progress-bar>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef> Estado </th>
+              <td mat-cell *matCellDef="let element">
+                <mat-chip-set>
+                  <mat-chip [style.backgroundColor]="element.estado === 'Crítico' ? '#FFEBEE' : '#FFF3E0'"
+                            [style.color]="element.estado === 'Crítico' ? '#D32F2F' : '#E65100'">
+                    {{element.estado}}
+                  </mat-chip>
+                </mat-chip-set>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef class="text-end"> Acciones </th>
+              <td mat-cell *matCellDef="let element" class="text-end">
+                <button mat-icon-button color="primary" matTooltip="Contactar">
+                  <mat-icon>mail</mat-icon>
+                </button>
+                <button mat-icon-button color="accent" matTooltip="Ver Perfil">
+                  <mat-icon>visibility</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="pro-row"></tr>
+          </table>
+          
+          <div *ngIf="!cargando && dataSource.length === 0" class="text-center p-4 text-muted">
+            No hay estudiantes en riesgo actualmente. ¡Buen trabajo!
+          </div>
+
+          <div *ngIf="cargando" class="d-flex justify-content-center p-4">
+             <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+           </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+</div>

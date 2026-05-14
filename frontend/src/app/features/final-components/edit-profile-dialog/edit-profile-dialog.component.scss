@@ -1,0 +1,159 @@
+@use 'sass:color';
+
+/* ========================================= */
+/* 1. LAYOUT GENERAL (Común) */
+/* ========================================= */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 10px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .form-grid-2, .form-grid-3 {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+/* ========================================= */
+/* 2. TEMA ESTUDIANTE (JUEGO / INFANTIL) */
+/* ========================================= */
+.student-dialog {
+  
+  /* Título divertido */
+  &.dialog-title {
+    font-family: 'Comic Sans MS', 'Comic Sans', cursive, sans-serif;
+    color: #4FC3F7; /* Azul Fun */
+    font-weight: 800;
+    text-align: center;
+    font-size: 1.8rem;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.05);
+  }
+
+  /* --- Inputs estilo "Juguete" --- */
+  
+  /* Fondo amarillo suave y bordes redondeados */
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    background-color: #ffffff !important; 
+    border-radius: 20px !important;
+    border: 2px solid #FFB74D !important; /* Borde naranja */
+    overflow: hidden;
+  }
+
+  /* Quitar la línea inferior por defecto de Material */
+  ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before,
+  ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after {
+    border-bottom-color: transparent !important;
+  }
+
+  /* Etiquetas (Labels) con fuente divertida */
+  ::ng-deep .mdc-floating-label {
+    font-family: 'Comic Sans MS', cursive !important;
+    color: #5D4037 !important;
+    font-weight: 700 !important;
+  }
+
+  /* Texto del input */
+  ::ng-deep .mat-mdc-input-element {
+    font-family: 'Comic Sans MS', cursive !important;
+    color: #3E2723 !important;
+    font-weight: 600;
+  }
+}
+
+/* Botones 3D para Estudiante */
+.student-actions {
+  justify-content: center !important;
+  gap: 20px;
+  padding-bottom: 25px;
+  background-color: transparent;
+}
+
+.btn-fun {
+  border-radius: 30px !important;
+  font-family: 'Comic Sans MS', cursive !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  padding: 22px 30px !important;
+  line-height: 0;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.1s;
+  color: white !important;
+}
+
+.btn-cancel-fun {
+  background-color: #FF7043 !important; /* Rojo suave */
+  box-shadow: 0 6px 0 #D84315;
+  margin-bottom: 6px;
+  
+  &:active {
+    transform: translateY(6px);
+    box-shadow: none;
+    margin-bottom: 0;
+  }
+}
+
+.btn-save-fun {
+  background-color: #66BB6A !important; /* Verde */
+  box-shadow: 0 6px 0 #2E7D32;
+  margin-bottom: 6px;
+
+  &:active {
+    transform: translateY(6px);
+    box-shadow: none;
+    margin-bottom: 0;
+  }
+}
+
+/* ========================================= */
+/* 3. TEMA DOCENTE (EMPRESARIAL / LIMPIO) */
+/* ========================================= */
+.teacher-dialog {
+  /* Título sobrio y limpio */
+  &.dialog-title {
+    font-family: 'Roboto', sans-serif;
+    color: #1565C0; /* Azul corporativo */
+    font-weight: 500;
+    font-size: 1.4rem;
+    border-bottom: 1px solid #E0E0E0;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+
+  /* Inputs limpios y profesionales */
+  ::ng-deep .mat-mdc-text-field-wrapper {
+    background-color: #F5F7FA !important; /* Gris muy claro */
+    border-radius: 4px !important;
+    border: 1px solid #E0E0E0;
+  }
+  
+  /* Focus color corporativo */
+  ::ng-deep .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: #1565C0 !important;
+  }
+}
+
+.teacher-actions {
+  border-top: 1px solid #E0E0E0;
+  padding: 15px 24px !important;
+  background-color: #FAFAFA; /* Footer gris claro */
+}

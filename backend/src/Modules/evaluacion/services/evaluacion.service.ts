@@ -10,6 +10,7 @@ import { SubmitEvaluacionDto } from '../dto/submit-evaluacion.dto';
 import { Opcion } from 'src/Modules/pregunta/entities/opcion.entity';
 import { RespuestaUsuario } from 'src/Modules/respuesta/entities/respuesta-usuario.entity';
 import { EvaluacionPregunta } from '../entities/evaluacion-pregunta.entity';
+import { Clase } from 'src/Modules/extra/entities/clase.entity';
 
 
 @Injectable()
@@ -27,10 +28,24 @@ export class EvaluacionService {
     private evaluacionRepository: Repository<Evaluacion>,
     @InjectRepository(EvaluacionPregunta)
     private readonly evaluacionPreguntaRepo: Repository<EvaluacionPregunta>,
+    @InjectRepository(Clase)
+    private readonly claseRepo: Repository<Clase>,
   ) {}
 
-  async create(createDto: CreateEvaluacionDto & { imagenUrl: string }) {
-    const evaluacion = this.evaluacionRepo.create(createDto);
+async create(createDto: CreateEvaluacionDto & { imagenUrl: string }) {
+    // 2. Buscar la clase por el ID que viene del formulario
+    const clase = await this.claseRepo.findOne({ where: { id: createDto.claseId } });
+    
+    if (!clase) {
+      throw new NotFoundException('La clase especificada no existe');
+    }
+
+    // 3. Crear la evaluación relacionándola con la clase encontrada
+    const evaluacion = this.evaluacionRepo.create({
+      ...createDto,
+      clases: [clase] // TypeORM guardará esto en la tabla 'clase_evaluacion'
+    });
+
     return await this.evaluacionRepo.save(evaluacion);
   }
 

@@ -17,7 +17,6 @@ export class EvaluacionPreguntaService {
     private readonly preguntaRepo: Repository<Pregunta>,
   ) {}
 
-  // Crear nueva EvaluacionPregunta
   async create(dto: CreateEvaluacionPreguntaDto) {
     const evaluacion = await this.evaluacionRepo.findOneBy({ id: dto.evaluacionId });
     if (!evaluacion) throw new BadRequestException('La evaluación no existe');
@@ -25,7 +24,6 @@ export class EvaluacionPreguntaService {
     const pregunta = await this.preguntaRepo.findOneBy({ id: dto.preguntaId });
     if (!pregunta) throw new BadRequestException('La pregunta no existe');
 
-    // Validación de duplicado de orden
     const existe = await this.evalPreguntaRepo.findOne({
       where: { 
         evaluacion: { id: evaluacion.id },
@@ -47,14 +45,37 @@ export class EvaluacionPreguntaService {
     return this.evalPreguntaRepo.save(evalPregunta);
   }
 
-  // Listar todas las preguntas de todas las evaluaciones
-  async findAll() {
+  // --- CORRECCIÓN AQUÍ: Agregar relaciones anidadas ---
+  async findAllByEvaluacion(evaluacionId: number) {
     return this.evalPreguntaRepo.find({
-      relations: ['evaluacion', 'pregunta'],
+      where: { evaluacion: { id: evaluacionId } },
+      relations: [
+        'evaluacion', 
+        'pregunta', 
+        'pregunta.tipoPregunta',    // <--- IMPORTANTE
+        'pregunta.dificultad',      // <--- IMPORTANTE
+        'pregunta.tipoContenido',   // <--- IMPORTANTE
+        'pregunta.competencia',     // <--- IMPORTANTE
+        'pregunta.opciones'         // Opcional, si quieres ver opciones
+      ],
+      order: { orden: 'ASC' }
     });
   }
 
-  // Eliminar una pregunta por id
+  // Método genérico (si lo usas para otra cosa)
+  async findAll() {
+    return this.evalPreguntaRepo.find({
+      relations: [
+        'evaluacion', 
+        'pregunta',
+        'pregunta.tipoPregunta',
+        'pregunta.dificultad',
+        'pregunta.tipoContenido',
+        'pregunta.competencia'
+      ],
+    });
+  }
+
   async remove(id: number) {
     const registro = await this.evalPreguntaRepo.findOneBy({ id });
     if (!registro) throw new BadRequestException(`No existe el registro con id ${id}`);
@@ -63,9 +84,7 @@ export class EvaluacionPreguntaService {
     return { message: `Registro con id ${id} eliminado correctamente` };
   }
 
-  // Actualizar solo el orden de una pregunta dentro de la evaluación
   async updateOrden(id: number, nuevoOrden: number) {
-    // Buscar la pregunta por id
     const evalPregunta = await this.evalPreguntaRepo.findOne({
       where: { id },
       relations: ['evaluacion']
@@ -75,7 +94,6 @@ export class EvaluacionPreguntaService {
       throw new BadRequestException(`No existe la evaluacion-pregunta con id ${id}`);
     }
 
-    // Verificar que no haya conflicto de orden
     const conflicto = await this.evalPreguntaRepo.findOne({
       where: {
         evaluacion: { id: evalPregunta.evaluacion.id },
@@ -88,10 +106,7 @@ export class EvaluacionPreguntaService {
       throw new BadRequestException(`Ya existe otra pregunta con el orden ${nuevoOrden} en esta evaluación`);
     }
 
-    // Actualizar el orden
     evalPregunta.orden = nuevoOrden;
-
-    // Guardar los cambios
     return this.evalPreguntaRepo.save(evalPregunta);
   }
 }

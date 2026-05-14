@@ -1,0 +1,86 @@
+<h2 mat-dialog-title class="dialog-title">
+  <div class="d-flex align-items-center">
+    <mat-icon class="me-2">{{ isEditMode ? 'edit' : 'add_circle_outline' }}</mat-icon>
+    <span>{{ isEditMode ? 'Editar Opción' : 'Nueva Opción' }}</span>
+  </div>
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  <form [formGroup]="form" class="grid-layout">
+    
+    <div class="inputs-column">
+      
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Texto de la Opción</mat-label>
+        <textarea matInput formControlName="texto" rows="3" placeholder="Ej. 4"></textarea>
+        <mat-error>Requerido</mat-error>
+      </mat-form-field>
+
+      <div class="mb-3">
+        <mat-checkbox formControlName="esCorrecta" color="primary">
+            <span class="fw-bold">¿Es la respuesta correcta?</span>
+        </mat-checkbox>
+      </div>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Tipo Contenido (Opcional)</mat-label>
+        <mat-select formControlName="idTipoContenido">
+          <mat-option [value]="null">-- Ninguno --</mat-option>
+          <mat-option *ngFor="let tc of tiposContenido" [value]="tc.id">
+            {{ tc.nombre }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+
+    <div class="image-column">
+      <div class="file-upload-container">
+        <label class="file-label">Ilustración (Opcional)</label>
+        
+        <div class="upload-area clickable mb-3" (click)="fileInput.click()" matTooltip="Click para subir imagen local">
+          
+          <div *ngIf="!imagePreview" class="placeholder-content">
+            <mat-icon class="upload-icon">cloud_upload</mat-icon> 
+            <span>Click para subir imagen</span>
+            <small class="text-muted">(O arrastra aquí)</small>
+          </div>
+
+          <div *ngIf="imagePreview" class="preview-content">
+            <img [src]="imagePreview" alt="Preview">
+            
+            <div class="overlay">
+                <mat-icon>edit</mat-icon> Cambiar
+            </div>
+
+            <button type="button" class="remove-btn" 
+                    (click)="imagePreview=null; selectedFile=null; selectedArasaacUrl=null; $event.stopPropagation()"
+                    matTooltip="Quitar imagen">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <input #fileInput type="file" hidden accept="image/*" (change)="onFileSelected($event)">
+
+                    <button 
+                type="button" 
+                mat-flat-button 
+                color="accent" 
+                (click)="abrirSelectorArasaac()" 
+                style="margin-top: 15px;">
+                <mat-icon>search</mat-icon> Buscar en ARASAAC
+            </button>
+
+      </div>
+    </div>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="guardar()">
+    Guardar
+  </button>
+</mat-dialog-actions>

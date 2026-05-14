@@ -1,113 +1,151 @@
-<div class="row justify-content-center">
-  <div class="col-lg-10">
-    
-    @if(loading) {
-      <div class="text-center p-5">
-        <p>Cargando perfil...</p>
-      </div>
-    } @else if (userProfile && personaData) {
-      
-      <mat-card class="cardWithShadow overflow-hidden">
-        
-        <!-- Banner superior (Fondo decorativo) -->
-        <div class="bg-primary" style="height: 80px; opacity: 0.8;"></div>
-        
-        <mat-card-content class="p-24 position-relative">
-          
-          <!-- Foto de Perfil Flotante -->
-          <div class="position-absolute" style="top: -60px; left: 24px;">
-            <img src="assets/images/profile/user-1.jpg" alt="Avatar" class="profile-avatar">
-          </div>
-
-          <!-- Cabecera con Nombre y Rol (A la derecha de la foto) -->
-          <div class="d-flex flex-column flex-md-row justify-content-end align-items-md-center mb-4 mt-5 mt-md-0" style="min-height: 60px;">
-            <div class="text-md-end ms-md-auto">
-              <h2 class="mat-headline-5 mb-1 fw-bold">{{ personaData.nombres }} {{ personaData.apellidos }}</h2>
-              <span class="badge bg-light-primary text-primary fs-5 px-3 py-1 rounded-pill">
-                {{ personaData.rol || 'Usuario' }}
-              </span>
-            </div>
-          </div>
-
-          <mat-divider class="my-4"></mat-divider>
-
-          <!-- Contenido en 2 Columnas -->
-          <div class="row">
-            
-            <!-- Columna 1: Información Personal -->
-            <div class="col-md-6 mb-4 mb-md-0 border-end-md">
-              <div class="d-flex align-items-center mb-3">
-                <div class="bg-light-accent rounded p-2 me-2 text-accent">
-                  <i-tabler name="user" class="icon-20"></i-tabler>
-                </div>
-                <h4 class="mat-subtitle-1 m-0 fw-bold">Información Personal</h4>
-              </div>
-
-              <div class="info-container p-3 bg-light-subtle rounded">
-                <div class="info-row">
-                  <span class="info-label">Usuario:</span>
-                  <span>{{ userProfile.username }}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Ciudad:</span>
-                  <span>{{ personaData.ciudad || 'No registrada' }}</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Edad:</span>
-                  <span>{{ personaData.edad }} años</span>
-                </div>
-                <div class="info-row">
-                  <span class="info-label">Sexo:</span>
-                  <span>{{ personaData.sexo === 'M' ? 'Masculino' : 'Femenino' }}</span>
-                </div>
-                @if(personaData.grado) {
-                  <div class="info-row">
-                    <span class="info-label">Grado:</span>
-                    <span>{{ personaData.grado }}</span>
-                  </div>
-                }
-              </div>
-
-              <div class="mt-4">
-                <button mat-stroked-button color="primary" class="w-100" (click)="openEditProfileModal()">
-                  <i-tabler name="pencil" class="icon-18 me-2"></i-tabler>
-                  Editar Información
-                </button>
-              </div>
-            </div>
-
-            <!-- Columna 2: Seguridad y Cuenta -->
-            <div class="col-md-6 ps-md-4">
-              <div class="d-flex align-items-center mb-3">
-                <div class="bg-light-warning rounded p-2 me-2 text-warning">
-                  <i-tabler name="lock" class="icon-20"></i-tabler>
-                </div>
-                <h4 class="mat-subtitle-1 m-0 fw-bold">Seguridad</h4>
-              </div>
-              
-              <p class="text-muted mb-4">
-                Gestiona la seguridad de tu cuenta. Te recomendamos usar una contraseña segura y única.
-              </p>
-
-              <div class="alert alert-light-primary d-flex align-items-center mb-4" role="alert">
-                <i-tabler name="info-circle" class="icon-20 me-2 text-primary"></i-tabler>
-                <div class="fs-6">Tu contraseña fue actualizada hace 30 días.</div>
-              </div>
-
-              <button mat-flat-button color="accent" class="w-100" (click)="openChangePasswordModal()">
-                <i-tabler name="key" class="icon-18 me-2"></i-tabler>
-                Cambiar Contraseña
-              </button>
-              
-            </div>
-
-          </div>
-
-        </mat-card-content>
-      </mat-card>
-
-    } @else {
-      <div class="alert alert-danger">No se pudo cargar la información del usuario.</div>
-    }
+@if(loading) {
+  <div class="text-center p-5">
+    <mat-spinner diameter="50" style="margin:0 auto;"></mat-spinner>
+    <p class="mt-3 text-muted">Cargando identidad...</p>
   </div>
-</div>
+} @else if (userProfile && personaData) {
+
+  @if (isStudent) {
+    <div class="student-container">
+      <div class="student-card">
+        
+        <div class="student-header">
+          <div class="student-avatar-wrapper">
+            <img src="assets/images/profile/user-1.jpg" alt="Avatar" class="student-avatar">
+            <div class="level-badge">
+              ⭐ {{ personaData.grado || 'Nivel 1' }}
+            </div>
+          </div>
+          
+          <h2 class="student-name">{{ personaData.nombres }} {{ personaData.apellidos }}</h2>
+          <span class="student-role-tag">🚀 Explorador (Estudiante)</span>
+        </div>
+
+        <div class="student-body row">
+          
+          <div class="col-md-6">
+            <div class="fun-info-box">
+              <h3 class="fun-title">🎒 Mis Datos</h3>
+              
+              <div class="fun-row">
+                <span class="fun-label">Nombre:</span>
+                <span>{{ userProfile.username }}</span>
+              </div>
+              <div class="fun-row">
+                <span class="fun-label">Ciudad:</span>
+                <span>{{ personaData.ciudad || 'Desconocida' }}</span>
+              </div>
+              <div class="fun-row">
+                <span class="fun-label">Edad:</span>
+                <span>{{ personaData.edad }} años</span>
+              </div>
+            </div>
+
+            <button class="btn-fun btn-fun-primary" (click)="openEditProfileModal()">
+              ✏️ Editar mi Carnet
+            </button>
+          </div>
+
+          <div class="col-md-6">
+            <div class="fun-info-box">
+              <h3 class="fun-title">🛡️ Escudo de Seguridad</h3>
+              <p style="font-size: 0.9rem; color: #777;">
+                Mantén tu llave secreta segura para que nadie más entre a tu aventura.
+              </p>
+            </div>
+
+            <button class="btn-fun btn-fun-accent" (click)="openChangePasswordModal()">
+              🔑 Cambiar Llave Secreta
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  }
+
+  @else {
+    <div class="pro-container">
+      <div class="pro-card">
+        
+        <div class="pro-sidebar">
+          <img src="assets/images/profile/user-1.jpg" alt="Avatar" class="pro-avatar">
+          
+          <h2 class="pro-name">{{ personaData.nombres }}</h2>
+          <h2 class="pro-name">{{ personaData.apellidos }}</h2>
+          <span class="pro-role">{{ personaData.rol || 'Docente' }}</span>
+
+          <div class="pro-actions">
+             <button mat-flat-button color="primary" class="btn-pro" (click)="openEditProfileModal()">
+              <i-tabler name="pencil" class="icon-18"></i-tabler>
+              Editar Perfil
+            </button>
+            
+            <button mat-stroked-button color="warn" class="btn-pro" (click)="openChangePasswordModal()">
+              <i-tabler name="lock" class="icon-18"></i-tabler>
+              Cambiar Contraseña
+            </button>
+          </div>
+        </div>
+
+        <div class="pro-content">
+          
+          <h3 class="pro-section-title">
+            <i-tabler name="user-check" class="icon-22"></i-tabler>
+            Información General
+          </h3>
+
+          <div class="pro-grid">
+            <div class="pro-data-item">
+              <span class="pro-label">Nombre de Usuario</span>
+              <div class="pro-value">{{ userProfile.username }}</div>
+            </div>
+            
+            <div class="pro-data-item">
+              <span class="pro-label">Ciudad de Residencia</span>
+              <div class="pro-value">{{ personaData.ciudad || 'No registrada' }}</div>
+            </div>
+
+            <div class="pro-data-item">
+              <span class="pro-label">Edad</span>
+              <div class="pro-value">{{ personaData.edad }} años</div>
+            </div>
+
+            <div class="pro-data-item">
+              <span class="pro-label">Género</span>
+              <div class="pro-value">
+                {{ personaData.sexo === 'M' ? 'Masculino' : 'Femenino' }}
+              </div>
+            </div>
+          </div>
+
+          <h3 class="pro-section-title">
+            <i-tabler name="shield-check" class="icon-22"></i-tabler>
+            Estado de la Cuenta
+          </h3>
+
+          <div class="pro-grid">
+            <div class="pro-data-item">
+              <span class="pro-label">Último Acceso</span>
+              <div class="pro-value text-muted">Hace 2 horas</div>
+            </div>
+            
+            <div class="pro-data-item">
+              <span class="pro-label">Estado</span>
+              <div class="pro-value d-flex align-items-center gap-2">
+                <span style="width: 10px; height: 10px; background: #66BB6A; border-radius: 50%;"></span>
+                Activo
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  }
+
+} @else {
+  <div class="alert alert-danger text-center">No se pudo cargar la información.</div>
+}

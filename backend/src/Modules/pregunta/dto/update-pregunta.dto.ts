@@ -1,23 +1,9 @@
-// update-pregunta.dto.ts
-import { IsOptional, IsString, IsNumber } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreatePreguntaDto } from './create-pregunta.dto';
+import { IsOptional, IsString } from 'class-validator';
 
-export class UpdatePreguntaDto {
-  @IsOptional()
-  @IsString()
-  enunciado?: string;
-
-  @IsOptional()
-  @IsNumber()
-  tipoPreguntaId?: number;
-
-  @IsOptional()
-  @IsNumber()
-  dificultadId?: number;
-
-  @IsOptional()
-  @IsNumber()
-  tipoContenidoId?: number;
-
+export class UpdatePreguntaDto extends PartialType(CreatePreguntaDto) {
+  // Agregamos esto para permitir que llegue la URL de Arasaac como texto
   @IsOptional()
   @IsString()
   urlContenido?: string;

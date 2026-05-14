@@ -1,89 +1,126 @@
-<mat-card class="cardWithShadow theme-card">
-  <div class="p-6 flex justify-between items-center">
-
-    <div class="flex items-center gap-4">
-      <span *ngIf="error" class="text-red-500 text-sm font-medium bg-red-50 px-2 py-1 rounded">
-        {{ error }}
-      </span>
-
-      <button mat-raised-button color="primary" (click)="crearClase()">
-        Crear Clase
-      </button>
+<div class="pro-container">
+  
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="pro-title">Gestión de Clases</h2>
+      <p class="text-muted mb-0">Administra el acceso y estado de tus asignaturas.</p>
     </div>
+    <button mat-flat-button color="primary" class="btn-pro-create" (click)="crearClase()">
+      <mat-icon class="me-2">add</mat-icon>
+      Nueva Clase
+    </button>
   </div>
 
-  <mat-progress-bar *ngIf="cargando" mode="indeterminate" color="primary"></mat-progress-bar>
+  <mat-card class="pro-card cardWithShadow">
+    
+    <div class="table-toolbar p-4 border-bottom">
+      <div class="row align-items-center">
+        <div class="col-md-6 col-lg-4">
+          <mat-form-field appearance="outline" class="w-100 density-compact">
+            <mat-icon matPrefix class="text-muted me-2">search</mat-icon>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Matemáticas">
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
 
-  <mat-card-content class="border-t border-border">
-    <div class="relative overflow-auto">
-      <table mat-table [dataSource]="clases" class="min-w-full">
+    <mat-progress-bar *ngIf="cargando" mode="indeterminate" color="primary"></mat-progress-bar>
 
-        <!-- Columna IMG -->
+    <div class="responsive-table-container">
+      <table mat-table [dataSource]="dataSource" matSort class="w-100 pro-table">
+
         <ng-container matColumnDef="img">
-          <th mat-header-cell *matHeaderCellDef class="font-semibold text-sm">IMG</th>
-          <td mat-cell *matCellDef="let element" class="whitespace-nowrap">
-            <img 
-              [src]="element.imagenUrl ? element.imagenUrl : 'assets/images/products/product-1.jpg'" 
-              alt="clase" 
-              width="60" 
-              class="rounded"
-            />
+          <th mat-header-cell *matHeaderCellDef class="ps-4"> Portada </th>
+          <td mat-cell *matCellDef="let element" class="ps-4 py-3">
+            <div class="img-wrapper">
+              <img 
+                [src]="element.imagenUrl ? element.imagenUrl : 'assets/images/backgrounds/Paisaje.jpg'" 
+                alt="clase" 
+              />
+            </div>
           </td>
         </ng-container>
 
-        <!-- Columna Asignatura -->
         <ng-container matColumnDef="asignatura">
-          <th mat-header-cell *matHeaderCellDef class="font-semibold text-sm">Asignatura</th>
-          <td mat-cell *matCellDef="let element" class="whitespace-nowrap">
-            {{ element.nombre || 'N/A' }}
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Asignatura </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex flex-column">
+              <span class="fw-bold text-dark">{{ element.nombre }}</span>
+            </div>
           </td>
         </ng-container>
 
-        <!-- Columna Grado -->
         <ng-container matColumnDef="grado">
-          <th mat-header-cell *matHeaderCellDef class="font-semibold text-sm">Grado</th>
-          <td mat-cell *matCellDef="let element" class="whitespace-nowrap">
-            {{ element.grado?.nombre || 'N/A' }}
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Grado </th>
+          <td mat-cell *matCellDef="let element">
+            <span class="badge-pro-gray">
+              {{ element.grado?.nombre || 'General' }}
+            </span>
           </td>
         </ng-container>
 
-        <!-- Columna Fecha Creación -->
         <ng-container matColumnDef="fecha">
-          <th mat-header-cell *matHeaderCellDef class="font-semibold text-sm">Fecha Creación</th>
-          <td mat-cell *matCellDef="let element" class="whitespace-nowrap">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Creación </th>
+          <td mat-cell *matCellDef="let element" class="text-muted">
             {{ element.createdAt | date:'mediumDate' }}
           </td>
         </ng-container>
 
-        <!-- Columna Acciones -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef> Visibilidad </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-slide-toggle
+              color="primary"
+              [checked]="element.activo"
+              matTooltip="Activar/Desactivar clase"
+              (change)="cambiarEstado(element, $event)"
+              (click)="$event.stopPropagation()">
+              <span class="text-xs ms-2 text-muted fw-bold">
+                {{ element.activo ? 'ACTIVO' : 'INACTIVO' }}
+              </span>
+            </mat-slide-toggle>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="acciones">
-          <th mat-header-cell *matHeaderCellDef class="font-semibold text-sm"></th>
-          <td mat-cell *matCellDef="let element" class="text-right">
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Opciones">
+          <th mat-header-cell *matHeaderCellDef class="text-end pe-4"> Acciones </th>
+          <td mat-cell *matCellDef="let element" class="text-end pe-4">
+            <button mat-icon-button color="primary" 
+                    matTooltip="Ver Evaluaciones" 
+                    class="me-1"
+                    (click)="verEvaluaciones(element.id)">
+              <mat-icon>assignment</mat-icon>
+            </button>
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="text-muted">
               <mat-icon>more_vert</mat-icon>
             </button>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item>
-                <mat-icon>assignment</mat-icon>
-                <span>Ver Evaluaciones</span>
+            <mat-menu #menu="matMenu" class="pro-menu">
+              <button mat-menu-item (click)="editarClase(element)"> 
+                <mat-icon color="accent">edit</mat-icon>
+                <span>Editar</span>
               </button>
-              <button mat-menu-item>
-                <mat-icon>edit</mat-icon>
-                <span>Editar Clase</span>
+              <button mat-menu-item (click)="eliminarClase(element)">
+                <mat-icon color="warn">delete</mat-icon><span>Eliminar</span>
               </button>
             </mat-menu>
           </td>
         </ng-container>
 
-        <!-- Filas -->
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="pro-row"></tr>
 
-        <!-- Mensaje cuando no hay clases -->
-        <tr class="mat-row" *ngIf="!cargando && clases.length === 0">
-          <td class="mat-cell text-center p-4" colspan="5">No hay clases asignadas</td>
+        <tr class="mat-row" *ngIf="dataSource.data.length === 0 && !cargando">
+          <td class="mat-cell text-center py-5" colspan="6">
+            <div class="empty-state">
+              <mat-icon class="empty-icon">school</mat-icon>
+              <h3>No hay clases registradas</h3>
+              <button mat-stroked-button color="primary" (click)="crearClase()">Crear Clase</button>
+            </div>
+          </td>
         </tr>
       </table>
     </div>
-  </mat-card-content>
-</mat-card>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </mat-card>
+</div>

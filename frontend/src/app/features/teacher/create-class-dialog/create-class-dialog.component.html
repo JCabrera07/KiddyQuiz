@@ -1,0 +1,82 @@
+<h2 mat-dialog-title class="dialog-title">
+  <div class="d-flex align-items-center">
+    <mat-icon class="me-2">{{ isEditMode ? 'edit' : 'add_circle_outline' }}</mat-icon>
+    <span>{{ isEditMode ? 'Editar Asignatura' : 'Nueva Asignatura' }}</span>
+  </div>
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  <form [formGroup]="claseForm" class="grid-layout">
+    
+    <div class="inputs-column">
+      
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Nombre de la Clase</mat-label>
+        <input matInput formControlName="nombre" placeholder="Ej. Matemáticas Avanzadas">
+        <mat-icon matSuffix>edit</mat-icon>
+        <mat-error *ngIf="claseForm.get('nombre')?.hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Seleccionar Grado</mat-label>
+        <mat-select formControlName="gradoId">
+          <mat-option *ngFor="let grado of grados" [value]="grado.id">
+            {{ grado.nombre }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>school</mat-icon>
+        <mat-error *ngIf="claseForm.get('gradoId')?.hasError('required')">
+          Requerido
+        </mat-error>
+      </mat-form-field>
+
+      <div class="info-text">
+        <mat-icon class="tiny-icon">info</mat-icon>
+        <small class="text-muted">Los campos marcados son obligatorios para crear el curso.</small>
+      </div>
+    </div>
+
+    <div class="image-column">
+      <div class="file-upload-container">
+        <label class="file-label">Imagen de Portada</label>
+        
+        <div class="upload-area" (click)="fileInput.click()">
+          <input 
+            #fileInput 
+            type="file" 
+            hidden 
+            accept="image/png, image/jpeg, image/jpg"
+            (change)="onFileSelected($event)">
+          
+          <div *ngIf="!imagePreview" class="placeholder-content">
+            <mat-icon class="upload-icon">add_photo_alternate</mat-icon>
+            <span>Subir Portada</span>
+            <small>JPG/PNG - Max 5MB</small>
+          </div>
+
+          <div *ngIf="imagePreview" class="preview-content">
+            <img [src]="imagePreview" alt="Vista previa">
+            <div class="overlay">
+              <mat-icon>edit</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button (click)="cancelar()" class="btn-cancel">Cancelar</button>
+  <button 
+    mat-flat-button 
+    color="primary" 
+    [disabled]="claseForm.invalid"
+    (click)="guardar()"
+    class="btn-save">
+    {{ isEditMode ? 'Guardar Cambios' : 'Crear Clase' }}
+  </button>
+</mat-dialog-actions>

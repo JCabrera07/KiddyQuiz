@@ -1,0 +1,47 @@
+<h2 mat-dialog-title class="dialog-title">
+  <mat-icon class="me-2">image_search</mat-icon> Banco de Pictogramas (ARASAAC)
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  
+  <div class="search-section">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Buscar pictograma</mat-label>
+      <input matInput [(ngModel)]="searchTerm" (keyup.enter)="buscar()" placeholder="Ej. Casa, Comer, Escuela...">
+      <button mat-icon-button matSuffix (click)="buscar()" color="primary">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div class="results-container">
+    
+    <div *ngIf="loading" class="loading-state">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Buscando en ARASAAC...</p>
+    </div>
+
+    <div *ngIf="!loading && pictograms.length === 0" class="empty-state">
+      <mat-icon class="huge-icon" *ngIf="!hasSearched">search</mat-icon>
+      <mat-icon class="huge-icon" *ngIf="hasSearched">sentiment_dissatisfied</mat-icon>
+      <p *ngIf="!hasSearched">Escribe una palabra para empezar.</p>
+      <p *ngIf="hasSearched">No se encontraron pictogramas para "{{searchTerm}}".</p>
+    </div>
+
+    <div *ngIf="!loading && pictograms.length > 0" class="pic-grid">
+      <div *ngFor="let pic of pictograms" class="pic-card" (click)="seleccionar(pic.url)">
+        <div class="img-wrapper">
+            <img [src]="pic.url" [alt]="pic.keywords">
+        </div>
+        <div class="pic-overlay">
+            <span>Seleccionar</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cerrar()">Cancelar</button>
+</mat-dialog-actions>

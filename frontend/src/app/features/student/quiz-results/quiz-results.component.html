@@ -50,17 +50,32 @@
 
       </div>
 
+      <div class="short-feedback-section">
+        
+        <div *ngIf="loadingCorto" class="mini-loader">
+          <mat-spinner diameter="30" color="accent"></mat-spinner>
+          <span>Leyendo tu mente... 🧠</span>
+        </div>
+
+        <div *ngIf="!loadingCorto && comentarioCorto" class="speech-bubble">
+          <span class="bot-icon">🤖</span>
+          <p>{{ comentarioCorto }}</p>
+        </div>
+
+      </div>
       <div *ngIf="loadingIA" class="spinner-overlay">
         <mat-spinner diameter="60" color="accent"></mat-spinner>
         <p>Consultando a los sabios... 🤖</p>
       </div>
 
+      
       <div class="quiz-actions" *ngIf="!loadingIA">
         
+        <!-- 
         <button class="btn-fun btn-ai" (click)="verComentarioIA()">
           <span>✨ Ver Consejos Mágicos (IA)</span>
         </button>
-
+-->
         <a class="btn-fun btn-back" [routerLink]="['/estudiante/mis-clases']">
           <span>🏠 Volver a clases</span>
         </a>
@@ -79,5 +94,3 @@
   </ng-template>
 
 </div>
-
-

@@ -21,7 +21,10 @@ export class EvaluacionPreguntaController {
   async remove(@Param('id', ParseIntPipe) id: number) {
     return this.evalPreguntaService.remove(id);
   }
-
+@Get('evaluacion/:id')
+  async findByEvaluacion(@Param('id', ParseIntPipe) id: number) {
+    return this.evalPreguntaService.findAllByEvaluacion(id);
+  }
 
 @Patch(':id/orden')
 async updateOrden(

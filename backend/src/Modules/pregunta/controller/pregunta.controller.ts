@@ -4,16 +4,17 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { PreguntaService } from '../services/pregunta.service';
 import { CreatePreguntaDto } from '../dto/create-pregunta.dto';
-import cloudinary from 'src/cloudinary.config';
 import { UpdatePreguntaDto } from '../dto/update-pregunta.dto';
+import cloudinary from 'src/cloudinary.config'; // Asegúrate de importar tu config
 
 @Controller('pregunta')
 export class PreguntaController {
   constructor(private readonly preguntaService: PreguntaService) {}
 
+  // --- CREAR PREGUNTA CON IMAGEN ---
   @Post()
   @UseInterceptors(
-    FileInterceptor('urlContenido', {
+    FileInterceptor('imagen', { // El frontend enviará el archivo en el campo 'imagen'
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
@@ -23,41 +24,34 @@ export class PreguntaController {
         },
       }),
       fileFilter: (req, file, cb) => {
-        if (!file.mimetype.match(/\/(jpg|jpeg|png|mp3|mp4)$/)) {
-          return cb(new BadRequestException('Formato no permitido'), false);
+        if (!file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) { // Solo imágenes por ahora
+          return cb(new BadRequestException('Solo se permiten imágenes (JPG, PNG, GIF)'), false);
         }
         cb(null, true);
       },
-      limits: { fileSize: 10 * 1024 * 1024 }, // 10MB máximo
+      limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
     }),
   )
   async create(
     @UploadedFile() file: Express.Multer.File,
     @Body() createDto: CreatePreguntaDto,
   ) {
+    // 1. Subir imagen a Cloudinary si existe
     if (file) {
-      const uploaded = await cloudinary.uploader.upload(file.path);
+      const uploaded = await cloudinary.uploader.upload(file.path, { 
+        folder: 'preguntas' 
+      });
       createDto.urlContenido = uploaded.secure_url;
-    } else if (!createDto.urlContenido) {
-      throw new BadRequestException('Debes enviar un archivo o una URL');
     }
 
+    // 2. Crear pregunta
     return this.preguntaService.create(createDto);
   }
 
-  @Get()
-  async findAll() {
-    return this.preguntaService.findAll();
-  }
-
-  @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.preguntaService.findOne(id);
-  }
-
+  // --- ACTUALIZAR PREGUNTA CON IMAGEN ---
   @Patch(':id')
   @UseInterceptors(
-    FileInterceptor('urlContenido', {
+    FileInterceptor('imagen', {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
@@ -67,12 +61,11 @@ export class PreguntaController {
         },
       }),
       fileFilter: (req, file, cb) => {
-        if (!file.mimetype.match(/\/(jpg|jpeg|png|mp3|mp4)$/)) {
-          return cb(new BadRequestException('Formato no permitido'), false);
+        if (!file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
+          return cb(new BadRequestException('Solo se permiten imágenes'), false);
         }
         cb(null, true);
       },
-      limits: { fileSize: 10 * 1024 * 1024 },
     }),
   )
   async update(
@@ -81,16 +74,22 @@ export class PreguntaController {
     @Body() dto: UpdatePreguntaDto,
   ) {
     if (file) {
-      const uploaded = await cloudinary.uploader.upload(file.path);
+      const uploaded = await cloudinary.uploader.upload(file.path, { 
+        folder: 'preguntas' 
+      });
       dto.urlContenido = uploaded.secure_url;
     }
 
     return this.preguntaService.update(id, dto);
   }
 
-    @Delete(':id')
-  async remove(@Param('id', ParseIntPipe) id: number) {
-    return this.preguntaService.remove(id);
-  }
+  @Get()
+  async findAll() { return this.preguntaService.findAll(); }
+
+  @Get(':id')
+  async findOne(@Param('id', ParseIntPipe) id: number) { return this.preguntaService.findOne(id); }
+
+  @Delete(':id')
+  async remove(@Param('id', ParseIntPipe) id: number) { return this.preguntaService.remove(id); }
 }
 

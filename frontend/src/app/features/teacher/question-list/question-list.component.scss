@@ -1,0 +1,87 @@
+@use 'sass:color';
+
+/* Reutilizar variables y .pro-container de tus otros archivos SCSS o importar global */
+$pro-bg: #F5F7FA;
+$pro-text: #263238;
+
+.pro-container {
+  padding: 20px;
+  background-color: $pro-bg;
+  min-height: 100%;
+}
+
+.pro-title { font-weight: 700; color: $pro-text; font-size: 1.5rem; margin-bottom: 0; }
+
+.question-number {
+  background-color: #E3F2FD;
+  color: #1565C0;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.cardWithShadow {
+  border-radius: 8px;
+  border: 1px solid #E0E0E0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02) !important; 
+}
+
+/* Opciones de respuesta visuales */
+.options-grid {
+  display: flex;
+  flex-wrap: wrap; /* Permite que bajen si hay muchas */
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.option-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Texto a la izq, icono a la der */
+  
+  padding: 8px 16px;
+  border-radius: 20px; /* Bordes muy redondos */
+  border: 1px solid #E0E0E0;
+  background-color: #FAFAFA;
+  color: #616161;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  min-width: 120px; /* Un ancho mínimo para que se vean uniformes */
+  
+  /* ESTILO PARA LA OPCIÓN CORRECTA */
+  &.is-correct {
+    background-color: #E8F5E9; /* Verde muy suave */
+    border-color: #4CAF50;     /* Borde verde */
+    color: #2E7D32;            /* Texto verde oscuro */
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.1);
+  }
+
+  .correct-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    margin-left: 8px;
+    color: #4CAF50;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 50px;
+  color: #90A4AE;
+  
+  .empty-icon { font-size: 60px; width: 60px; height: 60px; margin-bottom: 10px; opacity: 0.5; }
+}
+
+/* Botones igual que en evaluation-list */
+.btn-pro-create { height: 45px; border-radius: 6px; }
+.btn-pro-back { 
+    height: 45px; border-radius: 6px; background: white; border: 1px solid #CFD8DC; color: #546E7A;
+    &:hover { background: #ECEFF1; }
+}

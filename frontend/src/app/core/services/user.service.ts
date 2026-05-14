@@ -4,10 +4,27 @@ import { Observable } from 'rxjs';
 import { UserProfile } from 'src/app/core/models/user-profile.model';
 import { AuthService } from './auth.service'; // 2. Importar AuthService
 
+export interface UsuarioBackend {
+  id: number;
+  username: string;
+  persona: {
+    nombres: string;
+    apellidos: string;
+    edad: number;
+    ciudad: string;
+    sexo: string;
+    rol: string;
+    grado: string;
+    id_grado?: number;
+  }[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+
+  
   
   // Ajusta el puerto según tu backend
   private apiUrl = 'http://localhost:3000/usuario'; 
@@ -43,4 +60,15 @@ export class UserService {
       headers: this.getHeaders() 
     });
   }
+
+getAllUsers(): Observable<UsuarioBackend[]> {
+    return this.http.get<UsuarioBackend[]>(this.apiUrl);
+  }
+
+  // src/app/core/services/user.service.ts
+
+getMyStudents(): Observable<UsuarioBackend[]> {
+  // Llamamos al nuevo endpoint filtrado
+  return this.http.get<UsuarioBackend[]>(`${this.apiUrl}/mis-estudiantes`);
+}
 }

@@ -1,46 +1,171 @@
-.table-container {
-  margin: 20px;
-  overflow-x: auto;
+@use 'sass:color';
+
+/* Variables Corporativas */
+$pro-primary: #1565C0; // Azul fuerte
+$pro-bg: #F5F7FA;
+$pro-border: #E0E0E0;
+$pro-text: #263238;
+$pro-text-light: #78909C;
+
+.pro-container {
+  padding: 20px;
+  background-color: $pro-bg;
+  min-height: 100%;
 }
 
-.class-table {
+.pro-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  color: $pro-text;
+  margin-bottom: 5px;
+}
+
+.pro-card {
+  border-radius: 8px;
+  border: 1px solid $pro-border;
+  background: white;
+  overflow: hidden; /* Para que la barra de carga no se salga */
+}
+
+/* --- Botón Crear --- */
+.btn-pro-create {
+  padding: 0 24px;
+  height: 45px;
+  border-radius: 6px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* --- Toolbar --- */
+.table-toolbar {
+  background-color: white;
+}
+
+/* Ajuste del input de búsqueda para que se vea compacto */
+::ng-deep .density-compact .mat-mdc-form-field-flex {
+  height: 45px;
+  align-items: center;
+}
+
+/* --- Tabla --- */
+.pro-table {
   width: 100%;
-  border-collapse: collapse;
-  font-family: Arial, sans-serif;
-
-  thead {
-    background-color: #1976d2;
-    color: white;
-    font-weight: bold;
+  
+  th.mat-header-cell {
+    background-color: #F8F9FA; /* Gris muy claro para cabecera */
+    color: $pro-text-light;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    border-bottom: 1px solid $pro-border;
   }
 
-  th, td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
+  tr.mat-row {
+    transition: background-color 0.2s;
+    height: 70px; /* Filas un poco más altas para elegancia */
   }
 
-  td img {
-    width: 60px;
-    height: 40px;
+  tr.pro-row:hover {
+    background-color: #F5F9FF; /* Azul muy muy pálido al pasar mouse */
+  }
+
+  td.mat-cell {
+    border-bottom: 1px solid #F1F3F5;
+    color: $pro-text;
+    font-size: 0.95rem;
+  }
+}
+
+/* --- Imagen de Clase --- */
+.img-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid $pro-border;
+  
+  img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: 4px;
+  }
+}
+
+/* --- Badges y Estados --- */
+.badge-pro-gray {
+  background-color: #ECEFF1;
+  color: #455A64;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  
+  &.active {
+    color: #2E7D32;
+    .dot { background-color: #2E7D32; }
   }
 
-  tr:hover {
-    background-color: #f5f5f5;
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+}
+
+/* --- Empty State --- */
+.empty-state {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: $pro-text-light;
+
+  .empty-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 15px;
+    opacity: 0.5;
   }
 
-  button {
-    padding: 6px 10px;
-    background-color: #1976d2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
+  h3 { margin-bottom: 5px; font-weight: 600; }
+  p { margin-bottom: 20px; font-size: 0.9rem; }
+}
 
-  button:hover {
-    background-color: #125ea2;
-  }
+/* ... Estilos previos ... */
+
+/* Ajuste para el texto dentro del toggle */
+.mat-mdc-slide-toggle {
+  font-family: 'Roboto', sans-serif;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+/* Opcional: Colores para el snackbar (agrégalo en styles.scss global si prefieres) */
+::ng-deep .success-snackbar {
+  background-color: #2E7D32 !important;
+  color: white !important;
+}
+
+::ng-deep .info-snackbar {
+  background-color: #455A64 !important;
+  color: white !important;
+}
+
+/* --- Responsive --- */
+.responsive-table-container {
+  overflow-x: auto;
 }

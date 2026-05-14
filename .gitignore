@@ -1,0 +1,38 @@
+# Dependencias
+node_modules/
+
+# Builds
+dist/
+build/
+
+# Variables de entorno
+.env
+.env.*
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Archivos del sistema
+.DS_Store
+
+# Uploads temporales
+backend/uploads/
+
+# Backups PostgreSQL
+backup.sql
+*.dump
+*.backup
+*.sql
+
+# Angular
+.angular/
+.cache/
+
+# NestJS
+coverage/
+
+# IDE
+.vscode/
+.idea/

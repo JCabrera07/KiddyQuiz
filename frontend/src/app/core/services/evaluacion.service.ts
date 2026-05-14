@@ -59,7 +59,7 @@ export class EvaluacionService {
   }
 
 getDetalleEvaluacion(id: number): Observable<any> {
-  return this.http.get(`${environment.apiUrl}detalle-evaluacion/${id}`);
+  return this.http.get(`${environment.apiUrl}/detalle-evaluacion/${id}`);
 }
 
 

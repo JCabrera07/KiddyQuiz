@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'; // 1. Importar HttpHeaders
+import { HttpClient, HttpHeaders } from '@angular/common/http'; 
 import { Observable } from 'rxjs';
 import { UserProfile } from 'src/app/core/models/user-profile.model';
-import { AuthService } from './auth.service'; // 2. Importar AuthService
+import { AuthService } from './auth.service'; 
+import { environment } from '../../../environments/environment';
 
 export interface UsuarioBackend {
   id: number;
@@ -27,7 +28,7 @@ export class UserService {
   
   
   // Ajusta el puerto según tu backend
-  private apiUrl = 'http://localhost:3000/usuario'; 
+  private apiUrl = `${environment.apiUrl}/usuario`; 
 
   constructor(
     private http: HttpClient,

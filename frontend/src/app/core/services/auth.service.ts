@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
+
 
 export interface MyTokenPayload {
   username: string;
@@ -17,7 +19,7 @@ export interface MyTokenPayload {
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:3000/auth'; 
+  private apiUrl = environment.apiUrl; 
 
   // --- CORRECCIÓN AQUÍ ---
   // Inyectamos el Router además del HttpClient

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface Grado {
   id: number;
@@ -22,7 +23,7 @@ export interface Competencia {
   providedIn: 'root'
 })
 export class CompetenciaService {
-  private apiUrl = 'http://localhost:3000/competencia';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
@@ -31,7 +32,7 @@ getCompetenciasByGrado(idGrado: number): Observable<Competencia[]> {
 }
 
   getDetalleComentarioIA(id: number): Observable<any> {
-  return this.http.get(`http://localhost:3000/competencia/${id}/contenido-ia`);
+  return this.http.get(`${this.apiUrl}/competencia/${id}/contenido-ia`);
 }
 
   findAll(): Observable<any[]> {

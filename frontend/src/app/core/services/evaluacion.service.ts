@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-// Asegúrate de que la ruta al modelo sea correcta y que el archivo contenga todas las interfaces.
+import { environment } from '../../../environments/environment';
 import { Evaluacion, EvaluacionConPreguntas } from '../models/evaluacion.model'; 
 @Injectable({
   providedIn: 'root'
 })
 export class EvaluacionService {
-  // Corregí la URL base para que apunte al controlador correcto de tu API
-  private apiUrl = 'http://localhost:3000/evaluacion'; 
+  // 
+  private apiUrl = `${environment.apiUrl}/evaluacion`; 
 
   constructor(private http: HttpClient) {}
 
@@ -59,22 +59,22 @@ export class EvaluacionService {
   }
 
 getDetalleEvaluacion(id: number): Observable<any> {
-  return this.http.get(`http://localhost:3000/detalle-evaluacion/${id}`);
+  return this.http.get(`${environment.apiUrl}detalle-evaluacion/${id}`);
 }
 
 
   generarComentarioIA(id: number): Observable<any> {
-    return this.http.patch(`http://localhost:3000/detalle-evaluacion/${id}/comentario-ia`, {});
+    return this.http.patch(`${environment.apiUrl}/detalle-evaluacion/${id}/comentario-ia`, {});
   }
 
   getDetalleconRespuestas(id: number): Observable<any> {
-  return this.http.get(`http://localhost:3000/detalle-evaluacion/${id}/respuestas`);
+  return this.http.get(`${environment.apiUrl}/detalle-evaluacion/${id}/respuestas`);
 }
 
 // Agrega esto en tu EvaluacionService
 generarComentarioCortoIA(idDetalle: number) {
   // Llama a tu nuevo endpoint PATCH
-  return this.http.patch(`http://localhost:3000/detalle-evaluacion/${idDetalle}/comentario-ia-corto`, {});
+  return this.http.patch(`${environment.apiUrl}/detalle-evaluacion/${idDetalle}/comentario-ia-corto`, {});
 }
 
 
